@@ -12,7 +12,8 @@
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSOperationQueue *queue;
 
-@property (nonatomic, strong) NSMutableArray *bars;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) NSMutableArray *currentDrinkOrder;
 @end
 
 @implementation SharedDataHandler
@@ -39,16 +40,65 @@ static id _instance;
         return [[self alloc] init];
 }
 
+-(void)setupLocationTracking {
+    
+    self.locationManager = [[CLLocationManager alloc] init];
+    self.locationManager.delegate = self;
+    self.locationManager.distanceFilter = kCLDistanceFilterNone;
+    self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [self.locationManager startUpdatingLocation];
+}
+
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock {
     
     NSString *barsPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-        self.bars = [[NSMutableArray alloc] init];
+        NSMutableArray *bars = [[NSMutableArray alloc] init];
         for (NSDictionary *bar in [JSON objectForKey:@"bars"]) {
-            [self.bars addObject:bar];
+            [bars addObject:bar];
         }
-        completionBlock(self.bars);
+        completionBlock(bars);
     }];
+}
+
+-(void)loadDrinkTypesForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock {
+    
+//    NSString *drinksPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
+//    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+//        self.drinkTypes = [[NSMutableArray alloc] init];
+//        for (NSDictionary *bar in [JSON objectForKey:@"types"]) {
+//            [self.drinkTypes addObject:bar];
+//        }
+//        completionBlock(self.drinkTypes);
+//    }];
+
+    NSDictionary *beer = @{@"name": @"beer"};
+    NSDictionary *liquor = @{@"name": @"liquor"};
+    NSDictionary *wine = @{@"name": @"wine"};
+    
+    NSMutableArray *drinkTypes = [NSMutableArray arrayWithArray: @[beer, liquor, wine]];
+    completionBlock(drinkTypes);
+    
+}
+
+-(void)loadDrinksForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock {
+    
+    //    NSString *drinksPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
+    //    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+    //        self.drinkTypes = [[NSMutableArray alloc] init];
+    //        for (NSDictionary *bar in [JSON objectForKey:@"types"]) {
+    //            [self.drinkTypes addObject:bar];
+    //        }
+    //        completionBlock(self.drinkTypes);
+    //    }];
+    
+    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"$5.50", @"quantity":@0};
+    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"$7.00", @"quantity":@0};
+    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"$6.00", @"quantity":@0};
+    
+    NSMutableArray *barDrinks = [NSMutableArray arrayWithArray: @[drink1, drink2, drink3]];
+    completionBlock(barDrinks);
+    
 }
 
 - (void)JSONWithPath:(NSString *)requestPath onCompletion:(JsonRequestCompletionBlock)completionBlock {
@@ -65,4 +115,21 @@ static id _instance;
     [self.queue addOperation:operation];
 }
 
+#pragma mark - Drink Ordering
+
+-(NSMutableArray *)getCurrentOrder {
+    return self.currentDrinkOrder;
+}
+
+-(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
+    [self.currentDrinkOrder addObjectsFromArray:newDrinks];
+}
+
+-(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks {
+    [self.currentDrinkOrder removeObjectsInArray:removeDrinks];
+}
+
+-(void)clearCurrentDrinkOrder {
+    [self.currentDrinkOrder removeAllObjects];
+}
 @end

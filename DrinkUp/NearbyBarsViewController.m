@@ -9,8 +9,9 @@
 #import "NearbyBarsViewController.h"
 #import "MBProgressHUD.h"
 #import "UIImageView+AFNetworking.h"
-
 #import "SharedDataHandler.h"
+
+#import "DrinksTypeViewController.h"
 
 @interface NearbyBarsViewController ()
 @property (nonatomic, strong) NSMutableArray *bars;
@@ -30,6 +31,8 @@
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects) {
+            
+            NSLog(@"Bars: %@", objects);
             self.bars = [NSMutableArray arrayWithArray:objects];
             [self.tableView reloadData];
             
@@ -44,11 +47,6 @@
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
     [self.view addSubview:self.tableView];
-}
-
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - TableView DataSource Methods
@@ -80,6 +78,8 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Cell Chosen %i", [indexPath row]);
+    DrinksTypeViewController *dtvc = [[DrinksTypeViewController alloc] init];
+    [self.navigationController pushViewController:dtvc animated:YES];
 }
 
 @end

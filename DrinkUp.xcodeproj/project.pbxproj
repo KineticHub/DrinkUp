@@ -16,7 +16,7 @@
 		9C69C5AF16CD89F800D548F2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5AE16CD89F800D548F2 /* Default.png */; };
 		9C69C5B116CD89F800D548F2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5B016CD89F800D548F2 /* Default@2x.png */; };
 		9C69C5B316CD89F800D548F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5B216CD89F800D548F2 /* Default-568h@2x.png */; };
-		9C69C5BF16CD8BD700D548F2 /* BeerHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5BE16CD8BD700D548F2 /* BeerHistoryViewController.m */; };
+		9C69C5BF16CD8BD700D548F2 /* DrinkHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5BE16CD8BD700D548F2 /* DrinkHistoryViewController.m */; };
 		9C69C5D716CF8A1300D548F2 /* MainSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5D616CF8A1300D548F2 /* MainSettingsViewController.m */; };
 		9C69C5DB16CFD5A100D548F2 /* SharedDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5DA16CFD5A100D548F2 /* SharedDataHandler.m */; };
 		9C69C5FF16CFD83200D548F2 /* RecentBarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5FE16CFD83200D548F2 /* RecentBarsViewController.m */; };
@@ -34,6 +34,19 @@
 		9C69C64716CFF57300D548F2 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C63E16CFF57300D548F2 /* UIImageView+AFNetworking.m */; };
 		9C69C64B16CFF5C200D548F2 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C64A16CFF5C200D548F2 /* MBProgressHUD.m */; };
 		9C69C64F16CFFA1400D548F2 /* blank_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C64E16CFFA1400D548F2 /* blank_square.png */; };
+		9C69C65416D0012500D548F2 /* DrinksTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */; };
+		9C69C65616D008F700D548F2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C65516D008F700D548F2 /* CoreLocation.framework */; };
+		9C69C65B16D00A3F00D548F2 /* DrinkSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */; };
+		9C69C66D16D01F2600D548F2 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C65F16D01F2600D548F2 /* AUTHORS */; };
+		9C69C66E16D01F2600D548F2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C66016D01F2600D548F2 /* LICENSE */; };
+		9C69C66F16D01F2600D548F2 /* AbstractActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66316D01F2600D548F2 /* AbstractActionSheetPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9C69C67016D01F2600D548F2 /* ActionSheetDatePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66516D01F2600D548F2 /* ActionSheetDatePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9C69C67116D01F2600D548F2 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66716D01F2600D548F2 /* ActionSheetDistancePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9C69C67216D01F2600D548F2 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66916D01F2600D548F2 /* ActionSheetStringPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9C69C67316D01F2600D548F2 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66B16D01F2600D548F2 /* DistancePickerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		9C69C67416D01F2600D548F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C66C16D01F2600D548F2 /* README.md */; };
+		9C69C67816D23EC100D548F2 /* ConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */; };
+		9C69C67D16D2E8ED00D548F2 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C67C16D2E8ED00D548F2 /* ThanksViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,8 +63,8 @@
 		9C69C5AE16CD89F800D548F2 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		9C69C5B016CD89F800D548F2 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		9C69C5B216CD89F800D548F2 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		9C69C5BD16CD8BD700D548F2 /* BeerHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BeerHistoryViewController.h; sourceTree = "<group>"; };
-		9C69C5BE16CD8BD700D548F2 /* BeerHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BeerHistoryViewController.m; sourceTree = "<group>"; };
+		9C69C5BD16CD8BD700D548F2 /* DrinkHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkHistoryViewController.h; sourceTree = "<group>"; };
+		9C69C5BE16CD8BD700D548F2 /* DrinkHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkHistoryViewController.m; sourceTree = "<group>"; };
 		9C69C5D516CF8A1300D548F2 /* MainSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainSettingsViewController.h; sourceTree = "<group>"; };
 		9C69C5D616CF8A1300D548F2 /* MainSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainSettingsViewController.m; sourceTree = "<group>"; };
 		9C69C5D916CFD5A100D548F2 /* SharedDataHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SharedDataHandler.h; sourceTree = "<group>"; };
@@ -86,6 +99,29 @@
 		9C69C64916CFF5C200D548F2 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		9C69C64A16CFF5C200D548F2 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		9C69C64E16CFFA1400D548F2 /* blank_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_square.png; sourceTree = "<group>"; };
+		9C69C65216D0012500D548F2 /* DrinksTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrinksTypeViewController.h; path = ../../DrinksTypeViewController.h; sourceTree = "<group>"; };
+		9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrinksTypeViewController.m; path = ../../DrinksTypeViewController.m; sourceTree = "<group>"; };
+		9C69C65516D008F700D548F2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		9C69C65916D00A3F00D548F2 /* DrinkSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSelectionViewController.h; sourceTree = "<group>"; };
+		9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSelectionViewController.m; sourceTree = "<group>"; };
+		9C69C65E16D01F2600D548F2 /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
+		9C69C65F16D01F2600D548F2 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
+		9C69C66016D01F2600D548F2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		9C69C66216D01F2600D548F2 /* AbstractActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AbstractActionSheetPicker.h; sourceTree = "<group>"; };
+		9C69C66316D01F2600D548F2 /* AbstractActionSheetPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AbstractActionSheetPicker.m; sourceTree = "<group>"; };
+		9C69C66416D01F2600D548F2 /* ActionSheetDatePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDatePicker.h; sourceTree = "<group>"; };
+		9C69C66516D01F2600D548F2 /* ActionSheetDatePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDatePicker.m; sourceTree = "<group>"; };
+		9C69C66616D01F2600D548F2 /* ActionSheetDistancePicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetDistancePicker.h; sourceTree = "<group>"; };
+		9C69C66716D01F2600D548F2 /* ActionSheetDistancePicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetDistancePicker.m; sourceTree = "<group>"; };
+		9C69C66816D01F2600D548F2 /* ActionSheetStringPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetStringPicker.h; sourceTree = "<group>"; };
+		9C69C66916D01F2600D548F2 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
+		9C69C66A16D01F2600D548F2 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
+		9C69C66B16D01F2600D548F2 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
+		9C69C66C16D01F2600D548F2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
+		9C69C67616D23EC100D548F2 /* ConfirmOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmOrderViewController.h; sourceTree = "<group>"; };
+		9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmOrderViewController.m; sourceTree = "<group>"; };
+		9C69C67B16D2E8ED00D548F2 /* ThanksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThanksViewController.h; sourceTree = "<group>"; };
+		9C69C67C16D2E8ED00D548F2 /* ThanksViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThanksViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +129,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C69C65616D008F700D548F2 /* CoreLocation.framework in Frameworks */,
 				9C69C59D16CD89F800D548F2 /* UIKit.framework in Frameworks */,
 				9C69C59F16CD89F800D548F2 /* Foundation.framework in Frameworks */,
 				9C69C5A116CD89F800D548F2 /* CoreGraphics.framework in Frameworks */,
@@ -105,6 +142,7 @@
 		9C69C59016CD89F800D548F2 = {
 			isa = PBXGroup;
 			children = (
+				9C69C65516D008F700D548F2 /* CoreLocation.framework */,
 				9C69C5A216CD89F800D548F2 /* DrinkUp */,
 				9C69C59B16CD89F800D548F2 /* Frameworks */,
 				9C69C59A16CD89F800D548F2 /* Products */,
@@ -135,7 +173,9 @@
 				9C69C64D16CFF5F900D548F2 /* Global */,
 				9C69C5F916CFD77300D548F2 /* App Delegate */,
 				9C69C5FC16CFD81100D548F2 /* Bars */,
-				9C69C5B916CD8AEC00D548F2 /* Beer History */,
+				9C69C5B916CD8AEC00D548F2 /* Drink History */,
+				9C69C65116D000F200D548F2 /* Drinks */,
+				9C69C67516D23E8100D548F2 /* Orders */,
 				9C69C5FA16CFD78300D548F2 /* Settings */,
 			);
 			path = DrinkUp;
@@ -155,13 +195,13 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		9C69C5B916CD8AEC00D548F2 /* Beer History */ = {
+		9C69C5B916CD8AEC00D548F2 /* Drink History */ = {
 			isa = PBXGroup;
 			children = (
-				9C69C5BD16CD8BD700D548F2 /* BeerHistoryViewController.h */,
-				9C69C5BE16CD8BD700D548F2 /* BeerHistoryViewController.m */,
+				9C69C5BD16CD8BD700D548F2 /* DrinkHistoryViewController.h */,
+				9C69C5BE16CD8BD700D548F2 /* DrinkHistoryViewController.m */,
 			);
-			name = "Beer History";
+			name = "Drink History";
 			sourceTree = "<group>";
 		};
 		9C69C5D816CFD58700D548F2 /* Data Handler */ = {
@@ -301,6 +341,7 @@
 		9C69C64D16CFF5F900D548F2 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				9C69C65D16D01F1000D548F2 /* ActionSheetPicker */,
 				9C69C5D816CFD58700D548F2 /* Data Handler */,
 				9C69C65016CFFA1900D548F2 /* Images */,
 				9C69C64C16CFF5C600D548F2 /* Imported */,
@@ -315,6 +356,89 @@
 				9C69C64E16CFFA1400D548F2 /* blank_square.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		9C69C65116D000F200D548F2 /* Drinks */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C65816D00A2900D548F2 /* Drink Selection */,
+				9C69C65716D009B800D548F2 /* Drink Types */,
+			);
+			name = Drinks;
+			sourceTree = "<group>";
+		};
+		9C69C65716D009B800D548F2 /* Drink Types */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C65216D0012500D548F2 /* DrinksTypeViewController.h */,
+				9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */,
+			);
+			name = "Drink Types";
+			sourceTree = "<group>";
+		};
+		9C69C65816D00A2900D548F2 /* Drink Selection */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C65916D00A3F00D548F2 /* DrinkSelectionViewController.h */,
+				9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */,
+			);
+			name = "Drink Selection";
+			sourceTree = "<group>";
+		};
+		9C69C65D16D01F1000D548F2 /* ActionSheetPicker */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C65E16D01F2600D548F2 /* ActionSheetPicker.h */,
+				9C69C65F16D01F2600D548F2 /* AUTHORS */,
+				9C69C66016D01F2600D548F2 /* LICENSE */,
+				9C69C66116D01F2600D548F2 /* Pickers */,
+				9C69C66C16D01F2600D548F2 /* README.md */,
+			);
+			name = ActionSheetPicker;
+			sourceTree = "<group>";
+		};
+		9C69C66116D01F2600D548F2 /* Pickers */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C66216D01F2600D548F2 /* AbstractActionSheetPicker.h */,
+				9C69C66316D01F2600D548F2 /* AbstractActionSheetPicker.m */,
+				9C69C66416D01F2600D548F2 /* ActionSheetDatePicker.h */,
+				9C69C66516D01F2600D548F2 /* ActionSheetDatePicker.m */,
+				9C69C66616D01F2600D548F2 /* ActionSheetDistancePicker.h */,
+				9C69C66716D01F2600D548F2 /* ActionSheetDistancePicker.m */,
+				9C69C66816D01F2600D548F2 /* ActionSheetStringPicker.h */,
+				9C69C66916D01F2600D548F2 /* ActionSheetStringPicker.m */,
+				9C69C66A16D01F2600D548F2 /* DistancePickerView.h */,
+				9C69C66B16D01F2600D548F2 /* DistancePickerView.m */,
+			);
+			path = Pickers;
+			sourceTree = "<group>";
+		};
+		9C69C67516D23E8100D548F2 /* Orders */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C67A16D2E8B800D548F2 /* Thanks View */,
+				9C69C67916D2E8A800D548F2 /* Confirm Order */,
+			);
+			name = Orders;
+			sourceTree = "<group>";
+		};
+		9C69C67916D2E8A800D548F2 /* Confirm Order */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C67616D23EC100D548F2 /* ConfirmOrderViewController.h */,
+				9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */,
+			);
+			name = "Confirm Order";
+			sourceTree = "<group>";
+		};
+		9C69C67A16D2E8B800D548F2 /* Thanks View */ = {
+			isa = PBXGroup;
+			children = (
+				9C69C67B16D2E8ED00D548F2 /* ThanksViewController.h */,
+				9C69C67C16D2E8ED00D548F2 /* ThanksViewController.m */,
+			);
+			name = "Thanks View";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,6 +497,9 @@
 				9C69C5B116CD89F800D548F2 /* Default@2x.png in Resources */,
 				9C69C5B316CD89F800D548F2 /* Default-568h@2x.png in Resources */,
 				9C69C64F16CFFA1400D548F2 /* blank_square.png in Resources */,
+				9C69C66D16D01F2600D548F2 /* AUTHORS in Resources */,
+				9C69C66E16D01F2600D548F2 /* LICENSE in Resources */,
+				9C69C67416D01F2600D548F2 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -385,7 +512,7 @@
 			files = (
 				9C69C5A916CD89F800D548F2 /* main.m in Sources */,
 				9C69C5AD16CD89F800D548F2 /* AppDelegate.m in Sources */,
-				9C69C5BF16CD8BD700D548F2 /* BeerHistoryViewController.m in Sources */,
+				9C69C5BF16CD8BD700D548F2 /* DrinkHistoryViewController.m in Sources */,
 				9C69C5D716CF8A1300D548F2 /* MainSettingsViewController.m in Sources */,
 				9C69C5DB16CFD5A100D548F2 /* SharedDataHandler.m in Sources */,
 				9C69C5FF16CFD83200D548F2 /* RecentBarsViewController.m in Sources */,
@@ -402,6 +529,15 @@
 				9C69C64616CFF57300D548F2 /* AFXMLRequestOperation.m in Sources */,
 				9C69C64716CFF57300D548F2 /* UIImageView+AFNetworking.m in Sources */,
 				9C69C64B16CFF5C200D548F2 /* MBProgressHUD.m in Sources */,
+				9C69C65416D0012500D548F2 /* DrinksTypeViewController.m in Sources */,
+				9C69C65B16D00A3F00D548F2 /* DrinkSelectionViewController.m in Sources */,
+				9C69C66F16D01F2600D548F2 /* AbstractActionSheetPicker.m in Sources */,
+				9C69C67016D01F2600D548F2 /* ActionSheetDatePicker.m in Sources */,
+				9C69C67116D01F2600D548F2 /* ActionSheetDistancePicker.m in Sources */,
+				9C69C67216D01F2600D548F2 /* ActionSheetStringPicker.m in Sources */,
+				9C69C67316D01F2600D548F2 /* DistancePickerView.m in Sources */,
+				9C69C67816D23EC100D548F2 /* ConfirmOrderViewController.m in Sources */,
+				9C69C67D16D2E8ED00D548F2 /* ThanksViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -431,7 +567,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -446,6 +583,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "091197E9-8B63-4D99-B200-AA368A30501B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "091197E9-8B63-4D99-B200-AA368A30501B";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -462,7 +601,8 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -470,6 +610,8 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "091197E9-8B63-4D99-B200-AA368A30501B";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "091197E9-8B63-4D99-B200-AA368A30501B";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -481,6 +623,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -492,6 +635,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

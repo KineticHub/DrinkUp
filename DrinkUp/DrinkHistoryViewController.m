@@ -6,13 +6,13 @@
 //  Copyright (c) 2013 Kinetic. All rights reserved.
 //
 
-#import "BeerHistoryViewController.h"
+#import "DrinkHistoryViewController.h"
 
-@interface BeerHistoryViewController ()
+@interface DrinkHistoryViewController ()
 @property (nonatomic, strong) UITableView *tableView;
 @end
 
-@implementation BeerHistoryViewController
+@implementation DrinkHistoryViewController
 
 - (void)viewDidLoad
 {

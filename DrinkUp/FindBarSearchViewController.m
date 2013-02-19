@@ -18,7 +18,15 @@
 {
     [super viewDidLoad];
     
+    UITextField *barNameField = [[UITextField alloc] initWithFrame:CGRectMake(10, 20, 300, 20)];
+    [barNameField setPlaceholder:@"Name of the Bar (optional)"];
+    [barNameField setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:barNameField];
     
+    UITextField *cityOrZipField = [[UITextField alloc] initWithFrame:CGRectMake(10, 60, 300, 20)];
+    [cityOrZipField setPlaceholder:@"City or Zip Code"];
+    [cityOrZipField setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:cityOrZipField];
 }
 
 @end

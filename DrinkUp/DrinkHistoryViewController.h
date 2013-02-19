@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface BeerHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface DrinkHistoryViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
 
 @end
