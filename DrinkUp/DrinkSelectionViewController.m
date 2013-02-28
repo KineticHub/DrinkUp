@@ -14,15 +14,26 @@
 #import "ConfirmOrderViewController.h"
 
 @interface DrinkSelectionViewController ()
+@property (nonatomic, strong) NSString *drinkType;
 @property (nonatomic, strong) NSMutableArray *drinks;
 @property (nonatomic, strong) NSMutableArray *drinksOrder;
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIPickerView *pickerView;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
 @property int SelectedDrinkRow;
 @end
 
 @implementation DrinkSelectionViewController
+
+-(id)initWithDrinkType:(NSString *)drinkType {
+    
+    self = [super init];
+    
+    if (self) {
+        self.drinkType = drinkType;
+    }
+    
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -39,7 +50,23 @@
         
         [[SharedDataHandler sharedInstance] loadDrinksForBar:@"" onCompletion:^(NSMutableArray *objects) {
             
-            self.drinks = [NSMutableArray arrayWithArray:objects];
+            NSMutableArray *tempDrinksArray = [[NSMutableArray alloc] init];
+            for (NSDictionary *drink in objects) {
+                if ([[drink objectForKey:@"type"] isEqualToString:self.drinkType]) {
+                    [tempDrinksArray addObject:drink];
+                }
+            }
+            
+            for (NSDictionary *drink in tempDrinksArray) {
+                for (NSDictionary *drinkOrdered in self.drinksOrder) {
+                    if ([[drink objectForKey:@"name"] isEqualToString:[drinkOrdered objectForKey:@"name"]]) {
+                        [self.drinks addObject:drinkOrdered];
+                    } else {
+                        [self.drinks addObject:drink];
+                    }
+                }
+            }
+            
             [self.tableView reloadData];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -69,6 +96,7 @@
 }
 
 -(void)addDrinksToCurrentOrder {
+    
     [[SharedDataHandler sharedInstance] addDrinksToCurrentOrder:self.drinksOrder];
     
     ConfirmOrderViewController *confirmVC = [[ConfirmOrderViewController alloc] init];
@@ -98,9 +126,9 @@
     
     NSString *detailString;
     if ([[drink objectForKey:@"quantity"] integerValue] > 0) {
-        detailString = [NSString stringWithFormat:@"%i  x  %@", [[drink objectForKey:@"quantity"] integerValue], [drink objectForKey:@"price"]];
+        detailString = [NSString stringWithFormat:@"%i  x  $%@", [[drink objectForKey:@"quantity"] integerValue], [drink objectForKey:@"price"]];
     } else {
-        detailString = [NSString stringWithFormat:@"%@", [drink objectForKey:@"price"]];
+        detailString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
     }
     
     cell.textLabel.text = [drink objectForKey:@"name"];;
@@ -115,7 +143,7 @@
 #pragma mark - TableView Delegate Methods
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Cell Chosen %i", [indexPath row]);
+
     self.SelectedDrinkRow = [indexPath row];
     
     NSArray *amounts = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
@@ -128,9 +156,6 @@
 
 - (void)quantityWasSelected:(NSNumber *)selectedIndex element:(id)element {
     
-    //may have originated from textField or barButtonItem, use an IBOutlet instead of element
-    NSLog(@"Quantity %i", [selectedIndex intValue]);
-    
     NSMutableDictionary *dicDrink = [NSMutableDictionary dictionaryWithDictionary:[self.drinks objectAtIndex:self.SelectedDrinkRow]];
     [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue] + 1] forKey:@"quantity"];
     [self.drinks replaceObjectAtIndex:self.SelectedDrinkRow withObject:dicDrink];
@@ -138,87 +163,5 @@
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.SelectedDrinkRow inSection:0];
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
-
-//#pragma mark - Setup ActionSheet
-//-(void)setupPickerAndActionSheet {
-//    self.actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil];
-//    self.actionSheet.actionSheetStyle = UIActionSheetStyleBlackOpaque;
-//    
-//    
-//    self.pickerView = [[UIPickerView alloc] initWithFrame:CGRectMake(0,40, 320, 216)];
-//    self.pickerView.showsSelectionIndicator=YES;
-//    self.pickerView.dataSource = self;
-//    self.pickerView.delegate = self;
-////    picker.tag=SelectedDropDown;
-//    [self.actionSheet addSubview:self.pickerView];
-//    
-//    
-//    
-//    UIToolbar *tools=[[UIToolbar alloc]initWithFrame:CGRectMake(0, 0,320,40)];
-//    tools.barStyle=UIBarStyleBlackOpaque;
-//    [self.actionSheet addSubview:tools];
-//    
-//    
-//    UIBarButtonItem *doneButton=[[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(btnActionDoneClicked)];
-//    doneButton.imageInsets=UIEdgeInsetsMake(200, 6, 50, 25);
-//    UIBarButtonItem *CancelButton=[[UIBarButtonItem alloc]initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(btnActionCancelClicked)];
-//    UIBarButtonItem *flexSpace= [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-//    
-//    NSArray *array = [[NSArray alloc]initWithObjects:CancelButton,flexSpace,flexSpace,doneButton,nil];
-//    
-//    [tools setItems:array];
-//    
-//    
-//    //picker title
-//    UILabel *lblPickerTitle=[[UILabel alloc]initWithFrame:CGRectMake(60,8, 200, 25)];
-//    lblPickerTitle.text=@"Quantity";
-//    lblPickerTitle.backgroundColor=[UIColor clearColor];
-//    lblPickerTitle.textColor=[UIColor whiteColor];
-//    lblPickerTitle.textAlignment=NSTextAlignmentCenter;
-//    lblPickerTitle.font=[UIFont boldSystemFontOfSize:15];
-//    [tools addSubview:lblPickerTitle];
-//    
-//    [self.actionSheet showFromRect:CGRectMake(0,480, 320,215) inView:self.view animated:YES];
-//    [self.actionSheet setBounds:CGRectMake(0,0, 320, 411)];
-//}
-//
-//#pragma mark - PickerView Delegate Methods
-//-(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-//    return 1;
-//}
-//
-//-(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-//    return 20;
-//}
-//
-//-(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view {
-//    
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 300, 37)];
-//    label.text = [NSString stringWithFormat:@"%i", row + 1];
-//    label.textAlignment = NSTextAlignmentCenter;
-//    label.backgroundColor = [UIColor clearColor];
-//    return label;
-//}
-//
-//-(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-//    NSLog(@"Selected: %i", row);
-//}
-//
-//-(void)btnActionDoneClicked {
-//    NSLog(@"Selected: %i", [self.pickerView selectedRowInComponent:0]);
-//    [UIView animateWithDuration:0.2 delay:0.0 options:nil
-//                     animations:^{
-//                         self.actionSheet.frame = CGRectMake(0, 480, 320, 215);
-//                     }
-//                     completion:nil];
-//}
-//
-//-(void)btnActionCancelClicked {
-//    [UIView animateWithDuration:0.2 delay:0.0 options:nil
-//                     animations:^{
-//                         self.actionSheet.frame = CGRectMake(0, 480, 320, 215);
-//                     }
-//                     completion:nil];
-//}
 
 @end

@@ -11,6 +11,11 @@
 #import "RecentBarsViewController.h"
 #import "NearbyBarsViewController.h"
 #import "FindBarSearchViewController.h"
+#import "DrinkHistoryViewController.h"
+
+@interface AppDelegate ()
+@property (nonatomic, strong) UINavigationController *rootNavigationController;
+@end
 
 @implementation AppDelegate
 
@@ -34,13 +39,26 @@
     [tbvc addChildViewController:nbvc];
     [tbvc addChildViewController:fbvc];
     
-    UINavigationController *rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
+   self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
+    // Instantiate a New button to invoke the addTask: method when tapped.
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+                                  initWithTitle:@"History"
+                                  style:UIBarButtonItemStylePlain
+                                  target:self action:@selector(viewHistoryController:)];
+    
+    // Set up the Add custom button on the right of the navigation bar
+    tbvc.navigationItem.rightBarButtonItem = addButton;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    [self.window setRootViewController:rootNavigationController];
+    [self.window setRootViewController:self.rootNavigationController];
     self.window.backgroundColor = [UIColor clearColor];
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+//    return [facebook handleOpenURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -70,4 +88,9 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark - NavBar Button Methods
+-(void)viewHistoryController:(id)sender {
+    DrinkHistoryViewController *historyVC = [[DrinkHistoryViewController alloc] init];
+    [self.rootNavigationController pushViewController:historyVC animated:YES];
+}
 @end

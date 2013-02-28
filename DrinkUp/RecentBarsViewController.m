@@ -10,6 +10,8 @@
 
 #import "NearbyBarsViewController.h"
 
+#import "UserLoginViewController.h"
+
 @interface RecentBarsViewController ()
 @property (nonatomic, strong) UITableView *tableView;
 @end
@@ -60,6 +62,9 @@
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     NSLog(@"Cell Chosen %i", [indexPath row]);
+    
+    UserLoginViewController *ulvc = [[UserLoginViewController alloc] init];
+    [self.navigationController pushViewController:ulvc animated:YES];
 }
 
 #pragma mark - Segment Control Method

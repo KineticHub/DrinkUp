@@ -14,6 +14,8 @@
 
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSMutableArray *currentDrinkOrder;
+
+@property (nonatomic, strong) Facebook *facebook;
 @end
 
 @implementation SharedDataHandler
@@ -92,9 +94,9 @@ static id _instance;
     //        completionBlock(self.drinkTypes);
     //    }];
     
-    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"$5.50", @"quantity":@0};
-    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"$7.00", @"quantity":@0};
-    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"$6.00", @"quantity":@0};
+    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"5.50", @"quantity":@0};
+    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"7.00", @"quantity":@0};
+    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"6.00", @"quantity":@0};
     
     NSMutableArray *barDrinks = [NSMutableArray arrayWithArray: @[drink1, drink2, drink3]];
     completionBlock(barDrinks);
@@ -122,6 +124,14 @@ static id _instance;
 }
 
 -(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
+    
+    for (NSDictionary *drink in newDrinks) {
+        for (NSDictionary *orderedDrink in self.currentDrinkOrder) {
+            if ([[drink objectForKey:@"name"] isEqualToString:[orderedDrink objectForKey:@"name"]]) {
+            }
+        }
+    }
+    
     [self.currentDrinkOrder addObjectsFromArray:newDrinks];
 }
 
@@ -131,5 +141,62 @@ static id _instance;
 
 -(void)clearCurrentDrinkOrder {
     [self.currentDrinkOrder removeAllObjects];
+}
+
+#pragma mark - Facebook Methods
+
+-(Facebook *)facebookInstance {
+    return self.facebook;
+}
+
+-(void)initializeFacebook {
+    self.facebook = [[Facebook alloc] initWithAppId:@"428379253908650" andDelegate:self];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"]
+        && [defaults objectForKey:@"FBExpirationDateKey"]) {
+        self.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
+        self.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
+    }
+    
+    if (![self.facebook isSessionValid])
+    {
+        NSArray *permissions = [[NSArray alloc] initWithObjects:
+                                //@"user_likes",
+                                @"read_stream",
+                                @"publish_stream",
+                                nil];
+        [self.facebook authorize:permissions];
+    }
+}
+
+- (void)request:(FBRequest *)request didFailWithError:(NSError *)error {
+    NSLog(@"Failed with error: %@", [error localizedDescription]);
+}
+
+- (void)request:(FBRequest *)request didLoad:(id)result {
+	if ([result isKindOfClass:[NSArray class]]) {
+		result = [result objectAtIndex:0];
+	}
+	NSLog(@"Result of API call: \n%@", result);
+}
+
+- (void)fbDidLogin {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[self.facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[self.facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+}
+
+- (void) fbDidLogout {
+    
+    // Remove saved authorization information if it exists
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
+        [defaults removeObjectForKey:@"FBAccessTokenKey"];
+        [defaults removeObjectForKey:@"FBExpirationDateKey"];
+        [defaults synchronize];
+    }
 }
 @end

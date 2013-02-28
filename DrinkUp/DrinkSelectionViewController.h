@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DrinkSelectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIPickerViewDataSource, UIPickerViewDelegate, UIActionSheetDelegate>
-
+@interface DrinkSelectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
+-(id)initWithDrinkType:(NSString *)drinkType;
 @end

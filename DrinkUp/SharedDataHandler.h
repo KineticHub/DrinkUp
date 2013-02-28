@@ -8,11 +8,12 @@
 
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
+#import "FBConnect.h"
 
 typedef void(^JsonRequestCompletionBlock)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error);
 typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 
-@interface SharedDataHandler : NSObject <CLLocationManagerDelegate>
+@interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate>
 + (SharedDataHandler *)sharedInstance;
 
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock;
@@ -23,4 +24,8 @@ typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 -(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks;
 -(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks;
 -(void)clearCurrentDrinkOrder;
+
+#pragma mark - Facebook Methods
+-(Facebook *)facebookInstance;
+-(void)initializeFacebook;
 @end

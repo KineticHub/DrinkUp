@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConfirmOrderViewController : UIViewController  <UITableViewDelegate, UITableViewDataSource>
+@interface ConfirmOrderViewController : UIViewController  <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
 
 @end
