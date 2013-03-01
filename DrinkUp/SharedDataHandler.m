@@ -8,6 +8,8 @@
 
 #import "SharedDataHandler.h"
 #import "AFJSONRequestOperation.h"
+#import "AFHTTPRequestOperation.h"
+#import "AFHTTPClient.h"
 
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSOperationQueue *queue;
@@ -183,10 +185,51 @@ static id _instance;
 
 - (void)fbDidLogin {
     
+    NSLog(@"HIT FB LOGIN");
+    
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     [defaults setObject:[self.facebook accessToken] forKey:@"FBAccessTokenKey"];
     [defaults setObject:[self.facebook expirationDate] forKey:@"FBExpirationDateKey"];
     [defaults synchronize];
+    
+//START TEST
+    NSString *requestPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/facebook_login/mobile/";
+    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    NSError * error = nil;
+    
+    NSMutableDictionary *sendDic = [[NSMutableDictionary alloc] init];
+    [sendDic setObject:[self.facebook accessToken] forKey:@"oauth_token"];
+    [sendDic setObject:[NSNumber numberWithFloat:[[self.facebook expirationDate] timeIntervalSince1970]] forKey:@"expiration"];
+    [sendDic setObject:[NSNumber numberWithFloat:[[NSDate date]timeIntervalSince1970]] forKey:@"created"];
+    
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+    
+    NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDic];
+    [ request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+        
+        NSLog(@"response string: %@ ", operation.responseString);
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        NSLog(@"error: %@", operation.responseString);
+        
+    }];
+    
+//    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request2 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+//        NSLog(@"COMPLETED FB CALL: %@", JSON);
+////        completionBlock(request, response, JSON, nil);
+//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+////        completionBlock(request, response, JSON, error);
+//        NSLog(@"ERROR FB: %@", error);
+//    }];
+    [self.queue addOperation:operation];
 }
 
 - (void) fbDidLogout {

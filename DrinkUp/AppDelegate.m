@@ -13,6 +13,8 @@
 #import "FindBarSearchViewController.h"
 #import "DrinkHistoryViewController.h"
 
+#import "SharedDataHandler.h"
+
 @interface AppDelegate ()
 @property (nonatomic, strong) UINavigationController *rootNavigationController;
 @end
@@ -58,7 +60,7 @@
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-//    return [facebook handleOpenURL:url];
+    return [[SharedDataHandler sharedInstance].facebookInstance handleOpenURL:url];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
