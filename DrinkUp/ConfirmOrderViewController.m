@@ -38,11 +38,8 @@
     
     [self.view setBackgroundColor:[UIColor cyanColor]];
     
-    [[SharedDataHandler sharedInstance] loadDrinksForBar:@"" onCompletion:^(NSMutableArray *objects) {
-        self.drinksOrdered = [NSMutableArray arrayWithArray:objects];
-    }];
-    
-//    self.drinksOrdered = [NSMutableArray arrayWithArray:[[SharedDataHandler sharedInstance] getCurrentOrder]];
+    self.drinksOrdered = [NSMutableArray arrayWithArray:[[SharedDataHandler sharedInstance] getCurrentOrder]];
+    NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
     
     CGFloat verticlSpacer = 10.0;
     CGFloat horizontalSpacer = 10.0;
@@ -206,7 +203,7 @@
 
     self.SelectedDrinkRow = [indexPath row];
     
-    NSArray *amounts = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    NSArray *amounts = @[@"Remove",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:0 target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath]];
 }
 
@@ -217,11 +214,16 @@
 - (void)quantityWasSelected:(NSNumber *)selectedIndex element:(id)element {
     
     NSMutableDictionary *dicDrink = [NSMutableDictionary dictionaryWithDictionary:[self.drinksOrdered objectAtIndex:self.SelectedDrinkRow]];
-    [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue] + 1] forKey:@"quantity"];
+    [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue]] forKey:@"quantity"];
     [self.drinksOrdered replaceObjectAtIndex:self.SelectedDrinkRow withObject:dicDrink];
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.SelectedDrinkRow inSection:0];
-    [self.tableViewDrinks reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if ([[dicDrink objectForKey:@"quantity"] intValue] == 0) {
+        [self.drinksOrdered removeObjectAtIndex:self.SelectedDrinkRow];
+        [self.tableViewDrinks deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationFade];
+    } else {
+        [self.tableViewDrinks reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
     
     [self updatePricesAndTotals];
 }

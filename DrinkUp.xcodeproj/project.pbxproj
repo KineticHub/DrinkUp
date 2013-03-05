@@ -100,6 +100,7 @@
 		9C8B70E916DD9A6700FB80AF /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70E716DD9A6600FB80AF /* Social.framework */; };
 		9C8B70EE16DD9B5600FB80AF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70ED16DD9B5600FB80AF /* libsqlite3.0.dylib */; };
 		9C8B70F016DD9BA500FB80AF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */; };
+		9C8B70F716E4A48300FB80AF /* SelectBarSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -292,6 +293,8 @@
 		9C8B70E716DD9A6600FB80AF /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		9C8B70ED16DD9B5600FB80AF /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
 		9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		9C8B70F516E4A48200FB80AF /* SelectBarSectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectBarSectionViewController.h; sourceTree = "<group>"; };
+		9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectBarSectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -449,6 +452,7 @@
 		9C69C60816CFDC3300D548F2 /* Nearby Bars */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B70F416E4A42A00FB80AF /* Bar Section */,
 				9C69C60016CFDBE300D548F2 /* NearbyBarsViewController.h */,
 				9C69C60116CFDBE300D548F2 /* NearbyBarsViewController.m */,
 			);
@@ -756,6 +760,15 @@
 			name = Login;
 			sourceTree = "<group>";
 		};
+		9C8B70F416E4A42A00FB80AF /* Bar Section */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B70F516E4A48200FB80AF /* SelectBarSectionViewController.h */,
+				9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */,
+			);
+			name = "Bar Section";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -902,6 +915,7 @@
 				9C8B70E016DD901900FB80AF /* FBSBJsonWriter.m in Sources */,
 				9C8B70E116DD901900FB80AF /* NSError+FBError.m in Sources */,
 				9C8B70E516DD954D00FB80AF /* UserLoginViewController.m in Sources */,
+				9C8B70F716E4A48300FB80AF /* SelectBarSectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -31,8 +31,7 @@
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects) {
-            
-            NSLog(@"Bars: %@", objects);
+
             self.bars = [NSMutableArray arrayWithArray:objects];
             [self.tableView reloadData];
             
@@ -77,9 +76,26 @@
 #pragma mark - TableView Delegate Methods
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"Cell Chosen %i", [indexPath row]);
-    DrinksTypeViewController *dtvc = [[DrinksTypeViewController alloc] init];
-    [self.navigationController pushViewController:dtvc animated:YES];
+    
+    NSDictionary *selectedBar = [self.bars objectAtIndex:[indexPath row]];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] loadBarSectionsForBar:[[selectedBar objectForKey:@"id"] intValue] onCompletion:^(NSMutableArray *objects) {
+            
+            if ([objects count] == 1) {
+                NSDictionary *barSection = [objects objectAtIndex:0];
+                [SharedDataHandler sharedInstance].current_section = [[barSection objectForKey:@"id"] intValue];
+                DrinksTypeViewController *dtvc = [[DrinksTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+                [self.navigationController pushViewController:dtvc animated:YES];
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        }];
+    });
 }
 
 @end

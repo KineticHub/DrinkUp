@@ -14,7 +14,7 @@
 #import "ConfirmOrderViewController.h"
 
 @interface DrinkSelectionViewController ()
-@property (nonatomic, strong) NSString *drinkType;
+@property int drinkType;
 @property (nonatomic, strong) NSMutableArray *drinks;
 @property (nonatomic, strong) NSMutableArray *drinksOrder;
 @property (nonatomic, strong) UITableView *tableView;
@@ -24,7 +24,7 @@
 
 @implementation DrinkSelectionViewController
 
--(id)initWithDrinkType:(NSString *)drinkType {
+-(id)initWithDrinkType:(int)drinkType {
     
     self = [super init];
     
@@ -48,24 +48,21 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
-        [[SharedDataHandler sharedInstance] loadDrinksForBar:@"" onCompletion:^(NSMutableArray *objects) {
+        [[SharedDataHandler sharedInstance] loadDrinksForSection:[SharedDataHandler sharedInstance].current_section withType:self.drinkType onCompletion:^(NSMutableArray *objects) {
             
-            NSMutableArray *tempDrinksArray = [[NSMutableArray alloc] init];
             for (NSDictionary *drink in objects) {
-                if ([[drink objectForKey:@"type"] isEqualToString:self.drinkType]) {
-                    [tempDrinksArray addObject:drink];
-                }
-            }
-            
-            for (NSDictionary *drink in tempDrinksArray) {
                 for (NSDictionary *drinkOrdered in self.drinksOrder) {
-                    if ([[drink objectForKey:@"name"] isEqualToString:[drinkOrdered objectForKey:@"name"]]) {
+                    if ([[drink objectForKey:@"id"] intValue] == [[drinkOrdered objectForKey:@"id"] intValue]) {
                         [self.drinks addObject:drinkOrdered];
                     } else {
                         [self.drinks addObject:drink];
                     }
                 }
             }
+            
+            self.drinks = [NSMutableArray arrayWithArray:objects];
+            
+            NSLog(@"drinks to select: %@", self.drinks);
             
             [self.tableView reloadData];
             
@@ -96,6 +93,12 @@
 }
 
 -(void)addDrinksToCurrentOrder {
+    
+    for (NSDictionary *drink in self.drinks) {
+        if ([[drink objectForKey:@"quantity"] intValue] > 0) {
+            [self.drinksOrder addObject:drink];
+        }
+    }
     
     [[SharedDataHandler sharedInstance] addDrinksToCurrentOrder:self.drinksOrder];
     
@@ -146,7 +149,7 @@
 
     self.SelectedDrinkRow = [indexPath row];
     
-    NSArray *amounts = @[@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    NSArray *amounts = @[@"Remove",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:0 target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath]];
 }
 
@@ -157,7 +160,8 @@
 - (void)quantityWasSelected:(NSNumber *)selectedIndex element:(id)element {
     
     NSMutableDictionary *dicDrink = [NSMutableDictionary dictionaryWithDictionary:[self.drinks objectAtIndex:self.SelectedDrinkRow]];
-    [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue] + 1] forKey:@"quantity"];
+    [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue]] forKey:@"quantity"];
+    
     [self.drinks replaceObjectAtIndex:self.SelectedDrinkRow withObject:dicDrink];
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.SelectedDrinkRow inSection:0];

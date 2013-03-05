@@ -31,6 +31,9 @@ static id _instance;
         self = [super init];
         _instance = self;
         _queue = [[NSOperationQueue alloc] init];
+        
+        [self setupSharedVariables];
+//        [self setupLocationTracking];
     }
     
     return _instance;
@@ -53,55 +56,87 @@ static id _instance;
     [self.locationManager startUpdatingLocation];
 }
 
+-(void)setupSharedVariables {
+    
+    self.currentDrinkOrder = [[NSMutableArray alloc] init];
+}
+
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *barsPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
+    NSString *barsPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/all/";
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+        
         NSMutableArray *bars = [[NSMutableArray alloc] init];
-        for (NSDictionary *bar in [JSON objectForKey:@"bars"]) {
-            [bars addObject:bar];
+        NSMutableDictionary *tempDict;
+        for (NSMutableDictionary *bar in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[bar objectForKey:@"fields"]];
+            [tempDict setObject:[bar objectForKey:@"pk"] forKey:@"id"];
+            [bars addObject:tempDict];
         }
+        NSLog(@"bars: %@", bars);
         completionBlock(bars);
     }];
 }
 
--(void)loadDrinkTypesForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock {
+-(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-//    NSString *drinksPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
-//    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-//        self.drinkTypes = [[NSMutableArray alloc] init];
-//        for (NSDictionary *bar in [JSON objectForKey:@"types"]) {
-//            [self.drinkTypes addObject:bar];
-//        }
-//        completionBlock(self.drinkTypes);
-//    }];
+    NSString *barSectionsPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/%i/", bar_id];
+    NSLog(@"Path: %@", barSectionsPath);
+    [self JSONWithPath:barSectionsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+        
+        NSMutableArray *barSections = [[NSMutableArray alloc] init];
+        NSMutableDictionary *tempDict;
+        for (NSDictionary *barSection in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[barSection objectForKey:@"fields"]];
+            [tempDict setObject:[barSection objectForKey:@"pk"] forKey:@"id"];
+            [barSections addObject:tempDict];
+        }
+        NSLog(@"bar sections: %@", barSections);
+        completionBlock(barSections);
+    }];
+}
 
-    NSDictionary *beer = @{@"name": @"beer"};
-    NSDictionary *liquor = @{@"name": @"liquor"};
-    NSDictionary *wine = @{@"name": @"wine"};
+-(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSMutableArray *drinkTypes = [NSMutableArray arrayWithArray: @[beer, liquor, wine]];
-    completionBlock(drinkTypes);
+    NSString *drinkTypesPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/drinks/types/%i/", section_id];
+    [self JSONWithPath:drinkTypesPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+        
+        NSMutableArray *drinkTypes = [[NSMutableArray alloc] init];
+        NSMutableDictionary *tempDict;
+        for (NSDictionary *drinkType in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[drinkType objectForKey:@"fields"]];
+            [tempDict setObject:[drinkType objectForKey:@"pk"] forKey:@"id"];
+            [drinkTypes addObject:tempDict];
+        }
+        NSLog(@"types: %@", tempDict);
+        completionBlock(drinkTypes);
+    }];
     
 }
 
--(void)loadDrinksForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock {
+-(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    //    NSString *drinksPath = @"http://drink-up.appspot.com/bar?api_key=Pass1234&zipcode=24060";
-    //    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-    //        self.drinkTypes = [[NSMutableArray alloc] init];
-    //        for (NSDictionary *bar in [JSON objectForKey:@"types"]) {
-    //            [self.drinkTypes addObject:bar];
-    //        }
-    //        completionBlock(self.drinkTypes);
-    //    }];
+    NSString *drinksPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/drinks/%i/%i/", section_id, type_id];
+    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+        
+        NSMutableArray *drinks = [[NSMutableArray alloc] init];
+        NSMutableDictionary *tempDict;
+        for (NSDictionary *drink in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[drink objectForKey:@"fields"]];
+            [tempDict setObject:[drink objectForKey:@"pk"] forKey:@"id"];
+            [tempDict setObject:@0 forKey:@"quantity"];
+            [drinks addObject:tempDict];
+        }
+        NSLog(@"drinks: %@", tempDict);
+        completionBlock(drinks);
+    }];
     
-    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"5.50", @"quantity":@0};
-    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"7.00", @"quantity":@0};
-    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"6.00", @"quantity":@0};
-    
-    NSMutableArray *barDrinks = [NSMutableArray arrayWithArray: @[drink1, drink2, drink3]];
-    completionBlock(barDrinks);
+//    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"5.50", @"quantity":@0};
+//    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"7.00", @"quantity":@0};
+//    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"6.00", @"quantity":@0};
+//    
+//    NSMutableArray *barDrinks = [NSMutableArray arrayWithArray: @[drink1, drink2, drink3]];
+//    completionBlock(barDrinks);
     
 }
 
@@ -127,14 +162,26 @@ static id _instance;
 
 -(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
     
+    NSMutableArray *tempCurrentOrder = [[NSMutableArray alloc] initWithArray:self.currentDrinkOrder];
+    [self.currentDrinkOrder removeAllObjects];
+    
     for (NSDictionary *drink in newDrinks) {
-        for (NSDictionary *orderedDrink in self.currentDrinkOrder) {
-            if ([[drink objectForKey:@"name"] isEqualToString:[orderedDrink objectForKey:@"name"]]) {
+        bool found = NO;
+        for (NSMutableDictionary *orderedDrink in tempCurrentOrder) {
+            if ([[drink objectForKey:@"id"] intValue] == [[orderedDrink objectForKey:@"id"] intValue]) {
+                [orderedDrink setObject:[drink objectForKey:@"quantity"] forKey:@"quantity"];
+                if ([[drink objectForKey:@"quantity"] intValue] > 0) {
+                    [self.currentDrinkOrder addObject:orderedDrink];
+                }
+                found = YES;
             }
+        }
+        if (!found) {
+            [self.currentDrinkOrder addObject:drink];
         }
     }
     
-    [self.currentDrinkOrder addObjectsFromArray:newDrinks];
+    NSLog(@"new drinks: %@ sent drinks: %@", self.currentDrinkOrder, newDrinks);
 }
 
 -(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks {

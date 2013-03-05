@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface DrinkSelectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIActionSheetDelegate>
--(id)initWithDrinkType:(NSString *)drinkType;
+-(id)initWithDrinkType:(int)drinkType;
 @end

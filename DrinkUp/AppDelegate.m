@@ -37,19 +37,19 @@
     
     UITabBarController *tbvc = [[UITabBarController alloc] init];
     
-    [tbvc addChildViewController:rbvc];
+//    [tbvc addChildViewController:rbvc];
     [tbvc addChildViewController:nbvc];
     [tbvc addChildViewController:fbvc];
     
    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
     // Instantiate a New button to invoke the addTask: method when tapped.
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc]
+    UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
                                   initWithTitle:@"History"
                                   style:UIBarButtonItemStylePlain
                                   target:self action:@selector(viewHistoryController:)];
     
     // Set up the Add custom button on the right of the navigation bar
-    tbvc.navigationItem.rightBarButtonItem = addButton;
+    tbvc.navigationItem.rightBarButtonItem = historyButton;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];

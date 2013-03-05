@@ -14,11 +14,15 @@ typedef void(^JsonRequestCompletionBlock)(NSURLRequest *request, NSHTTPURLRespon
 typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 
 @interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate>
+
+@property int current_section;
+
 + (SharedDataHandler *)sharedInstance;
 
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock;
--(void)loadDrinkTypesForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock;
--(void)loadDrinksForBar:(NSString *)barEmail onCompletion:(ObjectsCompletionBlock)completionBlock;
+-(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock;
+-(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock;
+-(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 
 -(NSMutableArray *)getCurrentOrder;
 -(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks;
