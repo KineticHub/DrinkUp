@@ -40,37 +40,7 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor lightGrayColor]];
     
-    self.drinks = [[NSMutableArray alloc] init];
-    self.drinksOrder = [[NSMutableArray alloc] initWithArray:[[SharedDataHandler sharedInstance] getCurrentOrder]];
-    
     //check drinks order and update the quantity in current drink dictionary
-    
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        [[SharedDataHandler sharedInstance] loadDrinksForSection:[SharedDataHandler sharedInstance].current_section withType:self.drinkType onCompletion:^(NSMutableArray *objects) {
-            
-            for (NSDictionary *drink in objects) {
-                for (NSDictionary *drinkOrdered in self.drinksOrder) {
-                    if ([[drink objectForKey:@"id"] intValue] == [[drinkOrdered objectForKey:@"id"] intValue]) {
-                        [self.drinks addObject:drinkOrdered];
-                    } else {
-                        [self.drinks addObject:drink];
-                    }
-                }
-            }
-            
-            self.drinks = [NSMutableArray arrayWithArray:objects];
-            
-            NSLog(@"drinks to select: %@", self.drinks);
-            
-            [self.tableView reloadData];
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-            });
-        }];
-    });
     
     CGFloat bottomViewHeight = 44.0;
     
@@ -87,21 +57,49 @@
     UIButton *addToOrder = [UIButton  buttonWithType:UIButtonTypeRoundedRect];
     [addToOrder setFrame:CGRectMake(0, 0, 300.0, 30.0)];
     addToOrder.center = CGPointMake(bottomView.frame.size.width/2, bottomView.frame.size.height/2);
-    [addToOrder setTitle:@"Add to Order" forState:UIControlStateNormal];
-    [addToOrder addTarget:self action:@selector(addDrinksToCurrentOrder) forControlEvents:UIControlEventTouchUpInside];
+    [addToOrder setTitle:@"Current Order" forState:UIControlStateNormal];
+    [addToOrder addTarget:self action:@selector(viewCurrentOrderConfirm) forControlEvents:UIControlEventTouchUpInside];
     [bottomView addSubview:addToOrder];
 }
 
--(void)addDrinksToCurrentOrder {
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     
-    for (NSDictionary *drink in self.drinks) {
-        if ([[drink objectForKey:@"quantity"] intValue] > 0) {
-            [self.drinksOrder addObject:drink];
-        }
-    }
+    self.drinks = [[NSMutableArray alloc] init];
+    self.drinksOrder = [SharedDataHandler sharedInstance].currentDrinkOrder;
     
-    [[SharedDataHandler sharedInstance] addDrinksToCurrentOrder:self.drinksOrder];
-    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] loadDrinksForSection:[SharedDataHandler sharedInstance].current_section withType:self.drinkType onCompletion:^(NSMutableArray *objects) {
+            
+            NSLog(@"drinks ordered so far drink selection view: %@", self.drinksOrder);
+            
+            for (NSDictionary *drink in objects) {
+                bool found = NO;
+                for (NSDictionary *drinkOrdered in self.drinksOrder) {
+                    if ([[drink objectForKey:@"id"] intValue] == [[drinkOrdered objectForKey:@"id"] intValue]) {
+                        [self.drinks addObject:drinkOrdered];
+                        found = YES;
+                    }
+                }
+                if (!found) {
+                    [self.drinks addObject:drink];
+                }
+            }
+            
+            NSLog(@"drinks to select: %@", self.drinks);
+            
+            [self.tableView reloadData];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        }];
+    });
+}
+
+-(void)viewCurrentOrderConfirm {
     ConfirmOrderViewController *confirmVC = [[ConfirmOrderViewController alloc] init];
     [self.navigationController pushViewController:confirmVC animated:YES];
 }
@@ -163,6 +161,23 @@
     [dicDrink setObject:[NSNumber numberWithInteger:[selectedIndex integerValue]] forKey:@"quantity"];
     
     [self.drinks replaceObjectAtIndex:self.SelectedDrinkRow withObject:dicDrink];
+    
+    bool addDrink = YES;
+    NSDictionary *foundDrink;
+    for (NSDictionary *drink in self.drinksOrder) {
+        if ([[drink objectForKey:@"id"] intValue] == [[dicDrink objectForKey:@"id"] intValue]) {
+            if ([[dicDrink objectForKey:@"quantity"] intValue] == 0) {
+                addDrink = NO;
+            }
+            foundDrink = drink;
+            break;
+        }
+    }
+    
+    [self.drinksOrder removeObject:foundDrink];
+    if (addDrink) {
+        [self.drinksOrder addObject:dicDrink];
+    }
     
     NSIndexPath *path = [NSIndexPath indexPathForRow:self.SelectedDrinkRow inSection:0];
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];

@@ -38,7 +38,7 @@
     
     [self.view setBackgroundColor:[UIColor cyanColor]];
     
-    self.drinksOrdered = [NSMutableArray arrayWithArray:[[SharedDataHandler sharedInstance] getCurrentOrder]];
+    self.drinksOrdered = [SharedDataHandler sharedInstance].currentDrinkOrder;
     NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
     
     CGFloat verticlSpacer = 10.0;
@@ -225,13 +225,16 @@
         [self.tableViewDrinks reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     
+//    [[SharedDataHandler sharedInstance] addDrinksToCurrentOrder:self.drinksOrdered];
     [self updatePricesAndTotals];
 }
 
 #pragma mark - Ordering Options
 
 -(void)cancelCurrentOrder {
-    [[SharedDataHandler sharedInstance] clearCurrentDrinkOrder];
+//    [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
+    [self.drinksOrdered removeAllObjects];
+    [self.tableViewDrinks reloadData];
 }
 
 -(void)placeOrder {

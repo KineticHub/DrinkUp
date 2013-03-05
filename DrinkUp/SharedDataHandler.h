@@ -16,6 +16,7 @@ typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 @interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate>
 
 @property int current_section;
+@property (nonatomic, strong) NSMutableArray *currentDrinkOrder;
 
 + (SharedDataHandler *)sharedInstance;
 
@@ -24,10 +25,9 @@ typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 
--(NSMutableArray *)getCurrentOrder;
--(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks;
--(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks;
--(void)clearCurrentDrinkOrder;
+//-(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks;
+//-(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks;
+//-(void)clearCurrentDrinkOrder;
 
 #pragma mark - Facebook Methods
 -(Facebook *)facebookInstance;

@@ -13,10 +13,7 @@
 
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSOperationQueue *queue;
-
 @property (nonatomic, strong) CLLocationManager *locationManager;
-@property (nonatomic, strong) NSMutableArray *currentDrinkOrder;
-
 @property (nonatomic, strong) Facebook *facebook;
 @end
 
@@ -130,14 +127,6 @@ static id _instance;
         NSLog(@"drinks: %@", tempDict);
         completionBlock(drinks);
     }];
-    
-//    NSDictionary *drink1 = @{@"name": @"Sam Lite", @"price": @"5.50", @"quantity":@0};
-//    NSDictionary *drink2 = @{@"name": @"Budweiser", @"price": @"7.00", @"quantity":@0};
-//    NSDictionary *drink3 = @{@"name": @"Corona", @"price": @"6.00", @"quantity":@0};
-//    
-//    NSMutableArray *barDrinks = [NSMutableArray arrayWithArray: @[drink1, drink2, drink3]];
-//    completionBlock(barDrinks);
-    
 }
 
 - (void)JSONWithPath:(NSString *)requestPath onCompletion:(JsonRequestCompletionBlock)completionBlock {
@@ -156,41 +145,30 @@ static id _instance;
 
 #pragma mark - Drink Ordering
 
--(NSMutableArray *)getCurrentOrder {
-    return self.currentDrinkOrder;
-}
-
--(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
-    
-    NSMutableArray *tempCurrentOrder = [[NSMutableArray alloc] initWithArray:self.currentDrinkOrder];
-    [self.currentDrinkOrder removeAllObjects];
-    
-    for (NSDictionary *drink in newDrinks) {
-        bool found = NO;
-        for (NSMutableDictionary *orderedDrink in tempCurrentOrder) {
-            if ([[drink objectForKey:@"id"] intValue] == [[orderedDrink objectForKey:@"id"] intValue]) {
-                [orderedDrink setObject:[drink objectForKey:@"quantity"] forKey:@"quantity"];
-                if ([[drink objectForKey:@"quantity"] intValue] > 0) {
-                    [self.currentDrinkOrder addObject:orderedDrink];
-                }
-                found = YES;
-            }
-        }
-        if (!found) {
-            [self.currentDrinkOrder addObject:drink];
-        }
-    }
-    
-    NSLog(@"new drinks: %@ sent drinks: %@", self.currentDrinkOrder, newDrinks);
-}
-
--(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks {
-    [self.currentDrinkOrder removeObjectsInArray:removeDrinks];
-}
-
--(void)clearCurrentDrinkOrder {
-    [self.currentDrinkOrder removeAllObjects];
-}
+//-(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
+//    
+//    NSMutableArray *tempCurrentOrder = [[NSMutableArray alloc] initWithArray:self.currentDrinkOrder];
+//    [self.currentDrinkOrder removeAllObjects];
+//    
+//    NSLog(@"drinks ordered: %@, drinks being added: %@", tempCurrentOrder, newDrinks);
+//    for (NSDictionary *drink in newDrinks) {
+//        bool found = NO;
+//        for (NSMutableDictionary *orderedDrink in tempCurrentOrder) {
+//            if ([[drink objectForKey:@"id"] intValue] == [[orderedDrink objectForKey:@"id"] intValue]) {
+//                [orderedDrink setObject:[drink objectForKey:@"quantity"] forKey:@"quantity"];
+//                if ([[drink objectForKey:@"quantity"] intValue] > 0) {
+//                    [self.currentDrinkOrder addObject:orderedDrink];
+//                }
+//                found = YES;
+//            }
+//        }
+//        if (!found) {
+//            [self.currentDrinkOrder addObject:drink];
+//        }
+//    }
+//    
+//    NSLog(@"new drinks: %@ sent drinks: %@", self.currentDrinkOrder, newDrinks);
+//}
 
 #pragma mark - Facebook Methods
 

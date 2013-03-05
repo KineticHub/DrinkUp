@@ -36,6 +36,14 @@
     [self.view addSubview:logoutButton];
 }
 
+-(void)loginToServer {
+    
+}
+
+-(void)logoutFromServer {
+    
+}
+
 -(void)postToFacebookWall:(id)sender {
     
     //NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"I'm not convinced I'm not an actual wolf when I'm wearing my hat.", @"message", nil];
@@ -45,7 +53,7 @@
 
 - (void)logoutButtonClicked:(id)sender {
     // Method that gets called when the logout button is pressed
-    [[[SharedDataHandler sharedInstance] facebookInstance] logout];
+//    [[[SharedDataHandler sharedInstance] facebookInstance] logout];
 }
 
 @end

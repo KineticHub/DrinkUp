@@ -12,6 +12,7 @@
 #import "NearbyBarsViewController.h"
 #import "FindBarSearchViewController.h"
 #import "DrinkHistoryViewController.h"
+#import "UserLoginViewController.h"
 
 #import "SharedDataHandler.h"
 
@@ -41,15 +42,24 @@
     [tbvc addChildViewController:nbvc];
     [tbvc addChildViewController:fbvc];
     
-   self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
-    // Instantiate a New button to invoke the addTask: method when tapped.
+    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
+
+    NSMutableArray *navItemsArray = [[NSMutableArray alloc] init];
     UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
                                   initWithTitle:@"History"
                                   style:UIBarButtonItemStylePlain
                                   target:self action:@selector(viewHistoryController:)];
+    [navItemsArray addObject:historyButton];
+    
+    // Instantiate a New button to invoke the addTask: method when tapped.
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc]
+                                      initWithTitle:@"Settings"
+                                      style:UIBarButtonItemStylePlain
+                                      target:self action:@selector(viewSettingsController:)];
+    [navItemsArray addObject:settingsButton];
     
     // Set up the Add custom button on the right of the navigation bar
-    tbvc.navigationItem.rightBarButtonItem = historyButton;
+    tbvc.navigationItem.rightBarButtonItems = navItemsArray;
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
@@ -94,5 +104,10 @@
 -(void)viewHistoryController:(id)sender {
     DrinkHistoryViewController *historyVC = [[DrinkHistoryViewController alloc] init];
     [self.rootNavigationController pushViewController:historyVC animated:YES];
+}
+
+-(void)viewSettingsController:(id)sender {
+    UserLoginViewController *settingsVC = [[UserLoginViewController alloc] init];
+    [self.rootNavigationController pushViewController:settingsVC animated:YES];
 }
 @end
