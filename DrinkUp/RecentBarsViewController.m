@@ -8,7 +8,7 @@
 
 #import "RecentBarsViewController.h"
 
-#import "NearbyBarsViewController.h"
+#import "BSTNearbyBarsViewController.h"
 
 #import "UserLoginViewController.h"
 

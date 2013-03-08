@@ -9,10 +9,13 @@
 #import "AppDelegate.h"
 
 #import "RecentBarsViewController.h"
-#import "NearbyBarsViewController.h"
+#import "BSTNearbyBarsViewController.h"
+#import "BSTNearbyBarsViewController.h"
 #import "FindBarSearchViewController.h"
 #import "DrinkHistoryViewController.h"
 #import "UserLoginViewController.h"
+#import "SignupViewController.h"
+#import "MainSettingsViewController.h"
 
 #import "SharedDataHandler.h"
 
@@ -28,7 +31,8 @@
     RecentBarsViewController *rbvc = [[RecentBarsViewController alloc] init];
     rbvc.title  = @"Recent Bars";
     
-    NearbyBarsViewController *nbvc = [[NearbyBarsViewController alloc] init];
+//    NearbyBarsViewController *nbvc = [[NearbyBarsViewController alloc] init];
+    BSTNearbyBarsViewController *nbvc = [[BSTNearbyBarsViewController alloc] init];
     nbvc.title  = @"Nearby Bars";
 //    nbvc.tabBarItem.image = [UIImage imageNamed:@"info_bar"];
     
@@ -42,7 +46,8 @@
     [tbvc addChildViewController:nbvc];
     [tbvc addChildViewController:fbvc];
     
-    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
+//    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
+    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:nbvc];
 
     NSMutableArray *navItemsArray = [[NSMutableArray alloc] init];
     UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
@@ -60,6 +65,15 @@
     
     // Set up the Add custom button on the right of the navigation bar
     tbvc.navigationItem.rightBarButtonItems = navItemsArray;
+    nbvc.navigationItem.rightBarButtonItems = navItemsArray;
+    
+//    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_background.jpg"]];
+    UIView *background = [[UIView alloc] init];
+//    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
+    [background setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(0/255.0) alpha:1.0]];
+    background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    [self.rootNavigationController.view addSubview:background];
+    [self.rootNavigationController.view sendSubviewToBack:background];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
@@ -107,7 +121,10 @@
 }
 
 -(void)viewSettingsController:(id)sender {
-    UserLoginViewController *settingsVC = [[UserLoginViewController alloc] init];
-    [self.rootNavigationController pushViewController:settingsVC animated:YES];
+//    UserLoginViewController *settingsVC = [[UserLoginViewController alloc] init];
+//    [self.rootNavigationController pushViewController:settingsVC animated:YES];
+    
+    MainSettingsViewController *msvc = [[MainSettingsViewController alloc] init];
+    [self.rootNavigationController pushViewController:msvc animated:YES];
 }
 @end

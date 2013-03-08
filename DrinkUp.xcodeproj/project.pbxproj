@@ -20,7 +20,6 @@
 		9C69C5D716CF8A1300D548F2 /* MainSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5D616CF8A1300D548F2 /* MainSettingsViewController.m */; };
 		9C69C5DB16CFD5A100D548F2 /* SharedDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5DA16CFD5A100D548F2 /* SharedDataHandler.m */; };
 		9C69C5FF16CFD83200D548F2 /* RecentBarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5FE16CFD83200D548F2 /* RecentBarsViewController.m */; };
-		9C69C60216CFDBE300D548F2 /* NearbyBarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C60116CFDBE300D548F2 /* NearbyBarsViewController.m */; };
 		9C69C60516CFDC1700D548F2 /* FindBarResultsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C60416CFDC1700D548F2 /* FindBarResultsViewController.m */; };
 		9C69C60D16CFDF2E00D548F2 /* FindBarSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C60C16CFDF2E00D548F2 /* FindBarSearchViewController.m */; };
 		9C69C63F16CFF57300D548F2 /* AFHTTPClient.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C62D16CFF57300D548F2 /* AFHTTPClient.m */; };
@@ -34,9 +33,7 @@
 		9C69C64716CFF57300D548F2 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C63E16CFF57300D548F2 /* UIImageView+AFNetworking.m */; };
 		9C69C64B16CFF5C200D548F2 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C64A16CFF5C200D548F2 /* MBProgressHUD.m */; };
 		9C69C64F16CFFA1400D548F2 /* blank_square.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C64E16CFFA1400D548F2 /* blank_square.png */; };
-		9C69C65416D0012500D548F2 /* DrinksTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */; };
 		9C69C65616D008F700D548F2 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C65516D008F700D548F2 /* CoreLocation.framework */; };
-		9C69C65B16D00A3F00D548F2 /* DrinkSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */; };
 		9C69C66D16D01F2600D548F2 /* AUTHORS in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C65F16D01F2600D548F2 /* AUTHORS */; };
 		9C69C66E16D01F2600D548F2 /* LICENSE in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C66016D01F2600D548F2 /* LICENSE */; };
 		9C69C66F16D01F2600D548F2 /* AbstractActionSheetPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66316D01F2600D548F2 /* AbstractActionSheetPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -101,6 +98,26 @@
 		9C8B70EE16DD9B5600FB80AF /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70ED16DD9B5600FB80AF /* libsqlite3.0.dylib */; };
 		9C8B70F016DD9BA500FB80AF /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */; };
 		9C8B70F716E4A48300FB80AF /* SelectBarSectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */; };
+		9C8B70FB16E5C6DC00FB80AF /* SignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B70FA16E5C6DC00FB80AF /* SignupViewController.m */; };
+		9C8B70FF16E689BB00FB80AF /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B70FE16E689B700FB80AF /* MapKit.framework */; };
+		9C8B710316E7042600FB80AF /* PaymentProfilesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B710216E7042600FB80AF /* PaymentProfilesViewController.m */; };
+		9C8B710A16E706B800FB80AF /* libCardIO.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B710916E706B800FB80AF /* libCardIO.a */; };
+		9C8B710C16E7081A00FB80AF /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B710B16E7081700FB80AF /* AVFoundation.framework */; };
+		9C8B710E16E7082A00FB80AF /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B710D16E7082500FB80AF /* AudioToolbox.framework */; };
+		9C8B711016E7083C00FB80AF /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B710F16E7083900FB80AF /* CoreMedia.framework */; };
+		9C8B711216E7084B00FB80AF /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B711116E7084A00FB80AF /* CoreVideo.framework */; };
+		9C8B711416E7085C00FB80AF /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B711316E7085B00FB80AF /* MobileCoreServices.framework */; };
+		9C8B711616E7086A00FB80AF /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B711516E7086800FB80AF /* OpenGLES.framework */; };
+		9C8B711816E7087900FB80AF /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B711716E7087600FB80AF /* QuartzCore.framework */; };
+		9C8B711A16E7088700FB80AF /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B711916E7088500FB80AF /* Security.framework */; };
+		9C8B711D16E7346C00FB80AF /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B711C16E7346B00FB80AF /* User.m */; };
+		9C8B712116E73DB200FB80AF /* UserPictureViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B712016E73DB200FB80AF /* UserPictureViewController.m */; };
+		9C8B712416E808A700FB80AF /* main_background.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B712316E808A700FB80AF /* main_background.jpg */; };
+		9C8B712716E80D6E00FB80AF /* BasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B712616E80D6700FB80AF /* BasicCell.m */; };
+		9C8B713116E90F8D00FB80AF /* BasicSplitTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B713016E90F8C00FB80AF /* BasicSplitTableViewController.m */; };
+		9C8B713416E910E000FB80AF /* BSTNearbyBarsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B713316E910DF00FB80AF /* BSTNearbyBarsViewController.m */; };
+		9C8B713716E9173500FB80AF /* BSTDrinkTypeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B713616E9173400FB80AF /* BSTDrinkTypeViewController.m */; };
+		9C8B713A16E91D7500FB80AF /* BSTDrinkSelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B713916E91D7400FB80AF /* BSTDrinkSelectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -125,8 +142,6 @@
 		9C69C5DA16CFD5A100D548F2 /* SharedDataHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SharedDataHandler.m; sourceTree = "<group>"; };
 		9C69C5FD16CFD83200D548F2 /* RecentBarsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentBarsViewController.h; sourceTree = "<group>"; };
 		9C69C5FE16CFD83200D548F2 /* RecentBarsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentBarsViewController.m; sourceTree = "<group>"; };
-		9C69C60016CFDBE300D548F2 /* NearbyBarsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyBarsViewController.h; sourceTree = "<group>"; };
-		9C69C60116CFDBE300D548F2 /* NearbyBarsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyBarsViewController.m; sourceTree = "<group>"; };
 		9C69C60316CFDC1700D548F2 /* FindBarResultsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindBarResultsViewController.h; sourceTree = "<group>"; };
 		9C69C60416CFDC1700D548F2 /* FindBarResultsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FindBarResultsViewController.m; sourceTree = "<group>"; };
 		9C69C60B16CFDF2E00D548F2 /* FindBarSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FindBarSearchViewController.h; sourceTree = "<group>"; };
@@ -153,11 +168,7 @@
 		9C69C64916CFF5C200D548F2 /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
 		9C69C64A16CFF5C200D548F2 /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		9C69C64E16CFFA1400D548F2 /* blank_square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blank_square.png; sourceTree = "<group>"; };
-		9C69C65216D0012500D548F2 /* DrinksTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DrinksTypeViewController.h; path = ../../DrinksTypeViewController.h; sourceTree = "<group>"; };
-		9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = DrinksTypeViewController.m; path = ../../DrinksTypeViewController.m; sourceTree = "<group>"; };
 		9C69C65516D008F700D548F2 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		9C69C65916D00A3F00D548F2 /* DrinkSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSelectionViewController.h; sourceTree = "<group>"; };
-		9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSelectionViewController.m; sourceTree = "<group>"; };
 		9C69C65E16D01F2600D548F2 /* ActionSheetPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActionSheetPicker.h; sourceTree = "<group>"; };
 		9C69C65F16D01F2600D548F2 /* AUTHORS */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = AUTHORS; sourceTree = "<group>"; };
 		9C69C66016D01F2600D548F2 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
@@ -295,6 +306,39 @@
 		9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		9C8B70F516E4A48200FB80AF /* SelectBarSectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectBarSectionViewController.h; sourceTree = "<group>"; };
 		9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectBarSectionViewController.m; sourceTree = "<group>"; };
+		9C8B70F916E5C6DC00FB80AF /* SignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SignupViewController.h; sourceTree = "<group>"; };
+		9C8B70FA16E5C6DC00FB80AF /* SignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SignupViewController.m; sourceTree = "<group>"; };
+		9C8B70FE16E689B700FB80AF /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		9C8B710116E7042600FB80AF /* PaymentProfilesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PaymentProfilesViewController.h; sourceTree = "<group>"; };
+		9C8B710216E7042600FB80AF /* PaymentProfilesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PaymentProfilesViewController.m; sourceTree = "<group>"; };
+		9C8B710516E706B800FB80AF /* CardIO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIO.h; sourceTree = "<group>"; };
+		9C8B710616E706B800FB80AF /* CardIOCreditCardInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOCreditCardInfo.h; sourceTree = "<group>"; };
+		9C8B710716E706B800FB80AF /* CardIOPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewController.h; sourceTree = "<group>"; };
+		9C8B710816E706B800FB80AF /* CardIOPaymentViewControllerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CardIOPaymentViewControllerDelegate.h; sourceTree = "<group>"; };
+		9C8B710916E706B800FB80AF /* libCardIO.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCardIO.a; sourceTree = "<group>"; };
+		9C8B710B16E7081700FB80AF /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		9C8B710D16E7082500FB80AF /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9C8B710F16E7083900FB80AF /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		9C8B711116E7084A00FB80AF /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		9C8B711316E7085B00FB80AF /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		9C8B711516E7086800FB80AF /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9C8B711716E7087600FB80AF /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		9C8B711916E7088500FB80AF /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		9C8B711B16E7346B00FB80AF /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		9C8B711C16E7346B00FB80AF /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		9C8B711F16E73DB200FB80AF /* UserPictureViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPictureViewController.h; sourceTree = "<group>"; };
+		9C8B712016E73DB200FB80AF /* UserPictureViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPictureViewController.m; sourceTree = "<group>"; };
+		9C8B712316E808A700FB80AF /* main_background.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = main_background.jpg; sourceTree = "<group>"; };
+		9C8B712516E80D6400FB80AF /* BasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicCell.h; sourceTree = "<group>"; };
+		9C8B712616E80D6700FB80AF /* BasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicCell.m; sourceTree = "<group>"; };
+		9C8B712F16E90F8C00FB80AF /* BasicSplitTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicSplitTableViewController.h; sourceTree = "<group>"; };
+		9C8B713016E90F8C00FB80AF /* BasicSplitTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicSplitTableViewController.m; sourceTree = "<group>"; };
+		9C8B713216E910DE00FB80AF /* BSTNearbyBarsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTNearbyBarsViewController.h; sourceTree = "<group>"; };
+		9C8B713316E910DF00FB80AF /* BSTNearbyBarsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTNearbyBarsViewController.m; sourceTree = "<group>"; };
+		9C8B713516E9173400FB80AF /* BSTDrinkTypeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTDrinkTypeViewController.h; sourceTree = "<group>"; };
+		9C8B713616E9173400FB80AF /* BSTDrinkTypeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTDrinkTypeViewController.m; sourceTree = "<group>"; };
+		9C8B713816E91D7400FB80AF /* BSTDrinkSelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BSTDrinkSelectionViewController.h; sourceTree = "<group>"; };
+		9C8B713916E91D7400FB80AF /* BSTDrinkSelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BSTDrinkSelectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -302,6 +346,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C8B711A16E7088700FB80AF /* Security.framework in Frameworks */,
+				9C8B711816E7087900FB80AF /* QuartzCore.framework in Frameworks */,
+				9C8B711616E7086A00FB80AF /* OpenGLES.framework in Frameworks */,
+				9C8B711416E7085C00FB80AF /* MobileCoreServices.framework in Frameworks */,
+				9C8B711216E7084B00FB80AF /* CoreVideo.framework in Frameworks */,
+				9C8B711016E7083C00FB80AF /* CoreMedia.framework in Frameworks */,
+				9C8B710E16E7082A00FB80AF /* AudioToolbox.framework in Frameworks */,
+				9C8B710C16E7081A00FB80AF /* AVFoundation.framework in Frameworks */,
+				9C8B70FF16E689BB00FB80AF /* MapKit.framework in Frameworks */,
 				9C8B70F016DD9BA500FB80AF /* AdSupport.framework in Frameworks */,
 				9C8B70EE16DD9B5600FB80AF /* libsqlite3.0.dylib in Frameworks */,
 				9C8B70E816DD9A6700FB80AF /* Accounts.framework in Frameworks */,
@@ -310,6 +363,7 @@
 				9C69C59D16CD89F800D548F2 /* UIKit.framework in Frameworks */,
 				9C69C59F16CD89F800D548F2 /* Foundation.framework in Frameworks */,
 				9C69C5A116CD89F800D548F2 /* CoreGraphics.framework in Frameworks */,
+				9C8B710A16E706B800FB80AF /* libCardIO.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -319,11 +373,6 @@
 		9C69C59016CD89F800D548F2 = {
 			isa = PBXGroup;
 			children = (
-				9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */,
-				9C8B70ED16DD9B5600FB80AF /* libsqlite3.0.dylib */,
-				9C8B70E616DD9A6600FB80AF /* Accounts.framework */,
-				9C8B70E716DD9A6600FB80AF /* Social.framework */,
-				9C69C65516D008F700D548F2 /* CoreLocation.framework */,
 				9C69C5A216CD89F800D548F2 /* DrinkUp */,
 				9C69C59B16CD89F800D548F2 /* Frameworks */,
 				9C69C59A16CD89F800D548F2 /* Products */,
@@ -341,6 +390,20 @@
 		9C69C59B16CD89F800D548F2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B711916E7088500FB80AF /* Security.framework */,
+				9C8B711716E7087600FB80AF /* QuartzCore.framework */,
+				9C8B711516E7086800FB80AF /* OpenGLES.framework */,
+				9C8B711316E7085B00FB80AF /* MobileCoreServices.framework */,
+				9C8B711116E7084A00FB80AF /* CoreVideo.framework */,
+				9C8B710F16E7083900FB80AF /* CoreMedia.framework */,
+				9C8B710D16E7082500FB80AF /* AudioToolbox.framework */,
+				9C8B710B16E7081700FB80AF /* AVFoundation.framework */,
+				9C8B70FE16E689B700FB80AF /* MapKit.framework */,
+				9C8B70EF16DD9BA400FB80AF /* AdSupport.framework */,
+				9C8B70ED16DD9B5600FB80AF /* libsqlite3.0.dylib */,
+				9C8B70E616DD9A6600FB80AF /* Accounts.framework */,
+				9C8B70E716DD9A6600FB80AF /* Social.framework */,
+				9C69C65516D008F700D548F2 /* CoreLocation.framework */,
 				9C69C59C16CD89F800D548F2 /* UIKit.framework */,
 				9C69C59E16CD89F800D548F2 /* Foundation.framework */,
 				9C69C5A016CD89F800D548F2 /* CoreGraphics.framework */,
@@ -356,7 +419,6 @@
 				9C69C5FC16CFD81100D548F2 /* Bars */,
 				9C69C5B916CD8AEC00D548F2 /* Drink History */,
 				9C69C65116D000F200D548F2 /* Drinks */,
-				9C8B70E216DD952500FB80AF /* Login */,
 				9C69C67516D23E8100D548F2 /* Orders */,
 				9C69C5FA16CFD78300D548F2 /* Settings */,
 			);
@@ -391,6 +453,8 @@
 			children = (
 				9C69C5D916CFD5A100D548F2 /* SharedDataHandler.h */,
 				9C69C5DA16CFD5A100D548F2 /* SharedDataHandler.m */,
+				9C8B711B16E7346B00FB80AF /* User.h */,
+				9C8B711C16E7346B00FB80AF /* User.m */,
 			);
 			name = "Data Handler";
 			sourceTree = "<group>";
@@ -407,23 +471,28 @@
 		9C69C5FA16CFD78300D548F2 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
-				9C69C5FB16CFD79B00D548F2 /* Main Settings View */,
+				9C69C5FB16CFD79B00D548F2 /* Main */,
+				9C8B70E216DD952500FB80AF /* Login */,
+				9C8B710016E703EB00FB80AF /* Payment */,
+				9C8B711E16E73D3E00FB80AF /* Picture */,
+				9C8B712216E8076600FB80AF /* About */,
 			);
 			name = Settings;
 			sourceTree = "<group>";
 		};
-		9C69C5FB16CFD79B00D548F2 /* Main Settings View */ = {
+		9C69C5FB16CFD79B00D548F2 /* Main */ = {
 			isa = PBXGroup;
 			children = (
 				9C69C5D516CF8A1300D548F2 /* MainSettingsViewController.h */,
 				9C69C5D616CF8A1300D548F2 /* MainSettingsViewController.m */,
 			);
-			name = "Main Settings View";
+			name = Main;
 			sourceTree = "<group>";
 		};
 		9C69C5FC16CFD81100D548F2 /* Bars */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B70F416E4A42A00FB80AF /* Bar Section */,
 				9C69C60816CFDC3300D548F2 /* Nearby Bars */,
 				9C69C60716CFDC2800D548F2 /* Recents Bars */,
 				9C69C60616CFDC1C00D548F2 /* Find Bar */,
@@ -452,9 +521,8 @@
 		9C69C60816CFDC3300D548F2 /* Nearby Bars */ = {
 			isa = PBXGroup;
 			children = (
-				9C8B70F416E4A42A00FB80AF /* Bar Section */,
-				9C69C60016CFDBE300D548F2 /* NearbyBarsViewController.h */,
-				9C69C60116CFDBE300D548F2 /* NearbyBarsViewController.m */,
+				9C8B713216E910DE00FB80AF /* BSTNearbyBarsViewController.h */,
+				9C8B713316E910DF00FB80AF /* BSTNearbyBarsViewController.m */,
 			);
 			name = "Nearby Bars";
 			sourceTree = "<group>";
@@ -515,6 +583,7 @@
 		9C69C64C16CFF5C600D548F2 /* Imported */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B710416E706B400FB80AF /* CardIO */,
 				9C8B6F5916DD8F5E00FB80AF /* Facebook iOS SDK */,
 				9C69C64816CFF5AB00D548F2 /* MBProgressHUD */,
 				9C69C62B16CFF57200D548F2 /* AFNetworking */,
@@ -525,6 +594,7 @@
 		9C69C64D16CFF5F900D548F2 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B712816E80E6300FB80AF /* TableView */,
 				9C69C65D16D01F1000D548F2 /* ActionSheetPicker */,
 				9C69C5D816CFD58700D548F2 /* Data Handler */,
 				9C69C65016CFFA1900D548F2 /* Images */,
@@ -537,6 +607,7 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B712316E808A700FB80AF /* main_background.jpg */,
 				9C69C64E16CFFA1400D548F2 /* blank_square.png */,
 			);
 			name = Images;
@@ -554,8 +625,8 @@
 		9C69C65716D009B800D548F2 /* Drink Types */ = {
 			isa = PBXGroup;
 			children = (
-				9C69C65216D0012500D548F2 /* DrinksTypeViewController.h */,
-				9C69C65316D0012500D548F2 /* DrinksTypeViewController.m */,
+				9C8B713516E9173400FB80AF /* BSTDrinkTypeViewController.h */,
+				9C8B713616E9173400FB80AF /* BSTDrinkTypeViewController.m */,
 			);
 			name = "Drink Types";
 			sourceTree = "<group>";
@@ -563,8 +634,8 @@
 		9C69C65816D00A2900D548F2 /* Drink Selection */ = {
 			isa = PBXGroup;
 			children = (
-				9C69C65916D00A3F00D548F2 /* DrinkSelectionViewController.h */,
-				9C69C65A16D00A3F00D548F2 /* DrinkSelectionViewController.m */,
+				9C8B713816E91D7400FB80AF /* BSTDrinkSelectionViewController.h */,
+				9C8B713916E91D7400FB80AF /* BSTDrinkSelectionViewController.m */,
 			);
 			name = "Drink Selection";
 			sourceTree = "<group>";
@@ -754,6 +825,8 @@
 		9C8B70E216DD952500FB80AF /* Login */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B70F816E5C6BB00FB80AF /* Signup */,
+				9C8B70FC16E682F600FB80AF /* Email Login */,
 				9C8B70E316DD954D00FB80AF /* UserLoginViewController.h */,
 				9C8B70E416DD954D00FB80AF /* UserLoginViewController.m */,
 			);
@@ -767,6 +840,70 @@
 				9C8B70F616E4A48300FB80AF /* SelectBarSectionViewController.m */,
 			);
 			name = "Bar Section";
+			sourceTree = "<group>";
+		};
+		9C8B70F816E5C6BB00FB80AF /* Signup */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B70F916E5C6DC00FB80AF /* SignupViewController.h */,
+				9C8B70FA16E5C6DC00FB80AF /* SignupViewController.m */,
+			);
+			name = Signup;
+			sourceTree = "<group>";
+		};
+		9C8B70FC16E682F600FB80AF /* Email Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Email Login";
+			sourceTree = "<group>";
+		};
+		9C8B710016E703EB00FB80AF /* Payment */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B710116E7042600FB80AF /* PaymentProfilesViewController.h */,
+				9C8B710216E7042600FB80AF /* PaymentProfilesViewController.m */,
+			);
+			name = Payment;
+			sourceTree = "<group>";
+		};
+		9C8B710416E706B400FB80AF /* CardIO */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B710516E706B800FB80AF /* CardIO.h */,
+				9C8B710616E706B800FB80AF /* CardIOCreditCardInfo.h */,
+				9C8B710716E706B800FB80AF /* CardIOPaymentViewController.h */,
+				9C8B710816E706B800FB80AF /* CardIOPaymentViewControllerDelegate.h */,
+				9C8B710916E706B800FB80AF /* libCardIO.a */,
+			);
+			path = CardIO;
+			sourceTree = "<group>";
+		};
+		9C8B711E16E73D3E00FB80AF /* Picture */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B711F16E73DB200FB80AF /* UserPictureViewController.h */,
+				9C8B712016E73DB200FB80AF /* UserPictureViewController.m */,
+			);
+			name = Picture;
+			sourceTree = "<group>";
+		};
+		9C8B712216E8076600FB80AF /* About */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = About;
+			sourceTree = "<group>";
+		};
+		9C8B712816E80E6300FB80AF /* TableView */ = {
+			isa = PBXGroup;
+			children = (
+				9C8B712516E80D6400FB80AF /* BasicCell.h */,
+				9C8B712616E80D6700FB80AF /* BasicCell.m */,
+				9C8B712F16E90F8C00FB80AF /* BasicSplitTableViewController.h */,
+				9C8B713016E90F8C00FB80AF /* BasicSplitTableViewController.m */,
+			);
+			name = TableView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -830,6 +967,7 @@
 				9C69C67416D01F2600D548F2 /* README.md in Resources */,
 				9C8B70B216DD901900FB80AF /* FacebookSDKResources.bundle in Resources */,
 				9C8B70D816DD901900FB80AF /* FBUserSettingsViewResources.bundle in Resources */,
+				9C8B712416E808A700FB80AF /* main_background.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -846,7 +984,6 @@
 				9C69C5D716CF8A1300D548F2 /* MainSettingsViewController.m in Sources */,
 				9C69C5DB16CFD5A100D548F2 /* SharedDataHandler.m in Sources */,
 				9C69C5FF16CFD83200D548F2 /* RecentBarsViewController.m in Sources */,
-				9C69C60216CFDBE300D548F2 /* NearbyBarsViewController.m in Sources */,
 				9C69C60516CFDC1700D548F2 /* FindBarResultsViewController.m in Sources */,
 				9C69C60D16CFDF2E00D548F2 /* FindBarSearchViewController.m in Sources */,
 				9C69C63F16CFF57300D548F2 /* AFHTTPClient.m in Sources */,
@@ -859,8 +996,6 @@
 				9C69C64616CFF57300D548F2 /* AFXMLRequestOperation.m in Sources */,
 				9C69C64716CFF57300D548F2 /* UIImageView+AFNetworking.m in Sources */,
 				9C69C64B16CFF5C200D548F2 /* MBProgressHUD.m in Sources */,
-				9C69C65416D0012500D548F2 /* DrinksTypeViewController.m in Sources */,
-				9C69C65B16D00A3F00D548F2 /* DrinkSelectionViewController.m in Sources */,
 				9C69C66F16D01F2600D548F2 /* AbstractActionSheetPicker.m in Sources */,
 				9C69C67016D01F2600D548F2 /* ActionSheetDatePicker.m in Sources */,
 				9C69C67116D01F2600D548F2 /* ActionSheetDistancePicker.m in Sources */,
@@ -916,6 +1051,15 @@
 				9C8B70E116DD901900FB80AF /* NSError+FBError.m in Sources */,
 				9C8B70E516DD954D00FB80AF /* UserLoginViewController.m in Sources */,
 				9C8B70F716E4A48300FB80AF /* SelectBarSectionViewController.m in Sources */,
+				9C8B70FB16E5C6DC00FB80AF /* SignupViewController.m in Sources */,
+				9C8B710316E7042600FB80AF /* PaymentProfilesViewController.m in Sources */,
+				9C8B711D16E7346C00FB80AF /* User.m in Sources */,
+				9C8B712116E73DB200FB80AF /* UserPictureViewController.m in Sources */,
+				9C8B712716E80D6E00FB80AF /* BasicCell.m in Sources */,
+				9C8B713116E90F8D00FB80AF /* BasicSplitTableViewController.m in Sources */,
+				9C8B713416E910E000FB80AF /* BSTNearbyBarsViewController.m in Sources */,
+				9C8B713716E9173500FB80AF /* BSTDrinkTypeViewController.m in Sources */,
+				9C8B713A16E91D7500FB80AF /* BSTDrinkSelectionViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -998,11 +1142,18 @@
 		9C69C5B716CD89F800D548F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/DrinkUp/CardIO\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0575FCB4-AA36-49E7-AA13-3B96E589D5BA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1010,11 +1161,18 @@
 		9C69C5B816CD89F800D548F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/DrinkUp/CardIO\"",
+				);
+				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "0575FCB4-AA36-49E7-AA13-3B96E589D5BA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

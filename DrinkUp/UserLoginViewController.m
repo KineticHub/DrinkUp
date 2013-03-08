@@ -9,9 +9,11 @@
 #import "UserLoginViewController.h"
 #import "SharedDataHandler.h"
 #import "FBConnect.h"
+#import "SignupViewController.h"
 
 @interface UserLoginViewController ()
-
+@property (nonatomic, strong) UITextField *loginUsernameOrEmailField;
+@property (nonatomic, strong) UITextField *loginPasswordField;
 @end
 
 @implementation UserLoginViewController
@@ -23,25 +25,62 @@
     [[SharedDataHandler sharedInstance] initializeFacebook];
     Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
     
-    UIButton *postButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [postButton setFrame:CGRectMake(0, 0, 100, 45)];
-    [postButton setTitle:@"Post to Facebook" forState:UIControlStateNormal];
-    [postButton addTarget:self action:@selector(postToFacebookWall:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:postButton];
+    CGFloat y = 20.0;
+    CGFloat spacer = 10.0;
+    CGFloat edgeInset = 10.0;
+    CGFloat fieldWidth = 300.0;
+    CGFloat fieldHeight = 45.0;
+    
+    UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [facebookLoginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [facebookLoginButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
+    [facebookLoginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:facebookLoginButton];
+    y += facebookLoginButton.frame.size.height + spacer;
+    
+    self.loginUsernameOrEmailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [self.loginUsernameOrEmailField setPlaceholder:@"Email or Username"];
+    [self.view addSubview:self.loginUsernameOrEmailField];
+    y += self.loginUsernameOrEmailField.frame.size.height + spacer;
+    
+    self.loginPasswordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [self.loginPasswordField setPlaceholder:@"Password"];
+    [self.view addSubview:self.loginPasswordField];
+    y += self.loginPasswordField.frame.size.height + spacer;
+    
+    UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [loginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [loginButton setTitle:@"Login to DrinkUp" forState:UIControlStateNormal];
+    [loginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:loginButton];
+    y += loginButton.frame.size.height + spacer;
+    
+    UIButton *signupButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [signupButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [signupButton setTitle:@"SignUp for DrinkUp" forState:UIControlStateNormal];
+    [signupButton setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+    [signupButton addTarget:self action:@selector(showSignupView) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:signupButton];
+    y += signupButton.frame.size.height + spacer;
     
     UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [logoutButton setFrame:CGRectMake(0, 60, 100, 45)];
-    [logoutButton setTitle:@"Logout Facebook" forState:UIControlStateNormal];
-    [logoutButton addTarget:self action:@selector(logoutButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:logoutButton];
+    [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
+    [logoutButton addTarget:self action:@selector(logoutFromServer:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:logoutButton];
 }
 
--(void)loginToServer {
+-(void)loginToServer:(id)sender {
     
 }
 
--(void)logoutFromServer {
+-(void)logoutFromServer:(id)sender {
     
+}
+
+-(void)showSignupView {
+    SignupViewController *suvc = [[SignupViewController alloc] init];
+    [self.navigationController pushViewController:suvc animated:YES];
 }
 
 -(void)postToFacebookWall:(id)sender {

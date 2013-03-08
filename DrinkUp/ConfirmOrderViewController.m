@@ -11,6 +11,7 @@
 #import "SharedDataHandler.h"
 #import "ThanksViewController.h"
 #import "ActionSheetPicker.h"
+#import "BasicSplitTableViewController.h"
 
 @interface ConfirmOrderViewController ()
 @property (nonatomic, strong) NSMutableArray *drinksOrdered;
@@ -35,8 +36,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [self.view setBackgroundColor:[UIColor cyanColor]];
     
     self.drinksOrdered = [SharedDataHandler sharedInstance].currentDrinkOrder;
     NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
@@ -74,6 +73,11 @@
     [self setupBottomViewWithView:bottomView];
     
     [self updatePricesAndTotals];
+}
+
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [BasicSplitTableViewController forceHidePlaceOrderBar];
 }
 
 #pragma mark - Subviews Setup

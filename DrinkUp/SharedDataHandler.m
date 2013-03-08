@@ -10,10 +10,12 @@
 #import "AFJSONRequestOperation.h"
 #import "AFHTTPRequestOperation.h"
 #import "AFHTTPClient.h"
+#import "User.h"
 
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic, strong) User *currentUser;
 @property (nonatomic, strong) Facebook *facebook;
 @end
 
@@ -30,7 +32,6 @@ static id _instance;
         _queue = [[NSOperationQueue alloc] init];
         
         [self setupSharedVariables];
-//        [self setupLocationTracking];
     }
     
     return _instance;
@@ -44,7 +45,7 @@ static id _instance;
         return [[self alloc] init];
 }
 
--(void)setupLocationTracking {
+-(void)initializeLocationTracking {
     
     self.locationManager = [[CLLocationManager alloc] init];
     self.locationManager.delegate = self;

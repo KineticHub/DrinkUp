@@ -17,17 +17,15 @@ typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 
 @property int current_section;
 @property (nonatomic, strong) NSMutableArray *currentDrinkOrder;
+@property (nonatomic, strong) NSDictionary *currentBar;
 
 + (SharedDataHandler *)sharedInstance;
+-(void)initializeLocationTracking;
 
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock;
 -(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock;
-
-//-(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks;
-//-(void)removeDrinksFromCurrentOrder:(NSMutableArray *)removeDrinks;
-//-(void)clearCurrentDrinkOrder;
 
 #pragma mark - Facebook Methods
 -(Facebook *)facebookInstance;
