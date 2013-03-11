@@ -61,7 +61,7 @@ static id _instance;
 
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *barsPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/all/";
+    NSString *barsPath = @"https://DrinkUp-App.com/api/venues/all/";
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *bars = [[NSMutableArray alloc] init];
@@ -78,7 +78,7 @@ static id _instance;
 
 -(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *barSectionsPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/%i/", bar_id];
+    NSString *barSectionsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/%i/", bar_id];
     NSLog(@"Path: %@", barSectionsPath);
     [self JSONWithPath:barSectionsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
@@ -96,7 +96,7 @@ static id _instance;
 
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *drinkTypesPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/drinks/types/%i/", section_id];
+    NSString *drinkTypesPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/drinks/types/%i/", section_id];
     [self JSONWithPath:drinkTypesPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *drinkTypes = [[NSMutableArray alloc] init];
@@ -114,7 +114,7 @@ static id _instance;
 
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *drinksPath = [NSString stringWithFormat:@"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/drinkup/venues/bars/drinks/%i/%i/", section_id, type_id];
+    NSString *drinksPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/drinks/%i/%i/", section_id, type_id];
     [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *drinks = [[NSMutableArray alloc] init];
@@ -144,32 +144,10 @@ static id _instance;
     [self.queue addOperation:operation];
 }
 
-#pragma mark - Drink Ordering
-
-//-(void)addDrinksToCurrentOrder:(NSMutableArray *)newDrinks {
-//    
-//    NSMutableArray *tempCurrentOrder = [[NSMutableArray alloc] initWithArray:self.currentDrinkOrder];
-//    [self.currentDrinkOrder removeAllObjects];
-//    
-//    NSLog(@"drinks ordered: %@, drinks being added: %@", tempCurrentOrder, newDrinks);
-//    for (NSDictionary *drink in newDrinks) {
-//        bool found = NO;
-//        for (NSMutableDictionary *orderedDrink in tempCurrentOrder) {
-//            if ([[drink objectForKey:@"id"] intValue] == [[orderedDrink objectForKey:@"id"] intValue]) {
-//                [orderedDrink setObject:[drink objectForKey:@"quantity"] forKey:@"quantity"];
-//                if ([[drink objectForKey:@"quantity"] intValue] > 0) {
-//                    [self.currentDrinkOrder addObject:orderedDrink];
-//                }
-//                found = YES;
-//            }
-//        }
-//        if (!found) {
-//            [self.currentDrinkOrder addObject:drink];
-//        }
-//    }
-//    
-//    NSLog(@"new drinks: %@ sent drinks: %@", self.currentDrinkOrder, newDrinks);
-//}
+#pragma mark - Server Login
+-(void)loginToServerWithCredentials:(NSDictionary *)credentials {
+    
+}
 
 #pragma mark - Facebook Methods
 
@@ -186,15 +164,80 @@ static id _instance;
         self.facebook.accessToken = [defaults objectForKey:@"FBAccessTokenKey"];
         self.facebook.expirationDate = [defaults objectForKey:@"FBExpirationDateKey"];
     }
-    
+}
+
+-(void)authorizeFacebook {
     if (![self.facebook isSessionValid])
     {
         NSArray *permissions = [[NSArray alloc] initWithObjects:
-                                //@"user_likes",
-                                @"read_stream",
+                                @"email",
                                 @"publish_stream",
                                 nil];
         [self.facebook authorize:permissions];
+    }
+}
+
+-(void)fbGetUserInfo {
+    [self.facebook requestWithGraphPath:@"me" andDelegate:self];
+}
+
+- (void)fbDidLogin {
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:[self.facebook accessToken] forKey:@"FBAccessTokenKey"];
+    [defaults setObject:[self.facebook expirationDate] forKey:@"FBExpirationDateKey"];
+    [defaults synchronize];
+    
+    [self fbGetUserInfo];
+}
+    
+////START TEST
+//    NSString *requestPath = @"https://DrinkUp-App.com/api/facebook_login/mobile/";
+//    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    NSError * error = nil;
+//    
+//    NSMutableDictionary *sendDic = [[NSMutableDictionary alloc] init];
+//    [sendDic setObject:[self.facebook accessToken] forKey:@"oauth_token"];
+//    [sendDic setObject:[NSNumber numberWithFloat:[[self.facebook expirationDate] timeIntervalSince1970]] forKey:@"expiration"];
+//    [sendDic setObject:[NSNumber numberWithFloat:[[NSDate date]timeIntervalSince1970]] forKey:@"created"];
+//    
+//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+//    
+//    NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDic];
+//    [ request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+//    
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+//
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+//        
+//        NSLog(@"response string: %@ ", operation.responseString);
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        NSLog(@"error: %@", operation.responseString);
+//        
+//    }];
+//    
+////    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request2 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
+////        NSLog(@"COMPLETED FB CALL: %@", JSON);
+//////        completionBlock(request, response, JSON, nil);
+////    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
+//////        completionBlock(request, response, JSON, error);
+////        NSLog(@"ERROR FB: %@", error);
+////    }];
+//    [self.queue addOperation:operation];
+
+- (void) fbDidLogout {
+    
+    // Remove saved authorization information if it exists
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
+        [defaults removeObjectForKey:@"FBAccessTokenKey"];
+        [defaults removeObjectForKey:@"FBExpirationDateKey"];
+        [defaults synchronize];
     }
 }
 
@@ -209,63 +252,4 @@ static id _instance;
 	NSLog(@"Result of API call: \n%@", result);
 }
 
-- (void)fbDidLogin {
-    
-    NSLog(@"HIT FB LOGIN");
-    
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:[self.facebook accessToken] forKey:@"FBAccessTokenKey"];
-    [defaults setObject:[self.facebook expirationDate] forKey:@"FBExpirationDateKey"];
-    [defaults synchronize];
-    
-//START TEST
-    NSString *requestPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/facebook_login/mobile/";
-    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    NSError * error = nil;
-    
-    NSMutableDictionary *sendDic = [[NSMutableDictionary alloc] init];
-    [sendDic setObject:[self.facebook accessToken] forKey:@"oauth_token"];
-    [sendDic setObject:[NSNumber numberWithFloat:[[self.facebook expirationDate] timeIntervalSince1970]] forKey:@"expiration"];
-    [sendDic setObject:[NSNumber numberWithFloat:[[NSDate date]timeIntervalSince1970]] forKey:@"created"];
-    
-    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
-    
-    NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDic];
-    [ request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
-
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-        
-        NSLog(@"response string: %@ ", operation.responseString);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"error: %@", operation.responseString);
-        
-    }];
-    
-//    AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request2 success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
-//        NSLog(@"COMPLETED FB CALL: %@", JSON);
-////        completionBlock(request, response, JSON, nil);
-//    } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-////        completionBlock(request, response, JSON, error);
-//        NSLog(@"ERROR FB: %@", error);
-//    }];
-    [self.queue addOperation:operation];
-}
-
-- (void) fbDidLogout {
-    
-    // Remove saved authorization information if it exists
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    if ([defaults objectForKey:@"FBAccessTokenKey"]) {
-        [defaults removeObjectForKey:@"FBAccessTokenKey"];
-        [defaults removeObjectForKey:@"FBExpirationDateKey"];
-        [defaults synchronize];
-    }
-}
 @end

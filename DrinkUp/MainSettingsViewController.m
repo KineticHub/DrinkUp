@@ -10,6 +10,7 @@
 #import "UserLoginViewController.h"
 #import "PaymentProfilesViewController.h"
 #import "UserPictureViewController.h"
+#import "TestPaymentViewController.h"
 
 @interface MainSettingsViewController ()
 @property (nonatomic, strong) NSMutableArray *settings;
@@ -72,7 +73,8 @@
         }
         case 1:
         {
-            PaymentProfilesViewController *ppvc = [[PaymentProfilesViewController alloc] init];
+            TestPaymentViewController *ppvc = [[TestPaymentViewController alloc] init];
+//            PaymentProfilesViewController *ppvc = [[PaymentProfilesViewController alloc] init];
             [self.navigationController pushViewController:ppvc animated:YES];
             break;
         }

@@ -12,8 +12,6 @@
 
 @interface BasicCell ()
 @property (nonatomic, strong) UIView *seperatorLine;
-@property (nonatomic, strong) UIImageView *cellImageView;
-@property (nonatomic, strong) UIView *cellImageBox;
 @property int count;
 @end
 

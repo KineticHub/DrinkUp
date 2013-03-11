@@ -27,7 +27,11 @@ typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 
+#pragma mark - Server Login
+-(void)loginToServerWithCredentials:(NSDictionary *)credentials;
+
 #pragma mark - Facebook Methods
 -(Facebook *)facebookInstance;
 -(void)initializeFacebook;
+-(void)authorizeFacebook;
 @end

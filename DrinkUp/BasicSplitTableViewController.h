@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SharedDataHandler.h"
+#import "MBProgressHUD.h"
+#import "BasicCell.h"
 
 #define BOTTOM_BAR_TAG 55155
 

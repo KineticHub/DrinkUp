@@ -7,10 +7,6 @@
 //
 
 #import "BSTNearbyBarsViewController.h"
-#import "SharedDataHandler.h"
-#import "MBProgressHUD.h"
-#import "UIImageView+AFNetworking.h"
-#import "BasicCell.h"
 #import "BSTDrinkTypeViewController.h"
 
 @interface BSTNearbyBarsViewController ()

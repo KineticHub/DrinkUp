@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "BasicSplitTableViewController.h"
 
-@interface SelectBarSectionViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-
+/*
+ Replace with picker in order view
+ */
+@interface SelectBarSectionViewController : BasicSplitTableViewController
+-(id)initWithBarSections:(NSArray *)barSections;
 @end

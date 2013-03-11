@@ -7,9 +7,7 @@
 //
 
 #import "RecentBarsViewController.h"
-
 #import "BSTNearbyBarsViewController.h"
-
 #import "UserLoginViewController.h"
 
 @interface RecentBarsViewController ()

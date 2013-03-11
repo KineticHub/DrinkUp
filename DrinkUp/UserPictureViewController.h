@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UserPictureViewController : UIViewController
+@interface UserPictureViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @end

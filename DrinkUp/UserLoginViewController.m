@@ -21,9 +21,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [[SharedDataHandler sharedInstance] initializeFacebook];
-    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
+//    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
     
     CGFloat y = 20.0;
     CGFloat spacer = 10.0;
@@ -34,12 +35,17 @@
     UIButton *facebookLoginButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [facebookLoginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [facebookLoginButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
-    [facebookLoginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+    [facebookLoginButton addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:facebookLoginButton];
     y += facebookLoginButton.frame.size.height + spacer;
     
+    if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid]) {
+        [facebookLoginButton setTitle:@"Logout of Facebook" forState:UIControlStateNormal];
+        [facebookLoginButton addTarget:self action:@selector(logoutFacebook:) forControlEvents:UIControlEventTouchUpInside];
+    }
+    
     self.loginUsernameOrEmailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [self.loginUsernameOrEmailField setPlaceholder:@"Email or Username"];
+    [self.loginUsernameOrEmailField setPlaceholder:@"Email"];
     [self.view addSubview:self.loginUsernameOrEmailField];
     y += self.loginUsernameOrEmailField.frame.size.height + spacer;
     
@@ -70,8 +76,28 @@
 //    [self.view addSubview:logoutButton];
 }
 
+-(void)loginWithFacebook:(id)sender {
+    [[SharedDataHandler sharedInstance] authorizeFacebook];
+    
+    UIButton *fb_button = (UIButton *)sender;
+    [fb_button setTitle:@"Logout of Facebook" forState:UIControlStateNormal];
+    [fb_button addTarget:self action:@selector(logoutFacebook:) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)logoutFacebook:(id)sender {
+    [[SharedDataHandler sharedInstance].facebookInstance logout];
+    
+    UIButton *fb_button = (UIButton *)sender;
+    [fb_button setTitle:@"Login with Facebook" forState:UIControlStateNormal];
+    [fb_button addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
+}
+
 -(void)loginToServer:(id)sender {
     
+    NSMutableDictionary *creds = [[NSMutableDictionary alloc] init];
+    
+    [creds setObject:self.loginUsernameOrEmailField.text forKey:@"email"];
+    [creds setObject:self.loginPasswordField.text forKey:@"password"];
 }
 
 -(void)logoutFromServer:(id)sender {
@@ -85,9 +111,10 @@
 
 -(void)postToFacebookWall:(id)sender {
     
-    //NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"I'm not convinced I'm not an actual wolf when I'm wearing my hat.", @"message", nil];
+    
+//    NSMutableDictionary *params = [NSMutableDictionary dictionaryWithObjectsAndKeys:@"I'm not convinced I'm not an actual wolf when I'm wearing my hat.", @"message", nil];
 //    [[[SharedDataHandler sharedInstance] facebookInstance] dialog:@"feed" andParams:params andDelegate:[SharedDataHandler sharedInstance]];
-    //[[[SharedDataHandler sharedInstance] facebookInstance] requestWithMethodName:@"me/feed" andParams:params andHttpMethod:@"POST" andDelegate:[SharedDataHandler sharedInstance]];
+//    [[[SharedDataHandler sharedInstance] facebookInstance] requestWithMethodName:@"me/feed" andParams:params andHttpMethod:@"POST" andDelegate:[SharedDataHandler sharedInstance]];
 }
 
 - (void)logoutButtonClicked:(id)sender {

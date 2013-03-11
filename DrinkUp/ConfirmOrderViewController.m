@@ -43,7 +43,7 @@
     CGFloat verticlSpacer = 10.0;
     CGFloat horizontalSpacer = 10.0;
     CGFloat splitViewHeight = self.view.frame.size.height/2 - self.navigationController.navigationBar.frame.size.height;
-    CGFloat bottomViewHeight = 44.0;
+    CGFloat bottomViewHeight = 60.0;
     
     self.tableViewDrinks = [[UITableView alloc] initWithFrame:CGRectMake(horizontalSpacer, verticlSpacer, self.view.frame.size.width - horizontalSpacer * 2, splitViewHeight - verticlSpacer * 2) style:UITableViewStylePlain];
     [self.tableViewDrinks setDelegate:self];
@@ -53,24 +53,17 @@
     [self.tableViewDrinks setTag:0];
     [self.view addSubview:self.tableViewDrinks];
     
-    UIView *priceView = [[UIView alloc] initWithFrame:CGRectMake(horizontalSpacer, CGRectGetMaxY(self.tableViewDrinks.frame) + verticlSpacer, self.view.frame.size.width - horizontalSpacer * 2, splitViewHeight - bottomViewHeight)];
-    [priceView setBackgroundColor:[UIColor greenColor]];
-    [self.view addSubview:priceView];
-    
-    [self setupPriceViewWithView:priceView];
-    
-    self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
-    [self.totalCell setFrame:CGRectMake(0, CGRectGetMaxY(priceView.frame), 320, 44)];
-    [self.totalCell setBackgroundColor:[UIColor yellowColor]];
-    self.totalCell.textLabel.text = @"Total:";
-    self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
-    [self.view addSubview:self.totalCell];
-    
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - bottomViewHeight, self.view.frame.size.width, bottomViewHeight)];
-    [bottomView setBackgroundColor:[UIColor redColor]];
+    [bottomView setBackgroundColor:[UIColor darkGrayColor]];
     [self.view addSubview:bottomView];
     
     [self setupBottomViewWithView:bottomView];
+    
+    UIView *priceView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 160.0 - bottomViewHeight, self.view.frame.size.width, 160.0)];
+    [priceView setBackgroundColor:[UIColor lightGrayColor]];
+    [self.view addSubview:priceView];
+    
+    [self setupPriceViewWithView:priceView];
     
     [self updatePricesAndTotals];
 }
@@ -84,23 +77,33 @@
 
 -(void)setupPriceViewWithView:(UIView *)priceView {
     
-    CGFloat pvYPosition = 25.0;
+    CGFloat pvYPosition = 0.0;
     CGFloat pvEdgeInset = 0.0;
     CGFloat pvWidth = priceView.frame.size.width - pvEdgeInset * 2;
-    CGFloat pvHeight = 44.0;
+    CGFloat pvHeight = priceView.frame.size.height/3;
     
     self.taxAndFeeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
     [self.taxAndFeeCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
-    [self.taxAndFeeCell setBackgroundColor:[UIColor orangeColor]];
+    [self.taxAndFeeCell setBackgroundColor:[UIColor lightGrayColor]];
     self.taxAndFeeCell.textLabel.text = @"Tax and fees";
-    [priceView addSubview:self.taxAndFeeCell];
     
-    self.tipCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
-    [self.tipCell setFrame:CGRectMake(pvEdgeInset, CGRectGetMaxY(self.taxAndFeeCell.frame), pvWidth, pvHeight)];
-    [self.tipCell setBackgroundColor:[UIColor grayColor]];
+    [priceView addSubview:self.taxAndFeeCell];
+    pvYPosition += pvHeight;
+    
+    self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
+    [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
+    [self.totalCell setBackgroundColor:[UIColor lightGrayColor]];
+    self.totalCell.textLabel.text = @"Total:";
+    self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
+    
+    [priceView addSubview:self.totalCell];
+    pvYPosition += pvHeight;
+    
+    self.tipCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier3"];
+    [self.tipCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
+    [self.tipCell setBackgroundColor:[UIColor lightGrayColor]];
     self.tipCell.textLabel.text = @"Tip";
     self.tipCell.detailTextLabel.text = @"10%";
-    [priceView addSubview:self.tipCell];
     
     self.tipSlider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 150.0, 20.0)];
     [self.tipSlider setCenter:CGPointMake(self.tipCell.frame.size.width/2, self.tipCell.frame.size.height/2)];
@@ -109,29 +112,32 @@
     [self.tipSlider setValue:10];
     [self.tipSlider addTarget:self action:@selector(tipPercentChanged:) forControlEvents:UIControlEventValueChanged];
     [self.tipCell addSubview:self.tipSlider];
+    
+    [priceView addSubview:self.tipCell];
+    pvYPosition += pvHeight;
 }
 
 -(void)setupBottomViewWithView:(UIView *)bottomView {
     
-    CGFloat spacer = 10.0;
-    CGFloat bbWidth = (self.view.frame.size.width/3) - (spacer);
-    CGFloat bbHeight = 30.0;
-    CGFloat bbYPosition = 7.0;
-    CGFloat bbXPosition = 10.0;
+//    CGFloat spacer = 10.0;
+//    CGFloat bbWidth = (self.view.frame.size.width/3) - (spacer);
+//    CGFloat bbHeight = 30.0;
+//    CGFloat bbYPosition = bottomView.frame.size.height;
+//    CGFloat bbXPosition = 10.0;
     
-    UIButton *cancelOrder = [UIButton  buttonWithType:UIButtonTypeRoundedRect];
-    [cancelOrder setFrame:CGRectMake(bbXPosition, bbYPosition, bbWidth, bbHeight)];
-    //    cancelOrder.center = CGPointMake(cancelOrder.center.x, bottomView.frame.size.height/2);
-    [cancelOrder setTitle:@"Cancel" forState:UIControlStateNormal];
-    cancelOrder.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    cancelOrder.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [cancelOrder addTarget:self action:@selector(cancelCurrentOrder) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:cancelOrder];
-    bbXPosition += bbWidth + spacer;
+//    UIButton *cancelOrder = [UIButton  buttonWithType:UIButtonTypeRoundedRect];
+//    [cancelOrder setFrame:CGRectMake(bbXPosition, bbYPosition, bbWidth, bbHeight)];
+//    //    cancelOrder.center = CGPointMake(cancelOrder.center.x, bottomView.frame.size.height/2);
+//    [cancelOrder setTitle:@"Cancel" forState:UIControlStateNormal];
+//    cancelOrder.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//    cancelOrder.titleLabel.textAlignment = NSTextAlignmentCenter;
+//    [cancelOrder addTarget:self action:@selector(cancelCurrentOrder) forControlEvents:UIControlEventTouchUpInside];
+//    [bottomView addSubview:cancelOrder];
+//    bbXPosition += bbWidth + spacer;
     
     UIButton *placeOrder = [UIButton  buttonWithType:UIButtonTypeRoundedRect];
-    [placeOrder setFrame:CGRectMake(bbXPosition, bbYPosition, bbWidth * 2, bbHeight)];
-    //    [placeOrder setCenter: CGPointMake(placeOrder.center.x, bottomView.frame.size.height/2)];
+    [placeOrder setFrame:CGRectMake(0.0, 0.0, 300.0, bottomView.frame.size.height - 10.0)];
+    [placeOrder setCenter: CGPointMake(bottomView.center.x, bottomView.frame.size.height/2)];
     [placeOrder setTitle:@"Place Order" forState:UIControlStateNormal];
     placeOrder.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
     placeOrder.titleLabel.textAlignment = NSTextAlignmentCenter;

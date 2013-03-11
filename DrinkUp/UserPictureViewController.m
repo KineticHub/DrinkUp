@@ -10,6 +10,7 @@
 
 @interface UserPictureViewController ()
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
+@property (nonatomic, strong) UIImageView *selfie;
 @end
 
 @implementation UserPictureViewController
@@ -17,6 +18,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.selfie = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height)];
+    [self.view addSubview:self.selfie];
     
     [self takePictureWithCamera];
 }
@@ -51,7 +55,7 @@
     [self dismissViewControllerAnimated:YES completion:^{}]; //Do this first!!
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
     
-    //Do stuff with image
+    [self.selfie setImage:image];
 }
 
 @end

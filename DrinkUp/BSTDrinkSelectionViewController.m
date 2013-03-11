@@ -7,15 +7,14 @@
 //
 
 #import "BSTDrinkSelectionViewController.h"
-#import "MBProgressHUD.h"
-#import "UIImageView+AFNetworking.h"
 #import "ActionSheetStringPicker.h"
-#import "SharedDataHandler.h"
 #import "ConfirmOrderViewController.h"
-#import "BasicCell.h"
+#import "DrinkSelectCell.h"
+
 
 @interface BSTDrinkSelectionViewController ()
 @property int drinkType;
+@property (nonatomic, strong) NSString *drinkTypeName;
 @property (nonatomic, strong) NSMutableArray *drinks;
 @property (nonatomic, strong) NSMutableArray *drinksOrder;
 @property (nonatomic, strong) UIActionSheet *actionSheet;
@@ -24,10 +23,11 @@
 
 @implementation BSTDrinkSelectionViewController
 
--(id)initWithDrinkType:(int)drinkType {
-    self = [super init];
+-(id)initWithDrinkType:(int)drinkType typeName:(NSString *)drinkTypeName {
+    self = [super initWithUpperViewHieght:60.0];
     if (self) {
         self.drinkType = drinkType;
+        self.drinkTypeName = drinkTypeName;
     }
     return self;
 }
@@ -43,6 +43,14 @@
     
     self.drinks = [[NSMutableArray alloc] init];
     self.drinksOrder = [SharedDataHandler sharedInstance].currentDrinkOrder;
+    
+    UILabel *typeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, self.upperView.frame.size.width, self.upperView.frame.size.height)];
+    [typeLabel setTextAlignment:NSTextAlignmentCenter];
+    [typeLabel setText:self.drinkTypeName];
+    [typeLabel setFont:[UIFont boldSystemFontOfSize:36.0]];
+    [self.upperView addSubview:typeLabel];
+    
+    [self.tableView setRowHeight:65.0];
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
@@ -83,26 +91,19 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    BasicCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+    DrinkSelectCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     
 	if (cell == nil) {
-		cell = [[BasicCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
-//        [cell.textLabel setTextAlignment:NSTextAlignmentRight];
-//        [cell.imageView setFrame:CGRectMake(0, 0, 50, self.tableView.rowHeight)];
+		cell = [[DrinkSelectCell alloc] initWithReuseIdentifier:@"CellIdentifier"];
 	}
     
     NSDictionary *drink = [self.drinks objectAtIndex:[indexPath row]];
     
-    NSString *detailString;
-    if ([[drink objectForKey:@"quantity"] integerValue] > 0) {
-        detailString = [NSString stringWithFormat:@"%i  x  $%@", [[drink objectForKey:@"quantity"] integerValue], [drink objectForKey:@"price"]];
-    } else {
-        detailString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
-    }
+    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
     
-    cell.textLabel.text = [drink objectForKey:@"name"];;
-    cell.detailTextLabel.text = detailString;
-    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[drink objectForKey:@"icon"]]]];
+    cell.textLabel.text = [drink objectForKey:@"name"];
+    [cell setCostLabelAmount:priceString];
+    [cell setDrinkQuantity:[[drink objectForKey:@"quantity"] intValue]];
     
     return cell;
 }
@@ -144,7 +145,8 @@
     }
     
     [self.drinksOrder removeObject:foundDrink];
-    if (addDrink) {
+    if (addDrink && [[dicDrink objectForKey:@"quantity"] intValue] > 0) {
+        NSLog(@"ordered: %@", dicDrink);
         [self.drinksOrder addObject:dicDrink];
     }
     

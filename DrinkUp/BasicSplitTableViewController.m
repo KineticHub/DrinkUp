@@ -7,9 +7,7 @@
 //
 
 #import "BasicSplitTableViewController.h"
-#import "BasicCell.h"
 #import "ConfirmOrderViewController.h"
-#import "SharedDataHandler.h"
 
 #define BOTTOM_BAR_HEIGHT 60.0
 
@@ -146,7 +144,7 @@ static bool isShowingBottomBar = NO;
 +(void)forceHidePlaceOrderBar {
     isShowingBottomBar = NO;
     
-    [UIView animateWithDuration:0.5 animations:^{
+    [UIView animateWithDuration:0.0 animations:^{
         CGRect bottomBarFrame = bottomBar.frame;
         bottomBarFrame.origin.y += bottomBar.frame.size.height;
         [bottomBar setFrame:bottomBarFrame];

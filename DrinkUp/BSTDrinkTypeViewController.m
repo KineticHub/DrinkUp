@@ -7,11 +7,8 @@
 //
 
 #import "BSTDrinkTypeViewController.h"
-#import "MBProgressHUD.h"
-#import "UIImageView+AFNetworking.h"
-#import "SharedDataHandler.h"
-#import "BasicCell.h"
 #import "BSTDrinkSelectionViewController.h"
+#import "UIImageView+AFNetworking.h"
 
 @interface BSTDrinkTypeViewController ()
 @property (nonatomic, strong) NSMutableArray *drinkTypes;
@@ -49,19 +46,24 @@
         }];
     });
     
-    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 180.0, 150.0)];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 150.0)];
     [logoImageView setCenter:self.upperView.center];
     [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
     [self.upperView addSubview:logoImageView];
 }
 
 -(void) showLeavingOptions {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
-                                                      message:@"Leaving this bar will clear any drinks currently selected at this bar."
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Clear Drinks", nil];
-    [message show];
+    
+    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
+                                                          message:@"Leaving this bar will clear any drinks currently selected at this bar."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Clear Drinks", nil];
+        [message show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 #pragma mark - UIAlertView Method
@@ -108,7 +110,7 @@
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
     NSDictionary *selectedType = [self.drinkTypes objectAtIndex:[indexPath row]];
-    BSTDrinkSelectionViewController *dsvc = [[BSTDrinkSelectionViewController alloc] initWithDrinkType:[[selectedType objectForKey:@"id"] intValue]];
+    BSTDrinkSelectionViewController *dsvc = [[BSTDrinkSelectionViewController alloc] initWithDrinkType:[[selectedType objectForKey:@"id"] intValue] typeName:[selectedType objectForKey:@"name"]];
     [self.navigationController pushViewController:dsvc animated:YES];
 }
 

@@ -10,5 +10,5 @@
 #import "BasicSplitTableViewController.h"
 
 @interface BSTDrinkSelectionViewController : BasicSplitTableViewController <UIActionSheetDelegate>
--(id)initWithDrinkType:(int)drinkType;
+-(id)initWithDrinkType:(int)drinkType typeName:(NSString *)drinkTypeName;
 @end
