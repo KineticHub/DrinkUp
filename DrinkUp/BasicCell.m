@@ -24,16 +24,18 @@
     {
         self.count = 0;
         
-//        UIImage *cellBackgroundImage = [[UIImage imageNamed:@"main_background.jpg"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
+//        UIImage *cellBackgroundImage = [[UIImage imageNamed:@"pw_maze_white_@2X.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
         
 //        UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] initWithImage:cellBackgroundImage];
-//        [cellBackgroundViewImageView setFrame:CGRectMake(0, 0, self.frame.size.width - 20.0, self.frame.size.height)];
-//        [self setBackgroundView:cellBackgroundViewImageView];
-//        [self setBackgroundColor:[UIColor clearColor]];
+        UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] init];
+        [cellBackgroundViewImageView setFrame:CGRectMake(0, 0, self.frame.size.width - 20.0, self.frame.size.height)];
+        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
+        [self setBackgroundView:cellBackgroundViewImageView];
+        [self setBackgroundColor:[UIColor clearColor]];
         
         [self.textLabel setHighlightedTextColor:[UIColor blackColor]];
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
-        [self.textLabel setTextColor:[UIColor whiteColor]];
+        [self.textLabel setTextColor:[UIColor blackColor]];
 //        [self.textLabel setTextColor:[UIColor colorWithRed:(227/255.0) green:(204/255.0) blue:(35/255.0) alpha:1.0]];
         [self.textLabel setFont:DEFAULT_CELL_TITLE_FONT];
         [self.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -59,11 +61,11 @@
         [highlightedBackgroundView setBackgroundColor:[UIColor whiteColor]];
         [self setSelectedBackgroundView:highlightedBackgroundView];
         
-        self.seperatorLine = [[UIView alloc] init];
+//        self.seperatorLine = [[UIView alloc] init];
 //        [self.seperatorLine setBackgroundColor:[UIColor colorWithRed:(196/255.0) green:(196/255.0) blue:(196/255.0) alpha:1.0]];
 //        [self.seperatorLine setBackgroundColor:[UIColor colorWithRed:(227/255.0) green:(204/255.0) blue:(35/255.0) alpha:1.0]];
-        [self.seperatorLine setBackgroundColor:[UIColor whiteColor]];
-        [self addSubview:self.seperatorLine];
+//        [self.seperatorLine setBackgroundColor:[UIColor whiteColor]];
+//        [self addSubview:self.seperatorLine];
         
 //        UIImageView *callBackgroundViewImageViewSelected = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"pointing_arrow_2_dark"]];
 //        [self setSelectedBackgroundView:callBackgroundViewImageViewSelected];
@@ -78,7 +80,7 @@
     CGFloat spacer = 10.0;
     [self.cellImageBox setFrame:CGRectMake(0.0, 0.0, self.frame.size.height, self.frame.size.height)];
     self.cellImageView.center = CGPointMake(self.cellImageBox.center.x, self.cellImageBox.frame.size.height/2);
-    [self.seperatorLine setFrame:CGRectMake(0.0, self.frame.size.height, self.frame.size.width, 1.0)];
+//    [self.seperatorLine setFrame:CGRectMake(0.0, self.frame.size.height, self.frame.size.width, 1.0)];
     
     if (!self.cellImageView.image) {
         [self.cellImageView setHidden:YES];

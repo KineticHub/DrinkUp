@@ -48,7 +48,7 @@
     self.tableViewDrinks = [[UITableView alloc] initWithFrame:CGRectMake(horizontalSpacer, verticlSpacer, self.view.frame.size.width - horizontalSpacer * 2, splitViewHeight - verticlSpacer * 2) style:UITableViewStylePlain];
     [self.tableViewDrinks setDelegate:self];
     [self.tableViewDrinks setDataSource:self];
-    //    [self.tableView setBackgroundView:nil];
+//    [self.tableView setBackgroundView:nil];
     [self.tableViewDrinks flashScrollIndicators];
     [self.tableViewDrinks setTag:0];
     [self.view addSubview:self.tableViewDrinks];

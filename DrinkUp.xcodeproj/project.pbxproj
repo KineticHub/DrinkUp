@@ -205,6 +205,8 @@
 		9C8B77C316EB2A2E00FB80AF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C8B77C216EB2A2300FB80AF /* SystemConfiguration.framework */; };
 		9C8B77C616EB2AC100FB80AF /* TestPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B77C516EB2AC000FB80AF /* TestPaymentViewController.m */; };
 		9C8B782116ED68C600FB80AF /* DrinkSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B782016ED68C500FB80AF /* DrinkSelectCell.m */; };
+		9C8B782316EE315E00FB80AF /* px_by_Gre3g.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */; };
+		9C8B782516F05F9800FB80AF /* pw_maze_white_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -599,6 +601,8 @@
 		9C8B77C516EB2AC000FB80AF /* TestPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestPaymentViewController.m; sourceTree = "<group>"; };
 		9C8B781F16ED68C300FB80AF /* DrinkSelectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkSelectCell.h; sourceTree = "<group>"; };
 		9C8B782016ED68C500FB80AF /* DrinkSelectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSelectCell.m; sourceTree = "<group>"; };
+		9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = px_by_Gre3g.png; sourceTree = "<group>"; };
+		9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pw_maze_white_@2X.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -874,6 +878,8 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */,
+				9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */,
 				9C8B712316E808A700FB80AF /* main_background.jpg */,
 				9C69C64E16CFFA1400D548F2 /* blank_square.png */,
 			);
@@ -1452,6 +1458,8 @@
 				9C8B77AF16EB28D700FB80AF /* Test-Info.plist in Resources */,
 				9C8B77B516EB28D700FB80AF /* UnitTest-Info.plist in Resources */,
 				9C8B77B616EB28D700FB80AF /* UnitTests-Info.plist in Resources */,
+				9C8B782316EE315E00FB80AF /* px_by_Gre3g.png in Resources */,
+				9C8B782516F05F9800FB80AF /* pw_maze_white_@2X.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
