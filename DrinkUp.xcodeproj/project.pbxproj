@@ -41,7 +41,6 @@
 		9C69C67116D01F2600D548F2 /* ActionSheetDistancePicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66716D01F2600D548F2 /* ActionSheetDistancePicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9C69C67216D01F2600D548F2 /* ActionSheetStringPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66916D01F2600D548F2 /* ActionSheetStringPicker.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9C69C67316D01F2600D548F2 /* DistancePickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C66B16D01F2600D548F2 /* DistancePickerView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		9C69C67416D01F2600D548F2 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C66C16D01F2600D548F2 /* README.md */; };
 		9C69C67816D23EC100D548F2 /* ConfirmOrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */; };
 		9C69C67D16D2E8ED00D548F2 /* ThanksViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C67C16D2E8ED00D548F2 /* ThanksViewController.m */; };
 		9C8B70B116DD901900FB80AF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B703F16DD901800FB80AF /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -289,7 +288,6 @@
 		9C69C66916D01F2600D548F2 /* ActionSheetStringPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActionSheetStringPicker.m; sourceTree = "<group>"; };
 		9C69C66A16D01F2600D548F2 /* DistancePickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DistancePickerView.h; sourceTree = "<group>"; };
 		9C69C66B16D01F2600D548F2 /* DistancePickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DistancePickerView.m; sourceTree = "<group>"; };
-		9C69C66C16D01F2600D548F2 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.md; sourceTree = "<group>"; };
 		9C69C67616D23EC100D548F2 /* ConfirmOrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConfirmOrderViewController.h; sourceTree = "<group>"; };
 		9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConfirmOrderViewController.m; sourceTree = "<group>"; };
 		9C69C67B16D2E8ED00D548F2 /* ThanksViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThanksViewController.h; sourceTree = "<group>"; };
@@ -923,7 +921,6 @@
 				9C69C65F16D01F2600D548F2 /* AUTHORS */,
 				9C69C66016D01F2600D548F2 /* LICENSE */,
 				9C69C66116D01F2600D548F2 /* Pickers */,
-				9C69C66C16D01F2600D548F2 /* README.md */,
 			);
 			name = ActionSheetPicker;
 			sourceTree = "<group>";
@@ -1440,7 +1437,6 @@
 				9C69C64F16CFFA1400D548F2 /* blank_square.png in Resources */,
 				9C69C66D16D01F2600D548F2 /* AUTHORS in Resources */,
 				9C69C66E16D01F2600D548F2 /* LICENSE in Resources */,
-				9C69C67416D01F2600D548F2 /* README.md in Resources */,
 				9C8B70B216DD901900FB80AF /* FacebookSDKResources.bundle in Resources */,
 				9C8B70D816DD901900FB80AF /* FBUserSettingsViewResources.bundle in Resources */,
 				9C8B712416E808A700FB80AF /* main_background.jpg in Resources */,
