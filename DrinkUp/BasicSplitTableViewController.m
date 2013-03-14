@@ -15,6 +15,8 @@ static UIView *bottomBar = nil;
 static bool isShowingBottomBar = NO;
 
 @interface BasicSplitTableViewController ()
+@property (nonatomic) UIView *gradientView;
+@property (nonatomic) CAGradientLayer *maskLayer;
 @property (nonatomic) CGFloat upperViewHeight;
 @property (nonatomic) CGFloat bottomBarHeight;
 @end
@@ -22,7 +24,7 @@ static bool isShowingBottomBar = NO;
 @implementation BasicSplitTableViewController
 
 -(id)init {
-    return [self initWithUpperViewHieght:150.0];
+    return [self initWithUpperViewHieght:180.0];
 }
 
 -(id)initWithUpperViewHieght:(CGFloat)upperViewHeight {
@@ -42,17 +44,40 @@ static bool isShowingBottomBar = NO;
     self.bottomBarHeight = BOTTOM_BAR_HEIGHT;
     
     CGFloat upperViewHeight = self.upperViewHeight;
-    self.upperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, upperViewHeight)];
-    [self.view addSubview:self.upperView];
+    self.upperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width - 10.0, upperViewHeight - 10.0)];
+    [self.upperView.layer setCornerRadius:8.0];
+    [self.upperView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [self.upperView.layer setBorderWidth:4.0];
+    [self.upperView.layer setMasksToBounds:YES];
     
-    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStylePlain];
+    UIView *shadowUpperView = [[UIView alloc] initWithFrame:CGRectMake(5.0, 5.0, self.view.frame.size.width - 10.0, upperViewHeight - 10.0)];
+    [shadowUpperView.layer setShadowRadius:4.0];
+    [shadowUpperView.layer setShadowOpacity:0.5];
+    [shadowUpperView.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
+    [shadowUpperView.layer setShadowColor:[[UIColor whiteColor] CGColor]];
+    [shadowUpperView addSubview:self.upperView];
+    [self.view addSubview:shadowUpperView];
+//    [self.view addSubview:self.upperView];
+    
+//    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStyleGrouped];
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 5.0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStyleGrouped];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
     [self.tableView setBackgroundColor:[UIColor clearColor]];
-    [self.tableView setRowHeight:70.0];
-    [self.tableView setSeparatorColor:[UIColor clearColor]];
-    [self.view addSubview:self.tableView];
+    [self.tableView setOpaque:NO];
+    [self.tableView setRowHeight:60.0];
+    [self.tableView setSeparatorColor:[UIColor blackColor]];
+    self.tableView.sectionHeaderHeight = 0.0;
+    self.tableView.sectionFooterHeight = 0.0;
+//    [self.view addSubview:self.tableView];
+    
+    self.gradientView = [[UIView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight)];
+    [self.gradientView setBackgroundColor:[UIColor clearColor]];
+    [self.gradientView setOpaque:NO];
+    [self.view addSubview:self.gradientView];
+    [self.gradientView addSubview:self.tableView];
+    [self initTableMask];
     
     if (!bottomBar) {
         CGFloat bottomBarHeight = self.bottomBarHeight;
@@ -86,7 +111,37 @@ static bool isShowingBottomBar = NO;
     self.tableView.frame = tableViewRect;
 }
 
+-(void)initTableMask {
+    self.maskLayer = [CAGradientLayer layer];
+    self.maskLayer.colors = @[
+                              (id)[UIColor clearColor].CGColor,
+                              (id)[UIColor whiteColor].CGColor,
+                              (id)[UIColor whiteColor].CGColor,
+                              (id)[UIColor whiteColor].CGColor,
+                              (id)[UIColor whiteColor].CGColor];
+    self.maskLayer.locations = @[ @0.0f, @0.1f, @0.1f, @0.1f, @0.1f ];
+    self.maskLayer.frame = self.gradientView.bounds;
+    self.gradientView.layer.mask = self.maskLayer;
+}
+
 #pragma mark - TableView Data and Delegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+//    [CATransaction begin];
+//    [CATransaction setDisableActions:YES];
+//    self.maskLayer.position = CGPointMake(0, scrollView.contentOffset.y);
+//    [CATransaction commit];
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 12.0;
+    }
+    
+    return 0.0;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     BasicCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];

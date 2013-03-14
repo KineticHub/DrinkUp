@@ -70,13 +70,14 @@
     y += signupButton.frame.size.height + spacer;
     
     UIButton *logoutButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
-    [logoutButton setFrame:CGRectMake(0, 60, 100, 45)];
+    [logoutButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     [logoutButton addTarget:self action:@selector(logoutFromServer:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.view addSubview:logoutButton];
+    [self.view addSubview:logoutButton];
 }
 
--(void)loginWithFacebook:(id)sender {
+-(void)loginWithFacebook:(id)sender
+{
     [[SharedDataHandler sharedInstance] authorizeFacebook];
     
     UIButton *fb_button = (UIButton *)sender;
@@ -85,6 +86,7 @@
 }
 
 -(void)logoutFacebook:(id)sender {
+    
     [[SharedDataHandler sharedInstance].facebookInstance logout];
     
     UIButton *fb_button = (UIButton *)sender;
@@ -96,12 +98,15 @@
     
     NSMutableDictionary *creds = [[NSMutableDictionary alloc] init];
     
-    [creds setObject:self.loginUsernameOrEmailField.text forKey:@"email"];
+    [creds setObject:self.loginUsernameOrEmailField.text forKey:@"username"];
     [creds setObject:self.loginPasswordField.text forKey:@"password"];
+    
+    [[SharedDataHandler sharedInstance] userLoginToServerWithCredentials:creds];
 }
 
 -(void)logoutFromServer:(id)sender {
-    
+    NSLog(@"Logout attempt");
+    [[SharedDataHandler sharedInstance] userLogoutOfServer];
 }
 
 -(void)showSignupView {

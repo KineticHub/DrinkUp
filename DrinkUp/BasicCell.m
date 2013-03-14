@@ -7,7 +7,6 @@
 //
 
 #import "BasicCell.h"
-#import <QuartzCore/QuartzCore.h>
 #import "UIImageView+AFNetworking.h"
 
 @interface BasicCell ()
@@ -24,12 +23,17 @@
     {
         self.count = 0;
         
+        [self setBackgroundColor:[UIColor greenColor]];
+        [self setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
+        
 //        UIImage *cellBackgroundImage = [[UIImage imageNamed:@"pw_maze_white_@2X.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
         
 //        UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] initWithImage:cellBackgroundImage];
         UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] init];
-        [cellBackgroundViewImageView setFrame:CGRectMake(0, 0, self.frame.size.width - 20.0, self.frame.size.height)];
+        [cellBackgroundViewImageView setFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
         [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
+        [cellBackgroundViewImageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        [cellBackgroundViewImageView.layer setBorderWidth:2.0];
         [self setBackgroundView:cellBackgroundViewImageView];
         [self setBackgroundColor:[UIColor clearColor]];
         
@@ -49,16 +53,20 @@
         [self.detailTextLabel setNumberOfLines:2];
         [self.detailTextLabel setAlpha:0.75];
         
-        self.cellImageBox = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.height, self.frame.size.height)];
+        self.cellImageBox = [[UIView alloc] initWithFrame:CGRectMake(self.contentView.frame.origin.x, 0.0, self.frame.size.height, self.frame.size.height)];
         [self.cellImageBox setBackgroundColor:[UIColor whiteColor]];
+        [self.cellImageBox.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        [self.cellImageBox.layer setBorderWidth:2.0];
         [self addSubview:self.cellImageBox];
         
         self.cellImageView = [[UIImageView alloc] init];
-        self.cellImageView.frame = CGRectMake(0.0, 0.0, self.cellImageBox.frame.size.height, self.cellImageBox.frame.size.height);
+        self.cellImageView.frame = CGRectMake(self.contentView.frame.origin.x, 0.0, self.cellImageBox.frame.size.height, self.cellImageBox.frame.size.height);
         [self.cellImageBox addSubview: self.cellImageView];
         
         UIView *highlightedBackgroundView = [[UIView alloc] init];
         [highlightedBackgroundView setBackgroundColor:[UIColor whiteColor]];
+        [highlightedBackgroundView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        [highlightedBackgroundView.layer setBorderWidth:2.0];
         [self setSelectedBackgroundView:highlightedBackgroundView];
         
 //        self.seperatorLine = [[UIView alloc] init];
@@ -78,8 +86,8 @@
     [super layoutSubviews];
     
     CGFloat spacer = 10.0;
-    [self.cellImageBox setFrame:CGRectMake(0.0, 0.0, self.frame.size.height, self.frame.size.height)];
-    self.cellImageView.center = CGPointMake(self.cellImageBox.center.x, self.cellImageBox.frame.size.height/2);
+    [self.cellImageBox setFrame:CGRectMake(self.contentView.frame.origin.x, 0.0, self.frame.size.height, self.frame.size.height)];
+    self.cellImageView.center = CGPointMake(self.cellImageBox.frame.size.width/2, self.cellImageBox.frame.size.height/2);
 //    [self.seperatorLine setFrame:CGRectMake(0.0, self.frame.size.height, self.frame.size.width, 1.0)];
     
     if (!self.cellImageView.image) {

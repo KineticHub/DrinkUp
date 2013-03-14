@@ -18,7 +18,7 @@
 @implementation BSTDrinkTypeViewController
 
 -(id)initWithBarSection:(int)section_id {
-    self = [super init];
+    self = [super initWithUpperViewHieght:180.0];
     if (self) {
         self.section_id = section_id;
     }
@@ -46,10 +46,23 @@
         }];
     });
     
-    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 150.0)];
-    [logoImageView setCenter:self.upperView.center];
+    UIView *barNameTitleBar = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 20.0)];
+    [barNameTitleBar setBackgroundColor:[UIColor blackColor]];
+//    [self.upperView addSubview:barNameTitleBar];
+    
+    UILabel *barNameTitle = [[UILabel alloc] initWithFrame:barNameTitleBar.frame];
+    [barNameTitle setText:@"Top of the Stairs"];
+    [barNameTitle setTextAlignment:NSTextAlignmentCenter];
+    [barNameTitle setTextColor:[UIColor whiteColor]];
+    [barNameTitle setBackgroundColor:[UIColor clearColor]];
+    [barNameTitleBar addSubview:barNameTitle];
+    
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 140.0)];
+    [logoImageView setCenter:CGPointMake(self.upperView.center.x, self.upperView.center.y + 0.0)];
     [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
     [self.upperView addSubview:logoImageView];
+    
+    [self.upperView setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(void) showLeavingOptions {
@@ -85,18 +98,18 @@
 #pragma mark - TableView DataSource Methods
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.drinkTypes count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.drinkTypes count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     BasicCell *cell = (BasicCell *) [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    NSDictionary *type = [self.drinkTypes objectAtIndex:[indexPath row]];
+    NSDictionary *type = [self.drinkTypes objectAtIndex:[indexPath section]];
     cell.textLabel.text = [type objectForKey:@"name"];
     [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[type objectForKey:@"icon"]]]];
     

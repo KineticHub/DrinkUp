@@ -38,6 +38,7 @@
 @property (nonatomic, retain) UIActionSheet *actionSheet;
 @property (nonatomic, retain) UIPopoverController *popOverController;
 @property (nonatomic, retain) NSObject *selfReference;
+@property (nonatomic, retain) UIView *customTopView;
 
 - (void)presentPickerForView:(UIView *)aView;
 - (void)configureAndPresentPopoverForView:(UIView *)aView;
@@ -70,16 +71,25 @@
 @synthesize customButtons = _customButtons;
 @synthesize hideCancel = _hideCancel;
 @synthesize presentFromRect = _presentFromRect;
+@synthesize customTopView = _customTopView;
 
 #pragma mark - Abstract Implementation
 
-- (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin  {
+- (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin customTopSubviews:(NSArray *)subviews {
+    
     self = [super init];
     if (self) {
         self.target = target;
         self.successAction = successAction;
         self.cancelAction = cancelActionOrNil;
         self.presentFromRect = CGRectZero;
+        
+        self.customTopView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -220.0, 320.0, 210.0)];
+        if ([subviews isKindOfClass:[NSArray class]]) {
+            for (UIView *subview in subviews) {
+                [self.customTopView addSubview: subview];
+            }
+        }
         
         if ([origin isKindOfClass:[UIBarButtonItem class]])
             self.barButtonItem = origin;
@@ -92,6 +102,10 @@
         self.selfReference = self;
     }
     return self;
+}
+
+- (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin  {
+    return [self initWithTarget:target successAction:successAction cancelAction:cancelActionOrNil origin:origin customTopSubviews:nil];
 }
 
 - (void)dealloc {
@@ -110,6 +124,7 @@
     self.containerView = nil;
     self.barButtonItem = nil;
     self.target = nil;
+    self.customTopView = nil;
     
     [super dealloc];
 }
@@ -131,13 +146,18 @@
 #pragma mark - Actions
 
 - (void)showActionSheetPicker {
-    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];    
+    UIView *masterView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, self.viewSize.width, 260)];  
     UIToolbar *pickerToolbar = [self createPickerToolbarWithTitle:self.title];
     [pickerToolbar setBarStyle:UIBarStyleBlackTranslucent];
     [masterView addSubview:pickerToolbar];
     self.pickerView = [self configuredPickerView];
     NSAssert(_pickerView != NULL, @"Picker view failed to instantiate, perhaps you have invalid component data.");
     [masterView addSubview:_pickerView];
+    
+    [self.customTopView setBackgroundColor:[UIColor redColor]];
+    [masterView addSubview:self.customTopView];
+    [self.customTopView release];
+
     [self presentPickerForView:masterView];
     [masterView release];
 }

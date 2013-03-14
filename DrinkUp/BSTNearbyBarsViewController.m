@@ -48,18 +48,18 @@
 #pragma mark - TableView DataSource Methods
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.bars count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.bars count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
     BasicCell *cell = (BasicCell *) [super tableView:tableView cellForRowAtIndexPath:indexPath];
     
-    NSDictionary *bar = [self.bars objectAtIndex:[indexPath row]];
+    NSDictionary *bar = [self.bars objectAtIndex:[indexPath section]];
     cell.textLabel.text = [bar objectForKey:@"name"];
     [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
     
@@ -72,7 +72,7 @@
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
-    NSDictionary *selectedBar = [self.bars objectAtIndex:[indexPath row]];
+    NSDictionary *selectedBar = [self.bars objectAtIndex:[indexPath section]];
     [SharedDataHandler sharedInstance].currentBar = selectedBar;
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];

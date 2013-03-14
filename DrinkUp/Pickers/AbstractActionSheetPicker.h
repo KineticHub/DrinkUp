@@ -38,6 +38,7 @@
 
     // For subclasses.
 - (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin;
+- (id)initWithTarget:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin customTopSubviews:(NSArray *)subviews;
 
     // Present the ActionSheetPicker
 - (void)showActionSheetPicker;
@@ -56,5 +57,7 @@
 
     //For subclasses. This responds to a custom button being pressed.
 - (IBAction)customButtonPressed:(id)sender;
+
+
 
 @end

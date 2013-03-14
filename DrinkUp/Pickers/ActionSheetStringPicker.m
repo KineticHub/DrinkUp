@@ -53,14 +53,19 @@
     return self;
 }
 
-+ (id)showPickerWithTitle:(NSString *)title rows:(NSArray *)data initialSelection:(NSInteger)index target:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin {
-    ActionSheetStringPicker *picker = [[[ActionSheetStringPicker alloc] initWithTitle:title rows:data initialSelection:index target:target successAction:successAction cancelAction:cancelActionOrNil origin:origin] autorelease];
++ (id)showPickerWithTitle:(NSString *)title rows:(NSArray *)data initialSelection:(NSInteger)index target:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin customTopSubviews:(NSArray *)customTopSubviews {
+    ActionSheetStringPicker *picker = [[[ActionSheetStringPicker alloc] initWithTitle:title rows:data initialSelection:index target:target successAction:successAction cancelAction:cancelActionOrNil origin:origin customTopSubviews:customTopSubviews] autorelease];
     [picker showActionSheetPicker];
     return picker;
 }
 
 - (id)initWithTitle:(NSString *)title rows:(NSArray *)data initialSelection:(NSInteger)index target:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin {
-    self = [self initWithTarget:target successAction:successAction cancelAction:cancelActionOrNil origin:origin];
+    return [self initWithTitle:title rows:data initialSelection:index target:target successAction:successAction cancelAction:cancelActionOrNil origin:origin customTopSubviews:nil];
+}
+
+- (id)initWithTitle:(NSString *)title rows:(NSArray *)data initialSelection:(NSInteger)index target:(id)target successAction:(SEL)successAction cancelAction:(SEL)cancelActionOrNil origin:(id)origin customTopSubviews:(NSArray *)customTopSubviews {
+    self = [self initWithTarget:target successAction:successAction cancelAction:cancelActionOrNil origin:origin customTopSubviews:customTopSubviews];
+    
     if (self) {
         self.data = data;
         self.selectedIndex = index;

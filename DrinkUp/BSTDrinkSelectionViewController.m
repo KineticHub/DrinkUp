@@ -82,11 +82,11 @@
 #pragma mark - TableView DataSource Methods
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
+    return [self.drinks count];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.drinks count];
+    return 1;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -97,7 +97,7 @@
 		cell = [[DrinkSelectCell alloc] initWithReuseIdentifier:@"CellIdentifier"];
 	}
     
-    NSDictionary *drink = [self.drinks objectAtIndex:[indexPath row]];
+    NSDictionary *drink = [self.drinks objectAtIndex:[indexPath section]];
     
     NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
     
@@ -114,11 +114,16 @@
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
-    self.SelectedDrinkRow = [indexPath row];
+    self.SelectedDrinkRow = [indexPath section];
     int currentQuantity = [[[self.drinks objectAtIndex:self.SelectedDrinkRow] objectForKey:@"quantity"] intValue];
     
+    UILabel *drinkType = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 45.0)];
+    [drinkType setText:@"SOME DRINK TYPE"];
+    [drinkType setBackgroundColor:[UIColor greenColor]];
+    [drinkType setTextColor:[UIColor blackColor]];
+    
     NSArray *amounts = @[@"Remove",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:currentQuantity target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath]];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:currentQuantity target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath] customTopSubviews:@[drinkType]];
 }
 
 -(void)actionPickerCancelled {
@@ -150,7 +155,7 @@
         [self.drinksOrder addObject:dicDrink];
     }
     
-    NSIndexPath *path = [NSIndexPath indexPathForRow:self.SelectedDrinkRow inSection:0];
+    NSIndexPath *path = [NSIndexPath indexPathForRow:0 inSection:self.SelectedDrinkRow];
     [self.tableView reloadRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationAutomatic];
     
     [super checkPlaceOrderBarOption];

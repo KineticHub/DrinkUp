@@ -207,6 +207,7 @@
 		9C8B782116ED68C600FB80AF /* DrinkSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B782016ED68C500FB80AF /* DrinkSelectCell.m */; };
 		9C8B782316EE315E00FB80AF /* px_by_Gre3g.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */; };
 		9C8B782516F05F9800FB80AF /* pw_maze_white_@2X.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */; };
+		9C8B782716F14F9A00FB80AF /* DrinkUp-App.com.der in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782616F14F9900FB80AF /* DrinkUp-App.com.der */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -603,6 +604,7 @@
 		9C8B782016ED68C500FB80AF /* DrinkSelectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkSelectCell.m; sourceTree = "<group>"; };
 		9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = px_by_Gre3g.png; sourceTree = "<group>"; };
 		9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pw_maze_white_@2X.png"; sourceTree = "<group>"; };
+		9C8B782616F14F9900FB80AF /* DrinkUp-App.com.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "DrinkUp-App.com.der"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -640,9 +642,6 @@
 		9C69C59016CD89F800D548F2 = {
 			isa = PBXGroup;
 			children = (
-				9C8B77C216EB2A2300FB80AF /* SystemConfiguration.framework */,
-				9C8B77BE16EB29F300FB80AF /* libxml2.2.dylib */,
-				9C8B77BF16EB29FC00FB80AF /* libxml2.dylib */,
 				9C69C5A216CD89F800D548F2 /* DrinkUp */,
 				9C69C59B16CD89F800D548F2 /* Frameworks */,
 				9C69C59A16CD89F800D548F2 /* Products */,
@@ -660,6 +659,9 @@
 		9C69C59B16CD89F800D548F2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B77C216EB2A2300FB80AF /* SystemConfiguration.framework */,
+				9C8B77BE16EB29F300FB80AF /* libxml2.2.dylib */,
+				9C8B77BF16EB29FC00FB80AF /* libxml2.dylib */,
 				9C8B711916E7088500FB80AF /* Security.framework */,
 				9C8B711716E7087600FB80AF /* QuartzCore.framework */,
 				9C8B711516E7086800FB80AF /* OpenGLES.framework */,
@@ -698,6 +700,7 @@
 		9C69C5A316CD89F800D548F2 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9C8B782616F14F9900FB80AF /* DrinkUp-App.com.der */,
 				9C69C5A416CD89F800D548F2 /* DrinkUp-Info.plist */,
 				9C69C5A516CD89F800D548F2 /* InfoPlist.strings */,
 				9C69C5A816CD89F800D548F2 /* main.m */,
@@ -853,6 +856,7 @@
 		9C69C64C16CFF5C600D548F2 /* Imported */ = {
 			isa = PBXGroup;
 			children = (
+				9C69C65D16D01F1000D548F2 /* ActionSheetPicker */,
 				9C8B714316EB28AD00FB80AF /* anet_ios_sdk-1.1.1 */,
 				9C8B710416E706B400FB80AF /* CardIO */,
 				9C8B6F5916DD8F5E00FB80AF /* Facebook iOS SDK */,
@@ -866,7 +870,6 @@
 			isa = PBXGroup;
 			children = (
 				9C8B712816E80E6300FB80AF /* TableView */,
-				9C69C65D16D01F1000D548F2 /* ActionSheetPicker */,
 				9C69C5D816CFD58700D548F2 /* Data Handler */,
 				9C69C65016CFFA1900D548F2 /* Images */,
 				9C69C64C16CFF5C600D548F2 /* Imported */,
@@ -1460,6 +1463,7 @@
 				9C8B77B616EB28D700FB80AF /* UnitTests-Info.plist in Resources */,
 				9C8B782316EE315E00FB80AF /* px_by_Gre3g.png in Resources */,
 				9C8B782516F05F9800FB80AF /* pw_maze_white_@2X.png in Resources */,
+				9C8B782716F14F9A00FB80AF /* DrinkUp-App.com.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

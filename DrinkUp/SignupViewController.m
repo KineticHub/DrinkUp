@@ -7,11 +7,13 @@
 //
 
 #import "SignupViewController.h"
+#import "SharedDataHandler.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
 
 @interface SignupViewController ()
 @property (nonatomic, strong) UITextField *emailField;
+@property (nonatomic, strong) UITextField *userNameField;
 @property (nonatomic, strong) UITextField *firstNameField;
 @property (nonatomic, strong) UITextField *lastNameField;
 @property (nonatomic, strong) UITextField *passwordField;
@@ -40,15 +42,20 @@
     [self.view addSubview:self.emailField];
     y += self.emailField.frame.size.height + spacer;
     
+    self.userNameField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [self.userNameField setPlaceholder:@"Username"];
+    [self.view addSubview:self.userNameField];
+    y += self.userNameField.frame.size.height + spacer;
+    
     self.firstNameField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [self.firstNameField setPlaceholder:@"First Name"];
-    [self.view addSubview:self.firstNameField];
-    y += self.firstNameField.frame.size.height + spacer;
+//    [self.view addSubview:self.firstNameField];
+//    y += self.firstNameField.frame.size.height + spacer;
     
     self.lastNameField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [self.lastNameField setPlaceholder:@"Last Name"];
-    [self.view addSubview:self.lastNameField];
-    y += self.lastNameField.frame.size.height + spacer;
+//    [self.view addSubview:self.lastNameField];
+//    y += self.lastNameField.frame.size.height + spacer;
     
     self.passwordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [self.passwordField setPlaceholder:@"Password"];
@@ -69,32 +76,33 @@
 
 -(void)signupOnServer {
     
-    NSArray *paramObjects = @[self.emailField.text, self.firstNameField.text, self.lastNameField.text, self.passwordField.text];
-    NSArray *paramKeys = @[@"email", @"first_name", @"last_name", @"password"];
+    NSArray *paramObjects = @[self.emailField.text, self.userNameField.text, self.passwordField.text];
+    NSArray *paramKeys = @[@"email", @"username", @"password"];
     
-    NSDictionary *params = [[NSDictionary alloc] initWithObjects:paramObjects forKeys:paramKeys];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjects:paramObjects forKeys:paramKeys];
+    [[SharedDataHandler sharedInstance] userCreateOnServer:params];
     
-    NSString *requestPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/facebook_login/mobile/";
-    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
-    
-    NSMutableURLRequest *request2 = [client requestWithMethod:@"GET" path:@"" parameters:params];
-    [ request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
-    
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-        
-        NSLog(@"response string: %@ ", operation.responseString);
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        NSLog(@"error: %@", operation.responseString);
-        
-    }];
+//    NSString *requestPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/facebook_login/mobile/";
+//    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//    
+//    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+//    
+//    NSMutableURLRequest *request2 = [client requestWithMethod:@"GET" path:@"" parameters:params];
+//    [ request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+//    
+//    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+//    
+//    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+//        
+//        NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+//        
+//        NSLog(@"response string: %@ ", operation.responseString);
+//        
+//    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+//        
+//        NSLog(@"error: %@", operation.responseString);
+//        
+//    }];
 }
 
 @end
