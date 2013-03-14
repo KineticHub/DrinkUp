@@ -84,7 +84,7 @@
         self.cancelAction = cancelActionOrNil;
         self.presentFromRect = CGRectZero;
         
-        self.customTopView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -220.0, 320.0, 210.0)];
+        self.customTopView = [[UIView alloc] initWithFrame:CGRectMake(0.0, -220.0, self.viewSize.width, 210.0)];
         if ([subviews isKindOfClass:[NSArray class]]) {
             for (UIView *subview in subviews) {
                 [self.customTopView addSubview: subview];
