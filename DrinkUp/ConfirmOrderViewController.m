@@ -248,6 +248,7 @@
 }
 
 -(void)placeOrder {
+    [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
     ThanksViewController *thanksVC = [[ThanksViewController alloc] init];
     [self.navigationController pushViewController:thanksVC animated:YES];
 }

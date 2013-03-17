@@ -5,6 +5,7 @@
 //  Created by Kinetic on 3/5/13.
 //  Copyright (c) 2013 Kinetic. All rights reserved.
 //
+//  card.io api key = ae8c82d62dc5477e9623e85e82715a1a
 
 #import "PaymentProfilesViewController.h"
 

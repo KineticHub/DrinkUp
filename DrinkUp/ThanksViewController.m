@@ -7,6 +7,7 @@
 //
 
 #import "ThanksViewController.h"
+#import "BSTDrinkTypeViewController.h"
 
 @interface ThanksViewController ()
 @property (nonatomic, strong) UILabel *claimLabel;
@@ -17,6 +18,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Drinks Claimed!" style:UIBarButtonItemStyleDone target:self action:@selector(drinkOrderCompleteExit)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
     CGFloat yPosition = 20.0;
     CGFloat edgeInset = 10.0;
@@ -50,6 +54,15 @@
 
 -(void)orderReadyUpdate {
     [self.claimLabel setTextColor:[UIColor greenColor]];
+}
+
+-(void)drinkOrderCompleteExit {
+    for (UIViewController *controller in self.navigationController.viewControllers) {
+        if ([controller isKindOfClass:[BSTDrinkTypeViewController class]]) {
+            [self.navigationController popToViewController:controller animated:YES];
+            break;
+        }
+    }
 }
 
 @end

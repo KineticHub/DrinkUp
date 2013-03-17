@@ -18,7 +18,7 @@
 @implementation BSTDrinkTypeViewController
 
 -(id)initWithBarSection:(int)section_id {
-    self = [super initWithUpperViewHieght:180.0];
+    self = [super initWithUpperViewHieght:150.0];
     if (self) {
         self.section_id = section_id;
     }
@@ -57,7 +57,7 @@
     [barNameTitle setBackgroundColor:[UIColor clearColor]];
     [barNameTitleBar addSubview:barNameTitle];
     
-    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 220.0, 140.0)];
+    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 120.0)];
     [logoImageView setCenter:CGPointMake(self.upperView.center.x, self.upperView.center.y + 0.0)];
     [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
     [self.upperView addSubview:logoImageView];
@@ -122,7 +122,7 @@
     
     [super tableView:tableView didSelectRowAtIndexPath:indexPath];
     
-    NSDictionary *selectedType = [self.drinkTypes objectAtIndex:[indexPath row]];
+    NSDictionary *selectedType = [self.drinkTypes objectAtIndex:[indexPath section]];
     BSTDrinkSelectionViewController *dsvc = [[BSTDrinkSelectionViewController alloc] initWithDrinkType:[[selectedType objectForKey:@"id"] intValue] typeName:[selectedType objectForKey:@"name"]];
     [self.navigationController pushViewController:dsvc animated:YES];
 }

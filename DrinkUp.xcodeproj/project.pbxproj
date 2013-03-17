@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3D16F280EE002796B2 /* Icon_57x57.png */; };
+		9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3E16F280EE002796B2 /* Icon_114x114.png */; };
 		9C69C59D16CD89F800D548F2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C59C16CD89F800D548F2 /* UIKit.framework */; };
 		9C69C59F16CD89F800D548F2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C59E16CD89F800D548F2 /* Foundation.framework */; };
 		9C69C5A116CD89F800D548F2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C5A016CD89F800D548F2 /* CoreGraphics.framework */; };
@@ -227,6 +229,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9C225E3D16F280EE002796B2 /* Icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57x57.png; sourceTree = "<group>"; };
+		9C225E3E16F280EE002796B2 /* Icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114x114.png; sourceTree = "<group>"; };
 		9C69C59916CD89F800D548F2 /* DrinkUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C69C59C16CD89F800D548F2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9C69C59E16CD89F800D548F2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -879,6 +883,8 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C225E3D16F280EE002796B2 /* Icon_57x57.png */,
+				9C225E3E16F280EE002796B2 /* Icon_114x114.png */,
 				9C8B782416F05F9700FB80AF /* pw_maze_white_@2X.png */,
 				9C8B782216EE315E00FB80AF /* px_by_Gre3g.png */,
 				9C8B712316E808A700FB80AF /* main_background.jpg */,
@@ -1460,6 +1466,8 @@
 				9C8B782316EE315E00FB80AF /* px_by_Gre3g.png in Resources */,
 				9C8B782516F05F9800FB80AF /* pw_maze_white_@2X.png in Resources */,
 				9C8B782716F14F9A00FB80AF /* DrinkUp-App.com.der in Resources */,
+				9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */,
+				9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
