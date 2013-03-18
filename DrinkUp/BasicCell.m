@@ -23,7 +23,7 @@
     {
         self.count = 0;
         
-        [self setBackgroundColor:[UIColor greenColor]];
+        [self setBackgroundColor:[UIColor clearColor]];
         [self setAccessoryType:UITableViewCellAccessoryDisclosureIndicator];
         
 //        UIImage *cellBackgroundImage = [[UIImage imageNamed:@"pw_maze_white_@2X.png"] stretchableImageWithLeftCapWidth:0.0 topCapHeight:0.0];
@@ -31,36 +31,47 @@
 //        UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] initWithImage:cellBackgroundImage];
         UIImageView *cellBackgroundViewImageView = [[UIImageView alloc] init];
         [cellBackgroundViewImageView setFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
-        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
-        [cellBackgroundViewImageView.layer setBorderColor:[[UIColor blackColor] CGColor]];
-        [cellBackgroundViewImageView.layer setBorderWidth:2.0];
+//        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
+        [cellBackgroundViewImageView.layer setBorderColor:[[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0] CGColor]];
+        [cellBackgroundViewImageView.layer setBorderWidth:1.0];
+        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:0.5]];
         [self setBackgroundView:cellBackgroundViewImageView];
-        [self setBackgroundColor:[UIColor clearColor]];
+//        [self setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:1.0]];
         
         [self.textLabel setHighlightedTextColor:[UIColor blackColor]];
         [self.textLabel setBackgroundColor:[UIColor clearColor]];
-        [self.textLabel setTextColor:[UIColor blackColor]];
+//        [self.textLabel setTextColor:[UIColor whiteColor]];
+//        [self.textLabel setTextColor:[UIColor colorWithRed:(220/255.0) green:(220/255.0) blue:(220/255.0) alpha:1.0]]; // good with black
+//        [self.textLabel setTextColor:[UIColor colorWithRed:(181/255.0) green:(163/255.0) blue:(28/255.0) alpha:1.0]];
 //        [self.textLabel setTextColor:[UIColor colorWithRed:(227/255.0) green:(204/255.0) blue:(35/255.0) alpha:1.0]];
+//        [self.textLabel setTextColor:[UIColor colorWithRed:(205/255.0) green:(205/255.0) blue:(205/255.0) alpha:1.0]];
+//        [self.textLabel setTextColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(54/255.0) alpha:1.0]]; // good with black
+        [self.textLabel setTextColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
         [self.textLabel setFont:DEFAULT_CELL_TITLE_FONT];
         [self.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self.textLabel setNumberOfLines:0];
         
         [self.detailTextLabel setHighlightedTextColor:[UIColor blackColor]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
-        [self.detailTextLabel setTextColor:[UIColor blackColor]];
+        [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
         [self.detailTextLabel setFont:DEFAULT_CELL_DESCRIPTION_FONT];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [self.detailTextLabel setNumberOfLines:2];
-        [self.detailTextLabel setAlpha:0.75];
+        [self.detailTextLabel setNumberOfLines:3];
+        [self.detailTextLabel setAlpha:0.9];
         
-        self.cellImageBox = [[UIView alloc] initWithFrame:CGRectMake(self.contentView.frame.origin.x, 0.0, self.frame.size.height, self.frame.size.height)];
+        self.cellImageBox = [[UIView alloc] initWithFrame:CGRectMake(self.contentView.frame.origin.x + 10.0, 20.0, self.frame.size.height + 20.0, self.frame.size.height - 30.0)];
         [self.cellImageBox setBackgroundColor:[UIColor whiteColor]];
-        [self.cellImageBox.layer setBorderColor:[[UIColor blackColor] CGColor]];
-        [self.cellImageBox.layer setBorderWidth:2.0];
+//        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(181/255.0) green:(163/255.0) blue:(28/255.0) alpha:1.0] CGColor]];
+//        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(205/255.0) green:(205/255.0) blue:(205/255.0) alpha:1.0] CGColor]];
+        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0] CGColor]];
+        [self.cellImageBox.layer setBorderWidth:3.0];
+        [self.cellImageBox.layer setCornerRadius:20.0];
+        [self.cellImageBox.layer setMasksToBounds:YES];
+//        [self.cellImageBox setAlpha:0.8];
         [self addSubview:self.cellImageBox];
         
         self.cellImageView = [[UIImageView alloc] init];
-        self.cellImageView.frame = CGRectMake(self.contentView.frame.origin.x, 0.0, self.cellImageBox.frame.size.height, self.cellImageBox.frame.size.height);
+        self.cellImageView.frame = CGRectMake(0.0, 0.0, 0.0, 0.0);
         [self.cellImageBox addSubview: self.cellImageView];
         
         UIView *highlightedBackgroundView = [[UIView alloc] init];
@@ -71,7 +82,7 @@
         
 //        self.seperatorLine = [[UIView alloc] init];
 //        [self.seperatorLine setBackgroundColor:[UIColor colorWithRed:(196/255.0) green:(196/255.0) blue:(196/255.0) alpha:1.0]];
-//        [self.seperatorLine setBackgroundColor:[UIColor colorWithRed:(227/255.0) green:(204/255.0) blue:(35/255.0) alpha:1.0]];
+//        [self.seperatorLine setBackgroundColor:[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0]];
 //        [self.seperatorLine setBackgroundColor:[UIColor whiteColor]];
 //        [self addSubview:self.seperatorLine];
         
@@ -85,16 +96,19 @@
     
     [super layoutSubviews];
     
-    CGFloat spacer = 10.0;
-    [self.cellImageBox setFrame:CGRectMake(self.contentView.frame.origin.x, 0.0, self.frame.size.height, self.frame.size.height)];
+    CGFloat spacer = 15.0;
+//    [self.cellImageBox setFrame:CGRectMake(self.contentView.frame.origin.x + 10.0, 15.0, self.frame.size.height - 5.0, self.frame.size.height - 30.0)];
+    [self.cellImageBox setFrame:CGRectMake(self.contentView.frame.origin.x + 10.0, 10.0, self.frame.size.height - 30.0, self.frame.size.height - 30.0)];
+    [self.cellImageView setFrame:CGRectMake(0.0, 0.0, self.cellImageBox.frame.size.width - 10.0, self.cellImageBox.frame.size.height - 10.0)];
     self.cellImageView.center = CGPointMake(self.cellImageBox.frame.size.width/2, self.cellImageBox.frame.size.height/2);
-//    [self.seperatorLine setFrame:CGRectMake(0.0, self.frame.size.height, self.frame.size.width, 1.0)];
+//    [self.seperatorLine setFrame:CGRectMake(0.0, -1.0, self.frame.size.width, 1.0)];
     
     if (!self.cellImageView.image) {
         [self.cellImageView setHidden:YES];
         
         CGRect textLabelRect = self.textLabel.frame;
         textLabelRect.origin.x = spacer;
+        textLabelRect.origin.y = self.cellImageBox.frame.origin.y;
         [self.textLabel setFrame:textLabelRect];
         
     } else {
@@ -102,7 +116,12 @@
         
         CGRect textLabelRect = self.textLabel.frame;
         textLabelRect.origin.x = CGRectGetMaxX(self.cellImageBox.frame) + spacer;
+        textLabelRect.origin.y = self.cellImageBox.frame.origin.y;
         [self.textLabel setFrame:textLabelRect];
+        
+        CGRect detailLabelRect = self.detailTextLabel.frame;
+        detailLabelRect.origin.x = textLabelRect.origin.x;
+        [self.detailTextLabel setFrame:detailLabelRect];
     }
 }
 

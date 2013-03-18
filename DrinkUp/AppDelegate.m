@@ -16,10 +16,17 @@
 #import "UserLoginViewController.h"
 #import "SignupViewController.h"
 #import "MainSettingsViewController.h"
-
 #import "SharedDataHandler.h"
+#import "NearbyBarsMapViewController.h"
+
+#import "REMenu.h"
+#import "PKRevealController.h"
 
 @interface AppDelegate ()
+@property (nonatomic, strong) REMenu *menu;
+@property (nonatomic, strong) PKRevealController *revealController;
+@property (nonatomic, strong) UIBarButtonItem *settingsButton;
+@property (nonatomic, strong) UIBarButtonItem *mapButton;
 @property (nonatomic, strong) UINavigationController *rootNavigationController;
 @end
 
@@ -47,7 +54,7 @@
     [tbvc addChildViewController:fbvc];
     
 //    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
-    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:nbvc];
+//    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:nbvc];
 
     NSMutableArray *navItemsArray = [[NSMutableArray alloc] init];
     UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
@@ -56,28 +63,53 @@
                                   target:self action:@selector(viewHistoryController:)];
     [navItemsArray addObject:historyButton];
     
+    self.mapButton = [[UIBarButtonItem alloc]
+                                      initWithTitle:@"Map"
+                                      style:UIBarButtonItemStylePlain
+                                      target:self action:@selector(showMap)];
+    
     // Instantiate a New button to invoke the addTask: method when tapped.
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc]
+    self.settingsButton = [[UIBarButtonItem alloc]
                                       initWithTitle:@"Settings"
                                       style:UIBarButtonItemStylePlain
-                                      target:self action:@selector(viewSettingsController:)];
-    [navItemsArray addObject:settingsButton];
+                                      target:self action:@selector(showMenu)];
+//    [navItemsArray addObject:settingsButton];
     
     // Set up the Add custom button on the right of the navigation bar
     tbvc.navigationItem.rightBarButtonItems = navItemsArray;
     nbvc.navigationItem.rightBarButtonItems = navItemsArray;
     
+//    nbvc.navigationItem.leftBarButtonItem = settingsButton;
+    
+//////////////////////
+    MainSettingsViewController *msvc = [[MainSettingsViewController alloc] init];
+    NearbyBarsMapViewController *nbmvc = [[NearbyBarsMapViewController alloc] init];
+    self.revealController = [PKRevealController revealControllerWithFrontViewController:nbvc leftViewController:msvc rightViewController:nbmvc options:nil];
+    self.revealController.navigationItem.leftBarButtonItem = self.settingsButton;
+    self.revealController.navigationItem.rightBarButtonItem = self.mapButton;
+//////////////////////
+    
+    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:self.revealController];
+    
 //    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_background.jpg"]];
     UIView *background = [[UIView alloc] init];
+    
+//    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X"]]];
     [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(0/255.0) alpha:1.0]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [self.rootNavigationController.view addSubview:background];
     [self.rootNavigationController.view sendSubviewToBack:background];
+    [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
+    
+    [self.revealController.view addSubview:background];
+    [self.revealController.view sendSubviewToBack:background];
+    [self.revealController.navigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
+//    [self.window setRootViewController:revealController];
     self.window.backgroundColor = [UIColor clearColor];
     [self.window makeKeyAndVisible];
     return YES;
@@ -127,5 +159,28 @@
     
     MainSettingsViewController *msvc = [[MainSettingsViewController alloc] init];
     [self.rootNavigationController pushViewController:msvc animated:YES];
+}
+
+- (void)showMenu
+{
+    if (self.revealController.focusedController == self.revealController.leftViewController)
+    {
+        [self.revealController showViewController:self.revealController.frontViewController];
+    }
+    else
+    {
+        [self.revealController showViewController:self.revealController.leftViewController];
+    }
+}
+
+-(void)showMap {
+    if (self.revealController.focusedController == self.revealController.rightViewController)
+    {
+        [self.revealController showViewController:self.revealController.frontViewController];
+    }
+    else
+    {
+        [self.revealController showViewController:self.revealController.rightViewController];
+    }
 }
 @end

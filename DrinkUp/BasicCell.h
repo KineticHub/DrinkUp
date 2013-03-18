@@ -10,7 +10,7 @@
 #import <QuartzCore/QuartzCore.h>
 
 #define DEFAULT_CELL_TITLE_FONT [UIFont boldSystemFontOfSize:20.0]
-#define DEFAULT_CELL_DESCRIPTION_FONT [UIFont boldSystemFontOfSize:16.0]
+#define DEFAULT_CELL_DESCRIPTION_FONT [UIFont boldSystemFontOfSize:12.0]
 
 @interface BasicCell : UITableViewCell
 

@@ -18,6 +18,7 @@
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) User *currentUser;
 @property (nonatomic, strong) Facebook *facebook;
+@property bool isUserAuthenticated;
 @end
 
 @implementation SharedDataHandler
@@ -31,6 +32,7 @@ static id _instance;
         self = [super init];
         _instance = self;
         _queue = [[NSOperationQueue alloc] init];
+        _isUserAuthenticated = NO;
         
         [self setupSharedVariables];
     }
@@ -222,6 +224,7 @@ static id _instance;
             [self userIsUthenticated];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@", operation.responseString);
+            [self userIsUthenticated];
         }];
         
         [self.queue addOperation:operation];
@@ -293,6 +296,14 @@ static id _instance;
 -(void)userIsUthenticated {
     NSString *authPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/user/authenticated/"];
     [self JSONWithPath:authPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+        if (!error) {
+            self.isUserAuthenticated = YES;
+            NSLog(@"no error!");
+        }
+        else {
+            self.isUserAuthenticated = NO;
+            NSLog(@"error returned");
+        }
         NSLog(@"Check User Authenticated: %@", JSON);
     }];
 }

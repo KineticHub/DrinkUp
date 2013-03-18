@@ -24,8 +24,8 @@
 {
     [super viewDidLoad];
     
-    self.settings = [NSMutableArray arrayWithArray:@[@"Login to DrinkUp", @"Payment", @"Photo", @"About DrinkUp"]];
-    self.settingsDetails = [NSMutableArray arrayWithArray:@[@"Login using Facebook or Username", @"Add or remove credit cards", @"Help the bartender recognize you!", @""]];
+    self.settings = [NSMutableArray arrayWithArray:@[@"DrinkUp Profile", @"Payment", @"Photo", @"About DrinkUp"]];
+    self.settingsDetails = [NSMutableArray arrayWithArray:@[@"", @"Manage your credit card options", @"Help the bartender recognize you!", @""]];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height) style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
@@ -73,8 +73,8 @@
         }
         case 1:
         {
-            TestPaymentViewController *ppvc = [[TestPaymentViewController alloc] init];
-//            PaymentProfilesViewController *ppvc = [[PaymentProfilesViewController alloc] init];
+//            TestPaymentViewController *ppvc = [[TestPaymentViewController alloc] init];0
+            PaymentProfilesViewController *ppvc = [[PaymentProfilesViewController alloc] init];
             [self.navigationController pushViewController:ppvc animated:YES];
             break;
         }

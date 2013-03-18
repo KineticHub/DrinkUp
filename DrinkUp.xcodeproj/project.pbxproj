@@ -9,6 +9,14 @@
 /* Begin PBXBuildFile section */
 		9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3D16F280EE002796B2 /* Icon_57x57.png */; };
 		9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3E16F280EE002796B2 /* Icon_114x114.png */; };
+		9C225E4A16F5CFC8002796B2 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4316F5CFC8002796B2 /* REMenu.m */; };
+		9C225E4B16F5CFC8002796B2 /* REMenuContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4516F5CFC8002796B2 /* REMenuContainerView.m */; };
+		9C225E4C16F5CFC8002796B2 /* REMenuItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4716F5CFC8002796B2 /* REMenuItem.m */; };
+		9C225E4D16F5CFC8002796B2 /* REMenuItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4916F5CFC8002796B2 /* REMenuItemView.m */; };
+		9C225E5516F5DB40002796B2 /* PKRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E5016F5DB40002796B2 /* PKRevealController.m */; };
+		9C225E5616F5DB40002796B2 /* PKRevealControllerContainerView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E5216F5DB40002796B2 /* PKRevealControllerContainerView.m */; };
+		9C225E5716F5DB40002796B2 /* UIViewController+PKRevealController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E5416F5DB40002796B2 /* UIViewController+PKRevealController.m */; };
+		9C225E5A16F5E616002796B2 /* NearbyBarsMapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E5916F5E616002796B2 /* NearbyBarsMapViewController.m */; };
 		9C69C59D16CD89F800D548F2 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C59C16CD89F800D548F2 /* UIKit.framework */; };
 		9C69C59F16CD89F800D548F2 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C59E16CD89F800D548F2 /* Foundation.framework */; };
 		9C69C5A116CD89F800D548F2 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C69C5A016CD89F800D548F2 /* CoreGraphics.framework */; };
@@ -231,6 +239,22 @@
 /* Begin PBXFileReference section */
 		9C225E3D16F280EE002796B2 /* Icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57x57.png; sourceTree = "<group>"; };
 		9C225E3E16F280EE002796B2 /* Icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114x114.png; sourceTree = "<group>"; };
+		9C225E4216F5CFC8002796B2 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
+		9C225E4316F5CFC8002796B2 /* REMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenu.m; sourceTree = "<group>"; };
+		9C225E4416F5CFC8002796B2 /* REMenuContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuContainerView.h; sourceTree = "<group>"; };
+		9C225E4516F5CFC8002796B2 /* REMenuContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuContainerView.m; sourceTree = "<group>"; };
+		9C225E4616F5CFC8002796B2 /* REMenuItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItem.h; sourceTree = "<group>"; };
+		9C225E4716F5CFC8002796B2 /* REMenuItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItem.m; sourceTree = "<group>"; };
+		9C225E4816F5CFC8002796B2 /* REMenuItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenuItemView.h; sourceTree = "<group>"; };
+		9C225E4916F5CFC8002796B2 /* REMenuItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = REMenuItemView.m; sourceTree = "<group>"; };
+		9C225E4F16F5DB40002796B2 /* PKRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKRevealController.h; sourceTree = "<group>"; };
+		9C225E5016F5DB40002796B2 /* PKRevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKRevealController.m; sourceTree = "<group>"; };
+		9C225E5116F5DB40002796B2 /* PKRevealControllerContainerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PKRevealControllerContainerView.h; sourceTree = "<group>"; };
+		9C225E5216F5DB40002796B2 /* PKRevealControllerContainerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PKRevealControllerContainerView.m; sourceTree = "<group>"; };
+		9C225E5316F5DB40002796B2 /* UIViewController+PKRevealController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+PKRevealController.h"; sourceTree = "<group>"; };
+		9C225E5416F5DB40002796B2 /* UIViewController+PKRevealController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+PKRevealController.m"; sourceTree = "<group>"; };
+		9C225E5816F5E616002796B2 /* NearbyBarsMapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NearbyBarsMapViewController.h; sourceTree = "<group>"; };
+		9C225E5916F5E616002796B2 /* NearbyBarsMapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NearbyBarsMapViewController.m; sourceTree = "<group>"; };
 		9C69C59916CD89F800D548F2 /* DrinkUp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DrinkUp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C69C59C16CD89F800D548F2 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9C69C59E16CD89F800D548F2 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -641,6 +665,35 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9C225E4116F5CFC7002796B2 /* REMenu */ = {
+			isa = PBXGroup;
+			children = (
+				9C225E4216F5CFC8002796B2 /* REMenu.h */,
+				9C225E4316F5CFC8002796B2 /* REMenu.m */,
+				9C225E4416F5CFC8002796B2 /* REMenuContainerView.h */,
+				9C225E4516F5CFC8002796B2 /* REMenuContainerView.m */,
+				9C225E4616F5CFC8002796B2 /* REMenuItem.h */,
+				9C225E4716F5CFC8002796B2 /* REMenuItem.m */,
+				9C225E4816F5CFC8002796B2 /* REMenuItemView.h */,
+				9C225E4916F5CFC8002796B2 /* REMenuItemView.m */,
+			);
+			path = REMenu;
+			sourceTree = "<group>";
+		};
+		9C225E4E16F5DB40002796B2 /* PKRevealController */ = {
+			isa = PBXGroup;
+			children = (
+				9C225E4F16F5DB40002796B2 /* PKRevealController.h */,
+				9C225E5016F5DB40002796B2 /* PKRevealController.m */,
+				9C225E5116F5DB40002796B2 /* PKRevealControllerContainerView.h */,
+				9C225E5216F5DB40002796B2 /* PKRevealControllerContainerView.m */,
+				9C225E5316F5DB40002796B2 /* UIViewController+PKRevealController.h */,
+				9C225E5416F5DB40002796B2 /* UIViewController+PKRevealController.m */,
+			);
+			name = PKRevealController;
+			path = Controller;
+			sourceTree = "<group>";
+		};
 		9C69C59016CD89F800D548F2 = {
 			isa = PBXGroup;
 			children = (
@@ -798,6 +851,8 @@
 			children = (
 				9C8B713216E910DE00FB80AF /* BSTNearbyBarsViewController.h */,
 				9C8B713316E910DF00FB80AF /* BSTNearbyBarsViewController.m */,
+				9C225E5816F5E616002796B2 /* NearbyBarsMapViewController.h */,
+				9C225E5916F5E616002796B2 /* NearbyBarsMapViewController.m */,
 			);
 			name = "Nearby Bars";
 			sourceTree = "<group>";
@@ -858,6 +913,8 @@
 		9C69C64C16CFF5C600D548F2 /* Imported */ = {
 			isa = PBXGroup;
 			children = (
+				9C225E4E16F5DB40002796B2 /* PKRevealController */,
+				9C225E4116F5CFC7002796B2 /* REMenu */,
 				9C69C65D16D01F1000D548F2 /* ActionSheetPicker */,
 				9C8B714316EB28AD00FB80AF /* anet_ios_sdk-1.1.1 */,
 				9C8B710416E706B400FB80AF /* CardIO */,
@@ -1627,6 +1684,14 @@
 				9C8B77B716EB28D700FB80AF /* UserField.m in Sources */,
 				9C8B77C616EB2AC100FB80AF /* TestPaymentViewController.m in Sources */,
 				9C8B782116ED68C600FB80AF /* DrinkSelectCell.m in Sources */,
+				9C225E4A16F5CFC8002796B2 /* REMenu.m in Sources */,
+				9C225E4B16F5CFC8002796B2 /* REMenuContainerView.m in Sources */,
+				9C225E4C16F5CFC8002796B2 /* REMenuItem.m in Sources */,
+				9C225E4D16F5CFC8002796B2 /* REMenuItemView.m in Sources */,
+				9C225E5516F5DB40002796B2 /* PKRevealController.m in Sources */,
+				9C225E5616F5DB40002796B2 /* PKRevealControllerContainerView.m in Sources */,
+				9C225E5716F5DB40002796B2 /* UIViewController+PKRevealController.m in Sources */,
+				9C225E5A16F5E616002796B2 /* NearbyBarsMapViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

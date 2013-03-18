@@ -21,7 +21,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor clearColor];
     
     [[SharedDataHandler sharedInstance] initializeFacebook];
 //    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];

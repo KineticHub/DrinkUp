@@ -16,6 +16,11 @@
 
 @implementation BSTNearbyBarsViewController
 
+-(id)init {
+    self = [super initWithUpperViewHieght:0.0];
+    return self;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -47,6 +52,31 @@
 
 #pragma mark - TableView DataSource Methods
 
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (section == 0) {
+        return 25.0;
+    }
+    
+    return 0.0;
+}
+
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    UIView *nearbyView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 25.0)];
+    [nearbyView setBackgroundColor:[UIColor darkGrayColor]];
+    [nearbyView setAlpha:0.8];
+    
+    UILabel *nearbyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 15.0)];
+    [nearbyLabel setCenter:CGPointMake(nearbyLabel.center.x, nearbyView.center.y)];
+    [nearbyLabel setFont:[UIFont systemFontOfSize:14.0]];
+    [nearbyLabel setBackgroundColor:[UIColor clearColor]];
+    [nearbyLabel setTextAlignment:NSTextAlignmentCenter];
+    [nearbyLabel setTextColor:[UIColor lightGrayColor]];
+    [nearbyLabel setText:@"bars near Blacksburg, VA"];
+    [nearbyView addSubview:nearbyLabel];
+    
+    return nearbyView;
+}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return [self.bars count];
 }
@@ -61,6 +91,7 @@
     
     NSDictionary *bar = [self.bars objectAtIndex:[indexPath section]];
     cell.textLabel.text = [bar objectForKey:@"name"];
+    cell.detailTextLabel.text = @" $:  Mon - Thurs, 4pm - 5pm\n@:  111 South Main St.";
     [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
     
     return cell;
