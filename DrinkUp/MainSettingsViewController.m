@@ -23,6 +23,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.navigationController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
+    [self.view setBackgroundColor:[UIColor colorWithRed:(34/255.0) green:(34/255.0) blue:(34/255.0) alpha:1.0]];
     
     self.settings = [NSMutableArray arrayWithArray:@[@"DrinkUp Profile", @"Payment", @"Photo", @"About DrinkUp"]];
     self.settingsDetails = [NSMutableArray arrayWithArray:@[@"", @"Manage your credit card options", @"Help the bartender recognize you!", @""]];
@@ -31,6 +33,7 @@
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
     [self.tableView setBackgroundView:nil];
+    [self.tableView setBackgroundColor:[UIColor clearColor]];
     [self.tableView setRowHeight:70.0];
     [self.view addSubview:self.tableView];
 }
@@ -52,6 +55,8 @@
 	if (cell == nil) {
 		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"CellIdentifier"];
         cell.detailTextLabel.numberOfLines = 0;
+        [cell.textLabel setTextColor:[UIColor whiteColor]];
+        [cell.detailTextLabel setTextColor:[UIColor lightGrayColor]];
 	}
     
     cell.textLabel.text = [self.settings objectAtIndex:[indexPath row]];

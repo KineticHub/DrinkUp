@@ -83,7 +83,10 @@
     
 //////////////////////
     MainSettingsViewController *msvc = [[MainSettingsViewController alloc] init];
+//    [msvc.view setBackgroundColor:[UIColor clearColor]];
     NearbyBarsMapViewController *nbmvc = [[NearbyBarsMapViewController alloc] init];
+//    [nbmvc.view setBackgroundColor:[UIColor clearColor]];
+//    [nbmvc.view setBackgroundColor:[UIColor clearColor]];
     self.revealController = [PKRevealController revealControllerWithFrontViewController:nbvc leftViewController:msvc rightViewController:nbmvc options:nil];
     self.revealController.navigationItem.leftBarButtonItem = self.settingsButton;
     self.revealController.navigationItem.rightBarButtonItem = self.mapButton;
@@ -99,8 +102,8 @@
 //    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(0/255.0) alpha:1.0]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-    [self.rootNavigationController.view addSubview:background];
-    [self.rootNavigationController.view sendSubviewToBack:background];
+//    [self.rootNavigationController.view addSubview:background];
+//    [self.rootNavigationController.view sendSubviewToBack:background];
     [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     [self.revealController.view addSubview:background];

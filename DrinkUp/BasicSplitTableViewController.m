@@ -59,17 +59,21 @@ static bool isShowingBottomBar = NO;
 //    [self.view addSubview:shadowUpperView];
     [self.view addSubview:self.upperView];
     
+    UIView *background = [[UIView alloc] init];
+    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
+    background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
+    
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStylePlain];
 //    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
     [self.tableView setDataSource:self];
-    [self.tableView setBackgroundView:nil];
+    [self.tableView setBackgroundView:background];
     [self.tableView setBackgroundColor:[UIColor clearColor]];
-    [self.tableView setOpaque:NO];
+//    [self.tableView setOpaque:NO];
     [self.tableView setRowHeight:100.0];
-    [self.tableView setSeparatorColor:[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0]];
+//    [self.tableView setSeparatorColor:[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0]];
 //    [self.tableView setSeparatorColor:[UIColor colorWithRed:(181/255.0) green:(163/255.0) blue:(28/255.0) alpha:1.0]];
-//    [self.tableView setSeparatorColor:[UIColor whiteColor]];
+    [self.tableView setSeparatorColor:[UIColor darkGrayColor]];
     self.tableView.sectionHeaderHeight = 0.0;
     self.tableView.sectionFooterHeight = 0.0;
     [self.view addSubview:self.tableView];

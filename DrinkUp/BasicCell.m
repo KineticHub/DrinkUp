@@ -34,7 +34,8 @@
 //        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
         [cellBackgroundViewImageView.layer setBorderColor:[[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0] CGColor]];
         [cellBackgroundViewImageView.layer setBorderWidth:1.0];
-        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:0.5]];
+        [cellBackgroundViewImageView setBackgroundColor:[UIColor clearColor]];
+//        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:1.0]];
         [self setBackgroundView:cellBackgroundViewImageView];
 //        [self setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:1.0]];
         
