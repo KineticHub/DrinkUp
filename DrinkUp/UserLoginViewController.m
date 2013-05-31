@@ -12,6 +12,7 @@
 #import "SignupViewController.h"
 #import "QBFlatButton.h"
 #import "MBProgressHUD.h"
+#import "AppDelegate.h"
 
 @interface UserLoginViewController ()
 @property (nonatomic, strong) FBProfilePictureView *fbProfilePicView;
@@ -29,12 +30,6 @@
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    [[NSNotificationCenter defaultCenter]
-     addObserver:self
-     selector:@selector(fbLoggedInOn:)
-     name:@"FBServerLogin"
-     object:nil];
-    
     [[SharedDataHandler sharedInstance] initializeFacebook];
 //    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
 
@@ -46,15 +41,93 @@
     }
 }
 
--(void)fbLoggedInOn:(NSDictionary *)info
+- (void)loginView:(FBLoginView *)loginView
+      handleError:(NSError *)error
 {
-    [self transitionView:1];
-    NSLog(@"fb logged in and hit user login");
+    NSString *alertMessage, *alertTitle;
+    
+    // Facebook SDK * error handling *
+    // Error handling is an important part of providing a good user experience.
+    // Since this sample uses the FBLoginView, this delegate will respond to
+    // login failures, or other failures that have closed the session (such
+    // as a token becoming invalid). Please see the [- postOpenGraphAction:]
+    // and [- requestPermissionAndPost] on `SCViewController` for further
+    // error handling on other operations.
+    
+    if (error.fberrorShouldNotifyUser) {
+        // If the SDK has a message for the user, surface it. This conveniently
+        // handles cases like password change or iOS6 app slider state.
+        alertTitle = @"Something Went Wrong";
+        alertMessage = error.fberrorUserMessage;
+    } else if (error.fberrorCategory == FBErrorCategoryAuthenticationReopenSession) {
+        // It is important to handle session closures as mentioned. You can inspect
+        // the error for more context but this sample generically notifies the user.
+        alertTitle = @"Session Error";
+        alertMessage = @"Your current session is no longer valid. Please log in again.";
+    } else if (error.fberrorCategory == FBErrorCategoryUserCancelled) {
+        // The user has cancelled a login. You can inspect the error
+        // for more context. For this sample, we will simply ignore it.
+        NSLog(@"user cancelled login");
+    } else {
+        // For simplicity, this sample treats other errors blindly, but you should
+        // refer to https://developers.facebook.com/docs/technical-guides/iossdk/errors/ for more information.
+        alertTitle  = @"Unknown Error";
+        alertMessage = @"Error. Please try again later.";
+        NSLog(@"Unexpected error:%@", error);
+    }
+    
+    if (alertMessage) {
+        [[[UIAlertView alloc] initWithTitle:alertTitle
+                                    message:alertMessage
+                                   delegate:nil
+                          cancelButtonTitle:@"OK"
+                          otherButtonTitles:nil] show];
+    }
 }
 
 -(void)loginWithFacebook:(id)sender
 {
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(facebookAuthorized:)
+                                                 name:@"FacebookServerLoginAuthorized"
+                                               object:nil];
+    
     [[SharedDataHandler sharedInstance] authorizeFacebook];
+    
+//    // get the app delegate so that we can access the session property
+//    AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
+//    
+//    // this button's job is to flip-flop the session from open to closed
+//    if (appDelegate.session.isOpen) {
+//        // if a user logs out explicitly, we delete any cached token information, and next
+//        // time they run the applicaiton they will be presented with log in UX again; most
+//        // users will simply close the app or switch away, without logging out; this will
+//        // cause the implicit cached-token login to occur on next launch of the application
+//        [appDelegate.session closeAndClearTokenInformation];
+//        
+//    } else {
+//        if (appDelegate.session.state != FBSessionStateCreated) {
+//            // Create a new, logged out session.
+//            appDelegate.session = [[FBSession alloc] init];
+//        }
+//        
+//        // if the session isn't open, let's open it now and present the login UX to the user
+//        [appDelegate.session openWithCompletionHandler:^(FBSession *session,
+//                                                         FBSessionState status,
+//                                                         NSError *error) {
+//            // and here we make sure to update our UX according to the new session state
+//            [self transitionView:1];
+//        }];
+//    }
+}
+
+-(void)facebookAuthorized:(NSNotification *) notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [self transitionView:1];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 -(void)logoutFacebook:(id)sender {
@@ -73,14 +146,30 @@
         NSMutableDictionary *creds = [[NSMutableDictionary alloc] init];
         [creds setObject:self.loginUsernameOrEmailField.text forKey:@"username"];
         [creds setObject:self.loginPasswordField.text forKey:@"password"];
-        [[SharedDataHandler sharedInstance] userLoginToServerWithCredentials:creds andCompletion:^(bool successful) {
-            NSLog(@"was login successful? %i", successful);
-            if (successful) {
-                [self transitionView:1];
-            }
-        }];
+        
+        [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            
+            [[SharedDataHandler sharedInstance] userLoginToServerWithCredentials:creds andCompletion:^(bool successful)
+            {
+                if (successful)
+                {
+                    [self transitionView:1];
+                } else {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Login Failed"
+                                                                      message:@"Please check your username and password and try again."
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Okay"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                }
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+                 });
+             }];
+        });
     } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Missing Fields (._.)"
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Missing Fields"
                                                           message:@"Please make sure you have entered a username and password."
                                                          delegate:self
                                                 cancelButtonTitle:@"Okay"

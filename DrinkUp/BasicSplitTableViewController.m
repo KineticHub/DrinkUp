@@ -215,8 +215,8 @@ static bool isShowingBottomBar = NO;
     
     if (![SharedDataHandler sharedInstance].isUserAuthenticated)
     {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Gotta Login (O_o)"
-                                                          message:@"You must be logged in to place orders. Please go to the settings menu and login. Sorry, bro!"
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Login Required"
+                                                          message:@"You must be logged in to place orders. Please go to the settings menu and login."
                                                          delegate:self
                                                 cancelButtonTitle:@"Okay"
                                                 otherButtonTitles:nil];
@@ -235,10 +235,9 @@ static bool isShowingBottomBar = NO;
     {
         NSLog(@"User doesn't want to receive push-notifications, need to force use");
         [SharedDataHandler sharedInstance].isNotificationsEnabled = NO;
-        //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General&path=Network"]];
         
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Push Notifications Disabled"
-                                                          message:@"We cannot let you know when your order is ready without notifications. Please turn notifications on under Settings to place the order."
+                                                          message:@"We cannot let you know when your order is ready without notifications. Please turn notifications on in the Settings App to place the order."
                                                          delegate:self
                                                 cancelButtonTitle:@"Okay"
                                                 otherButtonTitles:nil];

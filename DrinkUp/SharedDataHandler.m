@@ -419,10 +419,19 @@ static id _instance;
         {
             self.isUserAuthenticated = YES;
             NSLog(@"no error!");
+            
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName:@"UserAuthorized"
+             object:self];
+            
         }
         else {
             self.isUserAuthenticated = NO;
             NSLog(@"error returned");
+            
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName:@"UserDeauthorized"
+             object:self];
         }
         
         if (successBlock) {
@@ -623,14 +632,14 @@ static id _instance;
     [self fbGetUserInfo];
 }
 
--(void)userLoginFacebookOnServer:(NSMutableDictionary *)userFacebookInfo {
+-(void)userLoginFacebookOnServer:(NSMutableDictionary *)userFacebookInfo withSuccess:(SuccessCompletionBlock)successBlock {
     
     NSLog(@"Facebook to Server");
     
     if (!self.csrfToken)
     {
         [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-            [self userLoginFacebookOnServer:userFacebookInfo];
+            [self userLoginFacebookOnServer:userFacebookInfo withSuccess:successBlock];
         }];
         
     } else {
@@ -663,12 +672,18 @@ static id _instance;
                 [[UAPush shared] setAlias:[[self userInformation] objectForKey:@"ua_username"]];
                 [[UAPush shared] updateRegistration];
                 [self userCurrentCardInfo];
+                
+                [[NSNotificationCenter defaultCenter]
+                 postNotificationName:@"FacebookServerLoginAuthorized"
+                 object:self];
+                
+                successBlock(YES);
             }];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"FBServerLogin" object:nil userInfo:nil];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@", operation.responseString);
             [self.userInformation removeAllObjects];
             [self userIsAuthenticated:nil];
+            successBlock(NO);
         }];
         
         [self.queue addOperation:operation];
@@ -739,7 +754,8 @@ static id _instance;
         [self.userInformation setObject:[result objectForKey:@"username"] forKey:@"fb_username"];
         [self.userInformation setObject:[result objectForKey:@"first_name"] forKey:@"fb_firstname"];
         
-        [self userLoginFacebookOnServer:userFacebookInfo];
+        [self userLoginFacebookOnServer:userFacebookInfo withSuccess:^(bool successful) {
+        }];
     }
     
     NSLog(@"Request Made: %@", [request graphPath]);

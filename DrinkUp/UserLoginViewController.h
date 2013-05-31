@@ -12,5 +12,5 @@
 #import "FacebookSDK.h"
 
 @interface UserLoginViewController : UIViewController <UITextFieldDelegate>
-
+- (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error;
 @end

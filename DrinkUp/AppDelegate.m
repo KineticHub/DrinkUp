@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import <UAirship.h>
 #import <UAPush.h>
+#import "FacebookSDK.h"
 
 #import "RecentBarsViewController.h"
 #import "BSTNearbyBarsViewController.h"
@@ -65,6 +66,8 @@
     
     
     
+    self.loginViewController = [[UserLoginViewController alloc] init];
+    self.session = [FBSession activeSession];
     
     
     RecentBarsViewController *rbvc = [[RecentBarsViewController alloc] init];
@@ -154,8 +157,33 @@
 }
 
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
-  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
+  sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{    
     return [[SharedDataHandler sharedInstance].facebookInstance handleOpenURL:url];
+    
+//    // Facebook SDK * login flow *
+//    // Attempt to handle URLs to complete any auth (e.g., SSO) flow.
+//    if ([[FBSession activeSession] handleOpenURL:url]) {
+//        return YES;
+//    } else {
+//        // Facebook SDK * App Linking *
+//        // For simplicity, this sample will ignore the link if the session is already
+//        // open but a more advanced app could support features like user switching.
+//        // Otherwise extract the app link data from the url and open a new active session from it.
+//        NSString *appID = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"FacebookAppID"];
+//        FBAccessTokenData *appLinkToken = [FBAccessTokenData createTokenFromFacebookURL:url
+//                                                                                  appID:appID
+//                                                                        urlSchemeSuffix:nil];
+//        if (appLinkToken) {
+//            if ([FBSession activeSession].isOpen) {
+//                NSLog(@"INFO: Ignoring app link because current session is open.");
+//            } else {
+//                [self handleAppLink:appLinkToken];
+//                return YES;
+//            }
+//        }
+//    }
+//    return NO;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application
@@ -187,15 +215,22 @@
     }
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+- (void)applicationDidBecomeActive:(UIApplication *)application	{
+    /*
+     Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+     */
+    
+    // FBSample logic
+    // We need to properly handle activation of the application with regards to SSO
+    //  (e.g., returning from iOS 6.0 authorization dialog or from fast app switching).
+    [FBSession.activeSession handleDidBecomeActive];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [UAirship land];
+    [FBSession.activeSession close];
 }
 
 #pragma mark - NavBar Button Methods
@@ -274,5 +309,37 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
                                             cancelButtonTitle:@"Sounds Good"
                                             otherButtonTitles:nil];
     [message show];
+}
+
+#pragma  mark -Facebook Helper
+// Helper method to wrap logic for handling app links.
+- (void)handleAppLink:(FBAccessTokenData *)appLinkToken {
+    // Initialize a new blank session instance...
+    FBSession *appLinkSession = [[FBSession alloc] initWithAppID:nil
+                                                     permissions:nil
+                                                 defaultAudience:FBSessionDefaultAudienceNone
+                                                 urlSchemeSuffix:nil
+                                              tokenCacheStrategy:[FBSessionTokenCachingStrategy nullCacheInstance] ];
+    [FBSession setActiveSession:appLinkSession];
+    // ... and open it from the App Link's Token.
+    [appLinkSession openFromAccessTokenData:appLinkToken
+                          completionHandler:^(FBSession *session, FBSessionState status, NSError *error) {
+                              // Forward any errors to the FBLoginView delegate.
+                              if (error) {
+                                  [self.loginViewController loginView:nil handleError:error];
+                              }
+                          }];
+}
+
+#pragma mark - UINavigationControllerDelegate
+
+- (void)navigationController:(UINavigationController *)navigationController
+       didShowViewController:(UIViewController *)viewController
+                    animated:(BOOL)animated {
+    self.isNavigating = NO;
+}
+
+- (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
+    self.isNavigating = YES;
 }
 @end

@@ -40,9 +40,31 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     [self.tableView setRowHeight:70.0];
     [self.view addSubview:self.tableView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userAuthorized)
+                                                 name:@"UserAuthorized"
+                                               object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(userDeauthorized)
+                                                 name:@"UserDeauthorized"
+                                               object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
+}
+
+#pragma mark - User
+
+-(void)userAuthorized
+{
+    [self.tableView reloadData];
+}
+
+-(void)userDeauthorized
 {
     [self.tableView reloadData];
 }
