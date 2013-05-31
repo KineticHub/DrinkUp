@@ -56,11 +56,11 @@ static bool isShowingBottomBar = NO;
     [shadowUpperView.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
     [shadowUpperView.layer setShadowColor:[[UIColor whiteColor] CGColor]];
     [shadowUpperView addSubview:self.upperView];
-//    [self.view addSubview:shadowUpperView];
-    [self.view addSubview:self.upperView];
+    [self.view addSubview:shadowUpperView];
+//    [self.view addSubview:self.upperView];
     
     UIView *background = [[UIView alloc] init];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
+    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"stressed_linen"]]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStylePlain];
@@ -209,9 +209,47 @@ static bool isShowingBottomBar = NO;
 }
 
 #pragma mark - Confirm Order Button Method
--(void)viewCurrentOrderView {
-    ConfirmOrderViewController *confirmVC = [[ConfirmOrderViewController alloc] init];
-    [self.navigationController pushViewController:confirmVC animated:YES];
+-(void)viewCurrentOrderView
+{
+    UIRemoteNotificationType status = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    
+    if (![SharedDataHandler sharedInstance].isUserAuthenticated)
+    {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Gotta Login (O_o)"
+                                                          message:@"You must be logged in to place orders. Please go to the settings menu and login. Sorry, bro!"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else if (![SharedDataHandler sharedInstance].userCard)
+    {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Required"
+                                                          message:@"You must have a credit card associated with your account to place and order."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else if (status == UIRemoteNotificationTypeNone)
+    {
+        NSLog(@"User doesn't want to receive push-notifications, need to force use");
+        [SharedDataHandler sharedInstance].isNotificationsEnabled = NO;
+        //        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General&path=Network"]];
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Push Notifications Disabled"
+                                                          message:@"We cannot let you know when your order is ready without notifications. Please turn notifications on under Settings to place the order."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else
+    {
+        ConfirmOrderViewController *confirmVC = [[ConfirmOrderViewController alloc] init];
+        [self.navigationController pushViewController:confirmVC animated:YES];
+    }
+    
 }
 
 @end

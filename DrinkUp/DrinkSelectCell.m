@@ -20,6 +20,8 @@
     self = [super initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:reuseIdentifier];
     if (self)
     {
+        NSLog(@"setup drink select cell");
+        
         [self setAccessoryType:UITableViewCellAccessoryNone];
         
         [self.cellImageView setHidden:YES];
@@ -55,22 +57,25 @@
 -(void)layoutSubviews {
     [super layoutSubviews];
     
+    [self.cellImageView setHidden:YES];
+    [self.cellImageBox setHidden:YES];
+    
     CGFloat spacer = 5.0;
     
-    CGRect drinkCountLabelRect = CGRectMake(self.cellImageBox.frame.origin.x, 0.0, self.cellImageBox.frame.size.width, self.cellImageBox.frame.size.height);
-    drinkCountLabelRect.size.width -= 30.0;
+    CGRect drinkCountLabelRect = CGRectMake(0.0, 0.0, self.frame.size.width/8, self.contentView.frame.size.height);
+    drinkCountLabelRect.size.width += 10.0;
     [self.drinkCountLabel setFrame:drinkCountLabelRect];
     
     CGRect costLabelRect = self.drinkCostLabel.frame;
-    costLabelRect.size.height = self.cellImageBox.frame.size.height;
-    costLabelRect.size.width = 80.0;
+    costLabelRect.size.height = self.contentView.frame.size.height;
+    costLabelRect.size.width = 70.0;
     costLabelRect.origin.x = CGRectGetMaxX(self.contentView.frame) - costLabelRect.size.width;
     costLabelRect.origin.y = 0.0;
     [self.drinkCostLabel setFrame:costLabelRect];
     
     CGRect textLabelRect = self.textLabel.frame;
     textLabelRect.origin.x = CGRectGetMaxX(self.drinkCountLabel.frame) + spacer;
-    textLabelRect.size.height = self.frame.size.height;
+    textLabelRect.size.height = self.contentView.frame.size.height;
     textLabelRect.size.width = self.frame.size.width - drinkCountLabelRect.size.width - costLabelRect.size.width - spacer;
     textLabelRect.origin.y = self.frame.size.height/2 - textLabelRect.size.height/2;
     [self.textLabel setFrame:textLabelRect];

@@ -111,7 +111,7 @@
     
     NSDictionary *type = [self.drinkTypes objectAtIndex:[indexPath section]];
     cell.textLabel.text = [type objectForKey:@"name"];
-    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[type objectForKey:@"icon"]]]];
+//    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[type objectForKey:@"icon"]]]];
     
     return cell;
 }

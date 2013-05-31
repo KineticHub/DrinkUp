@@ -8,6 +8,8 @@
 
 #import "BSTNearbyBarsViewController.h"
 #import "BSTDrinkTypeViewController.h"
+#import "DrinkSelectionsViewController.h"
+#import "SelectBarSectionViewController.h"
 
 @interface BSTNearbyBarsViewController ()
 @property (nonatomic, strong) NSMutableArray *bars;
@@ -32,11 +34,11 @@
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
-        [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects) {
+        [[SharedDataHandler sharedInstance] loadUserLocation];
+        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects) {
             
             self.bars = [NSMutableArray arrayWithArray:objects];
             [self.tableView reloadData];
-            
             [self setupMap];
             
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -48,6 +50,16 @@
     self.mapView = [[MKMapView alloc] initWithFrame:self.upperView.frame];
     [self.mapView setShowsUserLocation:YES];
     [self.upperView addSubview:self.mapView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
+     {
+         self.bars = [NSMutableArray arrayWithArray:objects];
+         [[SharedDataHandler sharedInstance] loadUserLocation];
+         [self.tableView reloadData];
+     }];
 }
 
 #pragma mark - TableView DataSource Methods
@@ -71,7 +83,7 @@
     [nearbyLabel setBackgroundColor:[UIColor clearColor]];
     [nearbyLabel setTextAlignment:NSTextAlignmentCenter];
     [nearbyLabel setTextColor:[UIColor lightGrayColor]];
-    [nearbyLabel setText:@"bars near Blacksburg, VA"];
+    [nearbyLabel setText:[SharedDataHandler sharedInstance].user_location];
     [nearbyView addSubview:nearbyLabel];
     
     return nearbyView;
@@ -91,8 +103,11 @@
     
     NSDictionary *bar = [self.bars objectAtIndex:[indexPath section]];
     cell.textLabel.text = [bar objectForKey:@"name"];
-    cell.detailTextLabel.text = @" $:  Mon - Thurs, 4pm - 5pm\n@:  111 South Main St.";
-    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
+    NSString *address = [NSString stringWithFormat:@"%@", [bar objectForKey:@"street_address"]];
+    cell.detailTextLabel.text = address;
+    [cell.detailTextLabel setNumberOfLines:2];
+    //@" $:  Mon - Thurs, 5pm - 7pm\n@:  %@", [bar objectForKey:@"address"]];
+//    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
     
     return cell;
 }
@@ -114,8 +129,22 @@
             if ([objects count] == 1) {
                 NSDictionary *barSection = [objects objectAtIndex:0];
                 [SharedDataHandler sharedInstance].current_section = [[barSection objectForKey:@"id"] intValue];
-                BSTDrinkTypeViewController *dtvc = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
-                [self.navigationController pushViewController:dtvc animated:YES];
+                
+                BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+                [self.navigationController pushViewController:selectionView animated:YES];
+                
+//                if ([indexPath section] == 1) {
+//                    BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+//                    [self.navigationController pushViewController:selectionView animated:YES];
+//                } else {
+//                    DrinkSelectionsViewController *selectionView = [[DrinkSelectionsViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+//                    [self.navigationController pushViewController:selectionView animated:YES];
+//                }
+                
+            } else {
+                //OTHERWISE GO TO BAR SELECTION SCREEN
+                SelectBarSectionViewController *selectSection = [[SelectBarSectionViewController alloc] initWithBarSections:objects];
+                [self.navigationController pushViewController:selectSection animated:YES];
             }
             
             dispatch_async(dispatch_get_main_queue(), ^{

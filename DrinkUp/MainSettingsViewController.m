@@ -11,11 +11,14 @@
 #import "PaymentProfilesViewController.h"
 #import "UserPictureViewController.h"
 #import "TestPaymentViewController.h"
+#import "CreditCardProfileViewController.h"
+#import "SharedDataHandler.h"
 
 @interface MainSettingsViewController ()
 @property (nonatomic, strong) NSMutableArray *settings;
 @property (nonatomic, strong) NSMutableArray *settingsDetails;
 @property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) NSMutableArray *requiresUser;
 @end
 
 @implementation MainSettingsViewController
@@ -23,11 +26,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
+    [self.navigationController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"stressed_linen"]]];
     [self.view setBackgroundColor:[UIColor colorWithRed:(34/255.0) green:(34/255.0) blue:(34/255.0) alpha:1.0]];
     
     self.settings = [NSMutableArray arrayWithArray:@[@"DrinkUp Profile", @"Payment", @"Photo", @"About DrinkUp"]];
     self.settingsDetails = [NSMutableArray arrayWithArray:@[@"", @"Manage your credit card options", @"Help the bartender recognize you!", @""]];
+    self.requiresUser = [NSMutableArray arrayWithArray:@[@NO, @YES, @YES, @NO]];
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height) style:UITableViewStylePlain];
     [self.tableView setDelegate:self];
@@ -36,6 +40,11 @@
     [self.tableView setBackgroundColor:[UIColor clearColor]];
     [self.tableView setRowHeight:70.0];
     [self.view addSubview:self.tableView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.tableView reloadData];
 }
 
 #pragma mark - TableView DataSource Methods
@@ -62,6 +71,18 @@
     cell.textLabel.text = [self.settings objectAtIndex:[indexPath row]];
     cell.detailTextLabel.text = [self.settingsDetails objectAtIndex:[indexPath row]];
     
+    if (![SharedDataHandler sharedInstance].isUserAuthenticated && [[self.requiresUser objectAtIndex:indexPath.row] boolValue])
+    {
+        cell.userInteractionEnabled = NO;
+        cell.textLabel.enabled = NO;
+        cell.detailTextLabel.enabled = NO;
+    } else
+    {
+        cell.userInteractionEnabled = YES;
+        cell.textLabel.enabled = YES;
+        cell.detailTextLabel.enabled = YES;
+    }
+    
     return cell;
 }
 
@@ -78,9 +99,8 @@
         }
         case 1:
         {
-//            TestPaymentViewController *ppvc = [[TestPaymentViewController alloc] init];0
-            PaymentProfilesViewController *ppvc = [[PaymentProfilesViewController alloc] init];
-            [self.navigationController pushViewController:ppvc animated:YES];
+            CreditCardProfileViewController *ccpvc = [[CreditCardProfileViewController alloc] init];
+            [self.navigationController pushViewController:ccpvc animated:YES];
             break;
         }
         case 2:

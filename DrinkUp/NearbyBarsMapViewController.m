@@ -24,11 +24,12 @@
     [[SharedDataHandler sharedInstance] initializeLocationTracking];
     
     self.bars = [[NSMutableArray alloc] init];
+    NSLog(@"nearby bars map view did load");
     
     [MBProgressHUD showHUDAddedTo:self.view animated:YES];
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
-        [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects) {
+        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects) {
             
             self.bars = [NSMutableArray arrayWithArray:objects];
             [self setupMap];
@@ -42,6 +43,17 @@
     self.mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height)];
     [self.mapView setShowsUserLocation:YES];
     [self.view addSubview:self.mapView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+     NSLog(@"nearby bars map view will appear");
+    [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
+    {
+        self.bars = [NSMutableArray arrayWithArray:objects];
+        [[SharedDataHandler sharedInstance] loadUserLocation];
+        [self setupMap];
+    }];
 }
 
 #pragma mark - MapView Delegate Methods

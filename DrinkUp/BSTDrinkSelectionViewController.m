@@ -119,7 +119,7 @@
     int currentQuantity = [[drink objectForKey:@"quantity"] intValue];
     
     UILabel *drinkTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 45.0)];
-    [drinkTypeLabel setText:self.drinkTypeName];
+    [drinkTypeLabel setText:[drink objectForKey:@"name"]];
     [drinkTypeLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
     [drinkTypeLabel setTextAlignment:NSTextAlignmentCenter];
     [drinkTypeLabel setBackgroundColor:[UIColor whiteColor]];
@@ -127,17 +127,23 @@
     [drinkTypeLabel.layer setBorderColor:[[UIColor blackColor] CGColor]];
     [drinkTypeLabel.layer setBorderWidth:2.0];
     
-    UIView *drinkInfoView = [[UIView alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkTypeLabel.frame), 320.0, 210 - 45)];
+    UIView *drinkInfoView = [[UIView alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkTypeLabel.frame), 320.0, 210 - 35.0)];
     [drinkInfoView setBackgroundColor:[UIColor whiteColor]];
     [drinkInfoView.layer setBorderColor:[[UIColor blackColor] CGColor]];
     [drinkInfoView.layer setBorderWidth:2.0];
+    
+    UITextView *drinkDescription = [[UITextView alloc] initWithFrame:CGRectMake(5.0, 10.0, drinkInfoView.frame.size.width - 10.0, drinkInfoView.frame.size.height - 20.0)];
+    [drinkDescription setText:[drink objectForKey:@"description"]];
+    [drinkDescription setFont:[UIFont systemFontOfSize:16.0]];
+    [drinkInfoView addSubview:drinkDescription];
+    
     
     UILabel *drinkNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 20.0, 320.0, 45.0)];
     [drinkNameLabel setText:[drink objectForKey:@"name"]];
     [drinkNameLabel setTextAlignment:NSTextAlignmentCenter];
     [drinkNameLabel setBackgroundColor:[UIColor clearColor]];
     [drinkNameLabel setTextColor:[UIColor blackColor]];
-    [drinkInfoView addSubview:drinkNameLabel];
+//    [drinkInfoView addSubview:drinkNameLabel];
     
     NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
     UILabel *drinkPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkNameLabel.frame), 320.0, 45.0)];
@@ -145,9 +151,9 @@
     [drinkPriceLabel setTextAlignment:NSTextAlignmentCenter];
     [drinkPriceLabel setBackgroundColor:[UIColor clearColor]];
     [drinkPriceLabel setTextColor:[UIColor blackColor]];
-    [drinkInfoView addSubview:drinkPriceLabel];
+//    [drinkInfoView addSubview:drinkPriceLabel];
     
-    NSArray *amounts = @[@"Remove",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    NSArray *amounts = @[@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:currentQuantity target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath] customTopSubviews:@[drinkTypeLabel, drinkInfoView]];
 }
 

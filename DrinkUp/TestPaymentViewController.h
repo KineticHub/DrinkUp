@@ -1,14 +1,13 @@
+////
+////  TestPaymentViewController.h
+////  DrinkUp
+////
+////  Created by Kinetic on 3/9/13.
+////  Copyright (c) 2013 Kinetic. All rights reserved.
+////
 //
-//  TestPaymentViewController.h
-//  DrinkUp
+//#import <UIKit/UIKit.h>
 //
-//  Created by Kinetic on 3/9/13.
-//  Copyright (c) 2013 Kinetic. All rights reserved.
+//@interface TestPaymentViewController : UIViewController
 //
-
-#import <UIKit/UIKit.h>
-#import "AuthNet.h"
-
-@interface TestPaymentViewController : UIViewController <AuthNetDelegate>
-
-@end
+//@end

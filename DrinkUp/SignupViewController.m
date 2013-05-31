@@ -10,6 +10,7 @@
 #import "SharedDataHandler.h"
 #import "AFHTTPClient.h"
 #import "AFHTTPRequestOperation.h"
+#import "MBProgressHUD.h"
 
 @interface SignupViewController ()
 @property (nonatomic, strong) UITextField *emailField;
@@ -80,7 +81,16 @@
     NSArray *paramKeys = @[@"email", @"username", @"password"];
     
     NSMutableDictionary *params = [[NSMutableDictionary alloc] initWithObjects:paramObjects forKeys:paramKeys];
-    [[SharedDataHandler sharedInstance] userCreateOnServer:params];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        [[SharedDataHandler sharedInstance] userCreateOnServer:params withSuccess:^(bool successful)
+        {
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+             });
+         }];
+    });
     
 //    NSString *requestPath = @"http://ec2-174-129-129-68.compute-1.amazonaws.com/Project/facebook_login/mobile/";
 //    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];

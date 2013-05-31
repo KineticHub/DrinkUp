@@ -159,7 +159,7 @@
     }
     
     //NEED TO FIGURE OUT WHERE THIS ACTUALLY COMES FROM
-    self.taxAndFees = 0.75;
+    self.taxAndFees = 2.75;
     self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.taxAndFees];
     
     self.finalPrice = self.totalPrice + self.taxAndFees + ((self.totalPrice + self.taxAndFees) * self.tipPercent);
@@ -213,7 +213,7 @@
 
     self.SelectedDrinkRow = [indexPath row];
     
-    NSArray *amounts = @[@"Remove",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
+    NSArray *amounts = @[@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
     [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:0 target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath] customTopSubviews:nil];
 }
 
@@ -247,10 +247,33 @@
     [self.tableViewDrinks reloadData];
 }
 
--(void)placeOrder {
-    [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
-    ThanksViewController *thanksVC = [[ThanksViewController alloc] init];
-    [self.navigationController pushViewController:thanksVC animated:YES];
+-(void)placeOrder
+{
+    NSMutableDictionary *order = [[NSMutableDictionary alloc] init];
+    [order setObject:[NSNumber numberWithInt:[SharedDataHandler sharedInstance].current_section] forKey:@"bar_id"];
+    [order setObject:[NSNumber numberWithFloat:self.totalPrice] forKey:@"total"];
+    [order setObject:[NSNumber numberWithFloat:2.40] forKey:@"tax"];
+    [order setObject:[NSNumber numberWithFloat:self.totalPrice + 2.40] forKey:@"sub_total"];
+    [order setObject:[NSNumber numberWithFloat:((self.totalPrice + 2.40 + 0.35) * self.tipPercent)] forKey:@"tip"];
+    [order setObject:[NSNumber numberWithFloat:0.35] forKey:@"fees"];
+    [order setObject:[NSNumber numberWithFloat:self.finalPrice] forKey:@"grand_total"];
+    [order setObject:[SharedDataHandler sharedInstance].currentDrinkOrder forKey:@"drinks"];
+//    [[SharedDataHandler sharedInstance] placeOrder:order];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] placeOrder:order withSuccess:^(bool successful)
+        {
+            [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
+            ThanksViewController *thanksVC = [[ThanksViewController alloc] init];
+            [self.navigationController pushViewController:thanksVC animated:YES];
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        }];
+    });
 }
 
 @end

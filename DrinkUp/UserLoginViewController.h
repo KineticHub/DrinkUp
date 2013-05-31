@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
+#import "FacebookSDK.h"
 
-@interface UserLoginViewController : UIViewController
+@interface UserLoginViewController : UIViewController <UITextFieldDelegate>
 
 @end

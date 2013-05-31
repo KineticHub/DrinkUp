@@ -7,6 +7,8 @@
 //
 
 #import "AppDelegate.h"
+#import <UAirship.h>
+#import <UAPush.h>
 
 #import "RecentBarsViewController.h"
 #import "BSTNearbyBarsViewController.h"
@@ -34,6 +36,36 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    // Call takeOff, passing in the launch options so the library can properly record when
+    // the app is launched from a push notification
+    NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
+    [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
+    
+    // This prevents the UA Library from registering with UIApplcation by default when
+    // registerForRemoteNotifications is called. This will allow you to prompt your
+    // users at a later time. This gives your app the opportunity to explain the benefits
+    // of push or allows users to turn it on explicitly in a settings screen.
+    // If you just want everyone to immediately be prompted for push, you can
+    // leave this line out.
+//    [UAPush setDefaultPushEnabledValue:NO];
+    
+    // Create Airship singleton that's used to talk to Urban Airhship servers.
+    // Please populate AirshipConfig.plist with your info from http://go.urbanairship.com
+    [UAirship takeOff:takeOffOptions];
+    
+    [[UAPush shared] resetBadge];//zero badge on startup
+    
+    // Register for remote notfications. With the default value of push set to no,
+    // UAPush will record the desired remote notifcation types, but not register for
+    // push notfications as mentioned above.
+    // When push is enabled at a later time, the registration will occur as normal.
+    [[UAPush shared] registerForRemoteNotificationTypes:(UIRemoteNotificationTypeBadge |
+                                                         UIRemoteNotificationTypeSound |
+                                                         UIRemoteNotificationTypeAlert)];
+    
+    
+    
+    
     
     RecentBarsViewController *rbvc = [[RecentBarsViewController alloc] init];
     rbvc.title  = @"Recent Bars";
@@ -98,17 +130,20 @@
     UIView *background = [[UIView alloc] init];
     
 //    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X"]]];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"px_by_Gre3g"]]];
+    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"stressed_linen"]]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(0/255.0) alpha:1.0]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
-//    [self.rootNavigationController.view addSubview:background];
-//    [self.rootNavigationController.view sendSubviewToBack:background];
-    [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
+    [self.rootNavigationController.view addSubview:background];
+    [self.rootNavigationController.view sendSubviewToBack:background];
+    [self.rootNavigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
+//    [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     [self.revealController.view addSubview:background];
     [self.revealController.view sendSubviewToBack:background];
-    [self.revealController.navigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
+    [self.revealController.frontViewController.navigationController.view addSubview:background];
+    [self.revealController.frontViewController.navigationController.view sendSubviewToBack:background];
+//    [self.revealController.navigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];
@@ -138,6 +173,18 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    
+    [[UAPush shared] resetBadge]; // zero badge after push received
+    
+    NSLog(@"applicationWillEnterForeground");
+    [SharedDataHandler sharedInstance].isNotificationsEnabled = YES;
+    UIRemoteNotificationType status = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    if (status == UIRemoteNotificationTypeNone)
+    {
+        NSLog(@"User doesn't want to receive push-notifications, need to force use");
+        [SharedDataHandler sharedInstance].isNotificationsEnabled = NO;
+//        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"prefs:root=General&path=Network"]];
+    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -148,6 +195,7 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    [UAirship land];
 }
 
 #pragma mark - NavBar Button Methods
@@ -185,5 +233,46 @@
     {
         [self.revealController showViewController:self.revealController.rightViewController];
     }
+}
+
+#pragma mark - Push Notifications Methods
+
+// Implement the iOS device token registration callback
+- (void)application:(UIApplication *)application
+didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
+    UALOG(@"APN device token: %@", deviceToken);
+    
+    // Updates the device token and registers the token with UA. This won't occur until
+    // push is enabled if the outlined process is followed.
+
+    NSLog(@"registering device");
+//    [[UAPush shared] setAlias:[[[SharedDataHandler sharedInstance] userInformation] objectForKey:@"ua_username"]];
+    [[UAPush shared] registerDeviceToken:deviceToken];
+}
+
+// Implement the iOS callback for incoming notifications
+//
+// Incoming Push notifications can be handled by the UAPush default alert handler,
+// which displays a simple UIAlertView, or you can provide you own delegate which
+// conforms to the UAPushNotificationDelegate protocol.
+- (void)application:(UIApplication *)application
+didReceiveRemoteNotification:(NSDictionary *)userInfo {
+    
+    // Send the alert to UA
+    [[UAPush shared] handleNotification:userInfo
+                       applicationState:application.applicationState];
+    
+    // Reset the badge if you are using that functionality
+    [[UAPush shared] resetBadge]; // zero badge after push received
+    [[UAPush shared] setBadgeNumber:0];
+    
+    NSLog(@"notification: %@", userInfo);
+    NSString *messageText = messageText = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Order Update"
+                                                      message:messageText
+                                                     delegate:self
+                                            cancelButtonTitle:@"Sounds Good"
+                                            otherButtonTitles:nil];
+    [message show];
 }
 @end

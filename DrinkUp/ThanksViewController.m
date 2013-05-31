@@ -8,6 +8,7 @@
 
 #import "ThanksViewController.h"
 #import "BSTDrinkTypeViewController.h"
+#import "SharedDataHandler.h"
 
 @interface ThanksViewController ()
 @property (nonatomic, strong) UILabel *claimLabel;
@@ -44,7 +45,7 @@
     [self.view addSubview:claimInfoLabel];
     
     self.claimLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition * 2, labelWidth, labelHeight * 4)];
-    [self.claimLabel setText:@"10S"];
+    [self.claimLabel setText:[SharedDataHandler sharedInstance].currentOrderID];
     [self.claimLabel setTextAlignment:NSTextAlignmentCenter];
     [self.claimLabel setTextColor:[UIColor orangeColor]];
     [self.claimLabel setFont:[UIFont systemFontOfSize:120.0]];

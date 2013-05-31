@@ -11,8 +11,10 @@
 #import "FBConnect.h"
 #import "SignupViewController.h"
 #import "QBFlatButton.h"
+#import "MBProgressHUD.h"
 
 @interface UserLoginViewController ()
+@property (nonatomic, strong) FBProfilePictureView *fbProfilePicView;
 @property (nonatomic, strong) UITextField *loginUsernameOrEmailField;
 @property (nonatomic, strong) UITextField *loginPasswordField;
 @end
@@ -24,10 +26,30 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
     
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    [self.view addGestureRecognizer:gestureRecognizer];
+    
+    [[NSNotificationCenter defaultCenter]
+     addObserver:self
+     selector:@selector(fbLoggedInOn:)
+     name:@"FBServerLogin"
+     object:nil];
+    
     [[SharedDataHandler sharedInstance] initializeFacebook];
 //    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
 
-    [self setupUserProfileView];
+    NSLog(@"view did load");
+    if ([SharedDataHandler sharedInstance].isUserAuthenticated) {
+        [self setupUserProfileView];
+    } else {
+        [self setupUserLoginView];
+    }
+}
+
+-(void)fbLoggedInOn:(NSDictionary *)info
+{
+    [self transitionView:1];
+    NSLog(@"fb logged in and hit user login");
 }
 
 -(void)loginWithFacebook:(id)sender
@@ -44,22 +66,48 @@
 //    [fb_button addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void)loginToServer:(id)sender {
-    
-    NSMutableDictionary *creds = [[NSMutableDictionary alloc] init];
-    [creds setObject:self.loginUsernameOrEmailField.text forKey:@"username"];
-    [creds setObject:self.loginPasswordField.text forKey:@"password"];
-    [[SharedDataHandler sharedInstance] userLoginToServerWithCredentials:creds];
-    
-    [self transitionView:1];
+-(void)loginToServer:(id)sender
+{
+    if ([self.loginUsernameOrEmailField.text length] > 0 && [self.loginPasswordField.text length] > 0)
+    {
+        NSMutableDictionary *creds = [[NSMutableDictionary alloc] init];
+        [creds setObject:self.loginUsernameOrEmailField.text forKey:@"username"];
+        [creds setObject:self.loginPasswordField.text forKey:@"password"];
+        [[SharedDataHandler sharedInstance] userLoginToServerWithCredentials:creds andCompletion:^(bool successful) {
+            NSLog(@"was login successful? %i", successful);
+            if (successful) {
+                [self transitionView:1];
+            }
+        }];
+    } else {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Missing Fields (._.)"
+                                                          message:@"Please make sure you have entered a username and password."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
 }
 
 -(void)logoutFromServer:(id)sender {
     
     NSLog(@"Logout attempt");
-    [[SharedDataHandler sharedInstance] userLogoutOfServer];
     
-    [self transitionView:0];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] userLogoutOfServer:^(bool successful)
+        {
+            if ([[[SharedDataHandler sharedInstance] facebookInstance] isSessionValid] )
+            {
+                [[SharedDataHandler sharedInstance].facebookInstance logout];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+            [self transitionView:0];
+        }];
+    });
 }
 
 -(void)showSignupView {
@@ -82,7 +130,7 @@
 
 -(void)transitionView:(int)viewChoice
 {
-    [UIView animateWithDuration:0.8 animations:^
+    [UIView animateWithDuration:0.2 animations:^
     {
         self.view.alpha = 0.0;
     } completion:^(BOOL finished)
@@ -95,7 +143,7 @@
             [self setupUserProfileView];
         }
         
-        [UIView animateWithDuration:0.8 animations:^
+        [UIView animateWithDuration:0.3 animations:^
          {
              self.view.alpha = 1.0;
          }];
@@ -125,15 +173,32 @@
     [profilePicView setCenter:CGPointMake(self.view.frame.size.width/2, profilePicView.center.y)];
     [self.view addSubview:profilePicView];
     
+    if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid]) {
+        self.fbProfilePicView = [[FBProfilePictureView alloc] initWithProfileID:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"fb_id"] pictureCropping:FBProfilePictureCroppingSquare];
+        [self.fbProfilePicView setFrame:profilePicView.frame];
+        [self.fbProfilePicView.layer setBorderColor:[[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0] CGColor]];
+        [self.fbProfilePicView.layer setBorderWidth:5.0];
+        [self.fbProfilePicView.layer setCornerRadius:8.0];
+        [self.view addSubview:self.fbProfilePicView];
+        [profilePicView setHidden:YES];
+    }
+    
     y += profilePicView.frame.size.height + spacer;
     
     UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [profileName setBackgroundColor:[UIColor clearColor]];
     [profileName setTextAlignment:NSTextAlignmentCenter];
-    [profileName setText:@"Hey, UserProfileName!"];
+    NSString *profileNameText = [NSString stringWithFormat:@"Hey, %@!", [[SharedDataHandler sharedInstance].userInformation objectForKey:@"username" ]];
+    NSLog(@"user setupUserProfileView: %@", [SharedDataHandler sharedInstance].userInformation);
+    [profileName setText:profileNameText];
     [profileName setTextColor:[UIColor whiteColor]];
     [profileName setFont:[UIFont boldSystemFontOfSize:24.0]];
     [self.view addSubview:profileName];
+    
+    if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid]) {
+        NSString *usernameLabelText = [NSString stringWithFormat:@"Hey, %@!", [[SharedDataHandler sharedInstance].userInformation objectForKey:@"fb_firstname"]];
+        [profileName setText:usernameLabelText];
+    } 
     
     //    y += profileName.frame.size.height + spacer;
     
@@ -158,7 +223,7 @@
 #pragma mark - User Login Options
 -(void)setupUserLoginView
 {
-    CGFloat y = 10.0;
+    CGFloat y = 5.0;
     CGFloat spacer = 10.0;
     CGFloat edgeInset = 10.0;
     CGFloat fieldWidth = 300.0;
@@ -187,6 +252,7 @@
     [self.loginUsernameOrEmailField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [self.loginUsernameOrEmailField setFont:[UIFont systemFontOfSize:16.0]];
     [self.loginUsernameOrEmailField setBackgroundColor:[UIColor clearColor]];
+    [self.loginUsernameOrEmailField setAutocorrectionType:UITextAutocorrectionTypeNo];
 //    [self.loginUsernameOrEmailField setBackgroundColor:[UIColor colorWithRed:(34/255.0) green:(34/255.0) blue:(34/255.0) alpha:0.7]];
     [self.view addSubview:self.loginUsernameOrEmailField];
     
@@ -206,6 +272,7 @@
     [self.loginPasswordField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
     [self.loginPasswordField setFont:[UIFont systemFontOfSize:16.0]];
     [self.loginPasswordField setBackgroundColor:[UIColor clearColor]];
+    [self.loginPasswordField setAutocorrectionType:UITextAutocorrectionTypeNo];
 //    [self.loginPasswordField setBackgroundColor:[UIColor colorWithRed:(34/255.0) green:(34/255.0) blue:(34/255.0) alpha:0.7]];
     [self.view addSubview:self.loginPasswordField];
     
@@ -280,6 +347,24 @@
     [forgotButton setTitleColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0] forState:UIControlStateNormal];
     [forgotButton setFrame:CGRectMake(CGRectGetMaxX(newLabel.frame), 0, fieldWidth/2, fieldHeight)];
     [bottomView2 addSubview:forgotButton];
+}
+
+#pragma mark - UITextField delegate methods
+-(void)textFieldDidEndEditing:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+}
+
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void) hideKeyboard
+{
+    [self.loginUsernameOrEmailField resignFirstResponder];
+    [self.loginPasswordField resignFirstResponder];
 }
 
 @end
