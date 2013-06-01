@@ -7,6 +7,11 @@
 //
 
 #import "UserPictureViewController.h"
+#import "SharedDataHandler.h"
+#import "MBProgressHUD.h"
+
+#import <AWSRuntime/AWSRuntime.h>
+#import <AWSS3/AWSS3.h>
 
 @interface UserPictureViewController ()
 @property (nonatomic, strong) UIImagePickerController *imagePicker;
@@ -51,9 +56,39 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    
     [self dismissViewControllerAnimated:YES completion:^{}]; //Do this first!!
     UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+    
+    NSString *picName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
+    NSLog(@"starting AWS");
+    
+    [MBProgressHUD showHUDAddedTo:self.imagePicker.view animated:YES];
+    
+    AmazonS3Client *s3 = [[AmazonS3Client alloc] initWithAccessKey:@"AKIAIXLT3ZDWWR7Q4YKA" withSecretKey:@"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"];
+    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:picName inBucket:@"DrinkUp"];
+    por.contentType = @"image/jpeg";
+    por.data = UIImageJPEGRepresentation(image, 0.7);;
+    [s3 putObject:por];
+    
+    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+    override.contentType = @"image/jpeg";
+    
+    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
+    gpsur.key     = picName;
+    gpsur.bucket  = @"DrinkUp";
+    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
+    gpsur.responseHeaderOverrides = override;
+    
+    NSURL *url = [s3 getPreSignedURL:gpsur];
+    
+    [[SharedDataHandler sharedInstance] userUpdateProfilePicture:url withSuccess:^(bool successful) {
+    }];
+    
+    [MBProgressHUD hideHUDForView:self.imagePicker.view animated:YES];
+    
+    NSLog(@"ending AWS");
+    
+    
     
     [self.selfie setImage:image];
 }

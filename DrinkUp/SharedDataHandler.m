@@ -516,6 +516,43 @@ static id _instance;
     }
 }
 
+-(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock
+{
+    if (!self.csrfToken)
+    {
+        [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+            [self userUpdateProfilePicture:imageURL withSuccess:successBlock];
+        }];
+    } else {
+        NSMutableDictionary *sendDict = [[NSMutableDictionary alloc] init];
+        [sendDict setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
+        [sendDict setObject:imageURL forKey:@"pictureURL"];
+        
+        NSString *requestPath = @"https://DrinkUp-App.com/api/user/update_picture/";
+        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+        NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDict];
+        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        
+        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+         {
+             NSLog(@"profile pic operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+             NSLog(@"user profile pic response object: %@", [responseObject objectFromJSONData]);
+             successBlock(YES);
+         }
+        failure:^(AFHTTPRequestOperation *operation, NSError *error)
+         {
+             NSLog(@"user update profile pic error: %@", operation.responseString);
+             successBlock(NO);
+         }];
+        
+        [self.queue addOperation:operation];
+    }
+}
+
 #pragma mark - Order API Functions
 -(void)placeOrder:(NSMutableDictionary *)order withSuccess:(SuccessCompletionBlock)successBlock
 {

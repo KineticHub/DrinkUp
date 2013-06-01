@@ -28,8 +28,27 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
-    self.navigationItem.leftBarButtonItem = backButton;
+//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
+//    self.navigationItem.leftBarButtonItem = backButton;
+    
+    CGFloat width = self.view.frame.size.width;
+    CGFloat height = 60.0;
+    UIView *leaveBarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - height - 45.0, width, height)];
+    [leaveBarView setBackgroundColor:[UIColor whiteColor]];
+    [self.view addSubview:leaveBarView];
+    
+//    QBFlatButton *leaveBarButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    leaveBarButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
+//    leaveBarButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
+//    leaveBarButton.radius = 6.0;
+//    leaveBarButton.margin = 4.0;
+//    leaveBarButton.depth = 3.0;
+//    leaveBarButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [leaveBarButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [leaveBarButton setTitle:@"Logout" forState:UIControlStateNormal];
+//    [leaveBarButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
+//    [leaveBarButton addTarget:self action:@selector(logoutFromServer:) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:leaveBarButton];
     
     self.drinkTypes = [[NSMutableArray alloc] init];
     
@@ -61,7 +80,6 @@
     [logoImageView setCenter:CGPointMake(self.upperView.center.x, self.upperView.center.y + 0.0)];
     [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
     [self.upperView addSubview:logoImageView];
-    
     [self.upperView setBackgroundColor:[UIColor whiteColor]];
 }
 

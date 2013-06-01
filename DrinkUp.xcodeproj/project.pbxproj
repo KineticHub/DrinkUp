@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		9C17CBD4175661CA00D0EA17 /* stressed_linen.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CBD3175661CA00D0EA17 /* stressed_linen.png */; };
 		9C17CBD717566F3200D0EA17 /* BasicCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBD617566F3100D0EA17 /* BasicCell.m */; };
+		9C17CBD91758FA3400D0EA17 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C17CBD81758FA3200D0EA17 /* AWSRuntime.framework */; };
+		9C17CBDB1758FA4800D0EA17 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */; };
+		9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CBDC175A652B00D0EA17 /* black_thread.png */; };
 		9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3D16F280EE002796B2 /* Icon_57x57.png */; };
 		9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3E16F280EE002796B2 /* Icon_114x114.png */; };
 		9C225E4A16F5CFC8002796B2 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4316F5CFC8002796B2 /* REMenu.m */; };
@@ -158,6 +161,9 @@
 		9C17CBD3175661CA00D0EA17 /* stressed_linen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = stressed_linen.png; sourceTree = "<group>"; };
 		9C17CBD517566F3100D0EA17 /* BasicCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BasicCell.h; sourceTree = "<group>"; };
 		9C17CBD617566F3100D0EA17 /* BasicCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BasicCell.m; sourceTree = "<group>"; };
+		9C17CBD81758FA3200D0EA17 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../../Documents/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
+		9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../../Documents/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
+		9C17CBDC175A652B00D0EA17 /* black_thread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_thread.png; sourceTree = "<group>"; };
 		9C225E3D16F280EE002796B2 /* Icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57x57.png; sourceTree = "<group>"; };
 		9C225E3E16F280EE002796B2 /* Icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114x114.png; sourceTree = "<group>"; };
 		9C225E4216F5CFC8002796B2 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
@@ -431,6 +437,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C17CBDB1758FA4800D0EA17 /* AWSS3.framework in Frameworks */,
+				9C17CBD91758FA3400D0EA17 /* AWSRuntime.framework in Frameworks */,
 				9C736FB6174E10300056713F /* libUAirship-1.4.0.a in Frameworks */,
 				9C8B70FF16E689BB00FB80AF /* MapKit.framework in Frameworks */,
 				9C8B710E16E7082A00FB80AF /* AudioToolbox.framework in Frameworks */,
@@ -524,6 +532,8 @@
 		9C69C59B16CD89F800D548F2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */,
+				9C17CBD81758FA3200D0EA17 /* AWSRuntime.framework */,
 				9C736FB3174E0FEA0056713F /* MessageUI.framework */,
 				9C736FB1174E0FCA0056713F /* libsqlite3.dylib */,
 				9C736FAF174E0FB90056713F /* libz.dylib */,
@@ -762,6 +772,7 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C17CBDC175A652B00D0EA17 /* black_thread.png */,
 				9C17CBD3175661CA00D0EA17 /* stressed_linen.png */,
 				9C225E3D16F280EE002796B2 /* Icon_57x57.png */,
 				9C225E3E16F280EE002796B2 /* Icon_114x114.png */,
@@ -1153,6 +1164,7 @@
 				9C7D290216F7935200CDA4B8 /* DrinkUp-Info.plist in Resources */,
 				9C736FB8174E110C0056713F /* AirshipConfig.plist in Resources */,
 				9C17CBD4175661CA00D0EA17 /* stressed_linen.png in Resources */,
+				9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1354,6 +1366,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../Documents/aws-ios-sdk-1.6.0\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";
@@ -1388,6 +1401,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
+					"\"$(SRCROOT)/../../../Documents/aws-ios-sdk-1.6.0\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "DrinkUp/DrinkUp-Prefix.pch";

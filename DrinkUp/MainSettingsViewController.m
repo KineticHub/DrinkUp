@@ -26,7 +26,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.navigationController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"stressed_linen"]]];
+    [self.navigationController.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
     [self.view setBackgroundColor:[UIColor colorWithRed:(34/255.0) green:(34/255.0) blue:(34/255.0) alpha:1.0]];
     
     self.settings = [NSMutableArray arrayWithArray:@[@"DrinkUp Profile", @"Payment", @"Photo", @"About DrinkUp"]];

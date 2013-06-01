@@ -34,10 +34,10 @@
 //        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X.png"]]];
         [cellBackgroundViewImageView.layer setBorderColor:[[UIColor colorWithRed:(31/255.0) green:(31/255.0) blue:(31/255.0) alpha:1.0] CGColor]];
         [cellBackgroundViewImageView.layer setBorderWidth:1.0];
-        [cellBackgroundViewImageView setBackgroundColor:[UIColor whiteColor]];
-        [cellBackgroundViewImageView setAlpha:0.7];
+        [cellBackgroundViewImageView setBackgroundColor:[UIColor blackColor]];
+        [cellBackgroundViewImageView setAlpha:0.1];
 //        [cellBackgroundViewImageView setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:1.0]];
-//        [self setBackgroundView:cellBackgroundViewImageView];
+        [self setBackgroundView:cellBackgroundViewImageView];
 //        [self setBackgroundColor:[UIColor colorWithRed:(26/255.0) green:(26/255.0) blue:(26/255.0) alpha:1.0]];
         
         [self.textLabel setHighlightedTextColor:[UIColor blackColor]];
@@ -112,7 +112,7 @@
     
     [self.detailTextLabel sizeToFit];
     [self.textLabel sizeToFit];
-    NSLog(@"frame %@: %f", self.detailTextLabel.text, self.detailTextLabel.frame.size.height);
+//    NSLog(@"frame %@: %f", self.detailTextLabel.text, self.detailTextLabel.frame.size.height);
     
     int totalHeight = self.textLabel.frame.size.height + self.detailTextLabel.frame.size.height + 5.0;
     float topMiddle = round(self.contentView.frame.size.height/2 - totalHeight/2);

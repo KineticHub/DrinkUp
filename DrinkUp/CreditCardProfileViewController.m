@@ -44,7 +44,7 @@
     //    [self.view addSubview:self.upperView];
     
     UIView *background = [[UIView alloc] init];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"stressed_linen"]]];
+    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
     UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(2.0, 2.0, self.upperView.frame.size.width - 4.0, 30.0)];

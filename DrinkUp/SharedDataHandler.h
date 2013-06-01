@@ -45,6 +45,7 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse;
 -(void)userCurrentCardInfo;
 -(void)userInvalidateCurrentCard:(SuccessCompletionBlock)successBlock;
+-(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock;
 
 #pragma mark - Order API Functions
 -(void)placeOrder:(NSMutableDictionary *)order withSuccess:(SuccessCompletionBlock)successBlock;
