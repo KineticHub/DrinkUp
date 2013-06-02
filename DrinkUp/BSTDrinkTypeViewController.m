@@ -9,6 +9,7 @@
 #import "BSTDrinkTypeViewController.h"
 #import "BSTDrinkSelectionViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "UserLoginViewController.h"
 
 @interface BSTDrinkTypeViewController ()
 @property (nonatomic, strong) NSMutableArray *drinkTypes;
@@ -28,14 +29,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
-//    self.navigationItem.leftBarButtonItem = backButton;
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
+    self.navigationItem.leftBarButtonItem = backButton;
     
-    CGFloat width = self.view.frame.size.width;
-    CGFloat height = 60.0;
-    UIView *leaveBarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - height - 45.0, width, height)];
-    [leaveBarView setBackgroundColor:[UIColor whiteColor]];
-    [self.view addSubview:leaveBarView];
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(showUserProfile)];
+    self.navigationItem.rightBarButtonItem = settingsButton;
+    
+//    CGFloat width = self.view.frame.size.width;
+//    CGFloat height = 60.0;
+//    UIView *leaveBarView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - height - 45.0, width, height)];
+//    [leaveBarView setBackgroundColor:[UIColor whiteColor]];
+//    [self.view addSubview:leaveBarView];
     
 //    QBFlatButton *leaveBarButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
 //    leaveBarButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
@@ -95,6 +99,12 @@
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
+}
+
+-(void)showUserProfile
+{
+    UserLoginViewController *userLoginVC = [[UserLoginViewController alloc] init];
+    [self.navigationController pushViewController:userLoginVC animated:YES];
 }
 
 #pragma mark - UIAlertView Method

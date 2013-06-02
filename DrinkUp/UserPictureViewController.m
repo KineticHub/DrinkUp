@@ -25,6 +25,7 @@
     [super viewDidLoad];
     
     self.selfie = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height)];
+    self.selfie.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.selfie];
     
     [self takePictureWithCamera];
@@ -81,16 +82,20 @@
     
     NSURL *url = [s3 getPreSignedURL:gpsur];
     
+    self.selfie.image = image;
+    
     [[SharedDataHandler sharedInstance] userUpdateProfilePicture:url withSuccess:^(bool successful) {
+        [self.navigationController popViewControllerAnimated:YES];
     }];
     
     [MBProgressHUD hideHUDForView:self.imagePicker.view animated:YES];
     
     NSLog(@"ending AWS");
-    
-    
-    
-    [self.selfie setImage:image];
+}
+
+-(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

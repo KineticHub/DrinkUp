@@ -42,7 +42,7 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)userLoginToServerWithCredentials:(NSMutableDictionary *)credentials andCompletion:(SuccessCompletionBlock)successBlock;
 -(void)userLogoutOfServer:(SuccessCompletionBlock)successBlock;
 -(void)userCreateOnServer:(NSMutableDictionary *)userDictionary withSuccess:(SuccessCompletionBlock)successBlock;
--(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse;
+-(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse withSuccess:(SuccessCompletionBlock)successBlock;
 -(void)userCurrentCardInfo;
 -(void)userInvalidateCurrentCard:(SuccessCompletionBlock)successBlock;
 -(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock;

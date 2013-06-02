@@ -57,7 +57,7 @@
         
         [self.detailTextLabel setHighlightedTextColor:[UIColor blackColor]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
-        [self.detailTextLabel setTextColor:[UIColor darkGrayColor]];
+        [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
         [self.detailTextLabel setFont:DEFAULT_CELL_DESCRIPTION_FONT];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByWordWrapping];
         [self.detailTextLabel setNumberOfLines:3];

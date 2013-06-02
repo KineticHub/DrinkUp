@@ -30,7 +30,6 @@
 @property (nonatomic, strong) PKRevealController *revealController;
 @property (nonatomic, strong) UIBarButtonItem *settingsButton;
 @property (nonatomic, strong) UIBarButtonItem *mapButton;
-@property (nonatomic, strong) UINavigationController *rootNavigationController;
 @end
 
 @implementation AppDelegate
@@ -122,9 +121,9 @@
     NearbyBarsMapViewController *nbmvc = [[NearbyBarsMapViewController alloc] init];
 //    [nbmvc.view setBackgroundColor:[UIColor clearColor]];
 //    [nbmvc.view setBackgroundColor:[UIColor clearColor]];
-    self.revealController = [PKRevealController revealControllerWithFrontViewController:nbvc leftViewController:msvc rightViewController:nbmvc options:nil];
-    self.revealController.navigationItem.leftBarButtonItem = self.settingsButton;
-    self.revealController.navigationItem.rightBarButtonItem = self.mapButton;
+    self.revealController = [PKRevealController revealControllerWithFrontViewController:nbvc leftViewController:nbmvc rightViewController:nil options:nil];
+    self.revealController.navigationItem.rightBarButtonItem = self.settingsButton;
+    self.revealController.navigationItem.leftBarButtonItem = self.mapButton;
 //////////////////////
     
     self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:self.revealController];
@@ -247,7 +246,7 @@
     [self.rootNavigationController pushViewController:msvc animated:YES];
 }
 
-- (void)showMenu
+- (void)showMap
 {
     if (self.revealController.focusedController == self.revealController.leftViewController)
     {
@@ -259,15 +258,18 @@
     }
 }
 
--(void)showMap {
-    if (self.revealController.focusedController == self.revealController.rightViewController)
-    {
-        [self.revealController showViewController:self.revealController.frontViewController];
-    }
-    else
-    {
-        [self.revealController showViewController:self.revealController.rightViewController];
-    }
+-(void)showMenu
+{
+    UserLoginViewController *userLoginVC = [[UserLoginViewController alloc] init];
+    [self.rootNavigationController pushViewController:userLoginVC animated:YES];
+//    if (self.revealController.focusedController == self.revealController.rightViewController)
+//    {
+//        [self.revealController showViewController:self.revealController.frontViewController];
+//    }
+//    else
+//    {
+//        [self.revealController showViewController:self.revealController.rightViewController];
+//    }
 }
 
 #pragma mark - Push Notifications Methods

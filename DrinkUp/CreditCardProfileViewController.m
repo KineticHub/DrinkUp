@@ -12,12 +12,12 @@
 #import "SharedDataHandler.h"
 #import "CreditCardProfileViewController.h"
 #import "QBFlatButton.h"
+#import "MBProgressHUD.h"
 
 @interface CreditCardProfileViewController ()
-@property (nonatomic, strong) UIView *upperView;
-@property (nonatomic) CAGradientLayer *maskLayer;
-@property (nonatomic) CGFloat upperViewHeight;
-@property (nonatomic, strong) UILabel *digitsLabel;
+@property (nonatomic, strong) UILabel *cardTypeDataLabel;
+@property (nonatomic, strong) UILabel *cardDigitsDataLabel;
+@property (nonatomic, strong) UILabel *cardExpirationDataLabel;
 @end
 
 @implementation CreditCardProfileViewController
@@ -26,64 +26,124 @@
 {
     [super viewDidLoad];
     
-    self.upperViewHeight = 150.0;
-    CGFloat upperViewHeight = self.upperViewHeight;
-    self.upperView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width - 10.0, upperViewHeight - 10.0)];
-    [self.upperView.layer setCornerRadius:8.0];
-    [self.upperView.layer setBorderColor:[[UIColor blackColor] CGColor]];
-    [self.upperView.layer setBorderWidth:4.0];
-    [self.upperView.layer setMasksToBounds:YES];
-    
-    UIView *shadowUpperView = [[UIView alloc] initWithFrame:CGRectMake(5.0, 5.0, self.view.frame.size.width - 10.0, upperViewHeight - 10.0)];
-    [shadowUpperView.layer setShadowRadius:4.0];
-    [shadowUpperView.layer setShadowOpacity:0.5];
-    [shadowUpperView.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
-    [shadowUpperView.layer setShadowColor:[[UIColor whiteColor] CGColor]];
-    [shadowUpperView addSubview:self.upperView];
-    [self.view addSubview:shadowUpperView];
-    //    [self.view addSubview:self.upperView];
-    
     UIView *background = [[UIView alloc] init];
     [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
-    UILabel *title = [[UILabel alloc] initWithFrame:CGRectMake(2.0, 2.0, self.upperView.frame.size.width - 4.0, 30.0)];
-    title.text = @"Credit Card Last 4 Digits:";
-    [self.upperView addSubview:title];
+    CGFloat y = 10.0;
+    CGFloat spacer = 10.0;
+    CGFloat edgeInset = 10.0;
+    CGFloat fieldWidth = 300.0;
+    CGFloat fieldHeight = 40.0;
     
-    self.digitsLabel = [[UILabel alloc] initWithFrame:CGRectMake(2.0, CGRectGetMaxY(title.frame) + 5.0, self.upperView.frame.size.width - 4.0, 30.0)];
-    [self.upperView addSubview:self.digitsLabel];
+    UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
+    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
+    [drinkUpLabel setTextColor:[UIColor whiteColor]];
+    [drinkUpLabel setText:@"Payment Info"];
+    [self.view addSubview:drinkUpLabel];
+    
+    y += drinkUpLabel.frame.size.height + spacer;
+    
+//    UILabel *cardTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [cardTypeLabel setBackgroundColor:[UIColor clearColor]];
+//    [cardTypeLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+//    [cardTypeLabel setTextAlignment:NSTextAlignmentLeft];
+//    [cardTypeLabel setTextColor:[UIColor whiteColor]];
+//    [cardTypeLabel setText:@"Card Type:"];
+//    [self.view addSubview:cardTypeLabel];
+//    
+//    y += cardTypeLabel.frame.size.height;
+    
+    NSString *cardTypeData = [NSString stringWithFormat:@"Card Type: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"]];
+    self.cardTypeDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
+    [self.cardTypeDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardTypeDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.cardTypeDataLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.cardTypeDataLabel setTextColor:[UIColor whiteColor]];
+    [self.cardTypeDataLabel setText:cardTypeData];
+    [self.view addSubview:self.cardTypeDataLabel];
+    
+    y += self.cardTypeDataLabel.frame.size.height;
+    
+//    UILabel *cardDigitsLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [cardDigitsLabel setBackgroundColor:[UIColor clearColor]];
+//    [cardDigitsLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+//    [cardDigitsLabel setTextAlignment:NSTextAlignmentLeft];
+//    [cardDigitsLabel setTextColor:[UIColor whiteColor]];
+//    [cardDigitsLabel setText:@"Last 4 Digits:"];
+//    [self.view addSubview:cardDigitsLabel];
+//    
+//    y += cardDigitsLabel.frame.size.height;
+    
+    NSString *cardDigitsData = [NSString stringWithFormat:@"Last 4 Digits: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
+    self.cardDigitsDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
+    [self.cardDigitsDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardDigitsDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.cardDigitsDataLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.cardDigitsDataLabel setTextColor:[UIColor whiteColor]];
+    [self.cardDigitsDataLabel setText:cardDigitsData];
+    [self.view addSubview:self.cardDigitsDataLabel];
+    
+    y += self.cardDigitsDataLabel.frame.size.height;
+    
+    NSString *cardExpirationData = [NSString stringWithFormat:@"Card Expiration: %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
+    self.cardExpirationDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
+    [self.cardExpirationDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardExpirationDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
+    [self.cardExpirationDataLabel setTextAlignment:NSTextAlignmentLeft];
+    [self.cardExpirationDataLabel setTextColor:[UIColor whiteColor]];
+    [self.cardExpirationDataLabel setText:cardExpirationData];
+    [self.view addSubview:self.cardExpirationDataLabel];
+    
+    y += self.cardDigitsDataLabel.frame.size.height + spacer * 2;
     
     QBFlatButton *changeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    changeCardButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
-    changeCardButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
+    changeCardButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+    changeCardButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
     changeCardButton.radius = 6.0;
     changeCardButton.margin = 4.0;
     changeCardButton.depth = 3.0;
     changeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [changeCardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [changeCardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [changeCardButton setTitle:@"Change Card" forState:UIControlStateNormal];
-    [changeCardButton setFrame:CGRectMake(10.0, CGRectGetMaxY(self.upperView.frame) + 15.0, self.view.frame.size.width - 20.0, 45.0)];
+    [changeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
     [changeCardButton addTarget:self action:@selector(cardImage) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changeCardButton];
     
+    y += changeCardButton.frame.size.height + spacer;
+    
     QBFlatButton *removeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    removeCardButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
-    removeCardButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
+    removeCardButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+    removeCardButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
     removeCardButton.radius = 6.0;
     removeCardButton.margin = 4.0;
     removeCardButton.depth = 3.0;
     removeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     [removeCardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [removeCardButton setTitle:@"Remove Card" forState:UIControlStateNormal];
-    [removeCardButton setFrame:CGRectMake(10.0, CGRectGetMaxY(changeCardButton.frame) + 5.0, self.view.frame.size.width - 20.0, 45.0)];
+    [removeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
     [removeCardButton addTarget:self action:@selector(removeCard) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:removeCardButton];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    self.digitsLabel.text = [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"];
+    [self refreshCardInfo];
+}
+
+-(void)refreshCardInfo
+{
+    NSLog(@"card info: %@", [SharedDataHandler sharedInstance].userCard);
+    
+    NSString *cardTypeData = [NSString stringWithFormat:@"Card Type: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"]];
+    NSString *cardDigitsData = [NSString stringWithFormat:@"Last 4 Digits: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
+    NSString *cardExpirationData = [NSString stringWithFormat:@"Card Expiration: %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
+    
+    self.cardTypeDataLabel.text = cardTypeData;
+    self.cardDigitsDataLabel.text = cardDigitsData;
+    self.cardExpirationDataLabel.text = cardExpirationData;
 }
 
 -(void)cardImage
@@ -95,6 +155,10 @@
 
 -(void)changeCard:(CardIOCreditCardInfo *)info
 {
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Updating Card";
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+    
     NSError *error;
     BalancedHelper *balanced = [[BalancedHelper alloc] initWithMarketplaceURI:[SharedDataHandler sharedInstance].marketplace];
     BPHCard *card = [[BPHCard alloc] initWithNumber:info.cardNumber andExperationMonth:[NSString stringWithFormat:@"%i", info.expiryMonth] andExperationYear:[NSString stringWithFormat:@"%i", info.expiryYear] andSecurityCode:info.cvv];
@@ -104,11 +168,15 @@
     NSLog(@"%@ and %@", [NSString stringWithFormat:@"%i", info.expiryMonth],  [NSString stringWithFormat:@"%i", info.expiryYear]);
     NSDictionary *response = [balanced tokenizeCard:card error:&error];
     
-    if (!error) {
+    if (!error)
+    {
         NSLog(@"%@", response);
         NSLog(@"Current User Info: %@", [[SharedDataHandler sharedInstance] userInformation]);
         if ([[response objectForKey:@"status_code"] intValue] == 409)
         {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
             NSLog(@"409 error");
             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Not Validated"
                                                               message:@"It appears there was an issue validating your card. Please check that the card number, security code, and expiration date are correct."
@@ -119,31 +187,86 @@
         }
         else
         {
-            [[SharedDataHandler sharedInstance] userUpdateCardInfo:[NSMutableDictionary dictionaryWithDictionary:response]];
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Updated"
-                                                              message:@"Your credit card has been successfully updated."
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Okay"
-                                                    otherButtonTitles:nil];
-            [message show];
+                [[SharedDataHandler sharedInstance] userUpdateCardInfo:[NSMutableDictionary dictionaryWithDictionary:response] withSuccess:^(bool successful)
+                {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    });
+                    
+                    if (successful)
+                    {
+                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Updated"
+                                                                          message:@"Your credit card has been successfully updated."
+                                                                         delegate:self
+                                                                cancelButtonTitle:@"Okay"
+                                                                otherButtonTitles:nil];
+                        [message show];
+                        
+                        [self refreshCardInfo];
+                    }
+                    else
+                    {
+                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Update Error"
+                                                                          message:@"There was an error updating the card information. It may be the connecion or an issue on ur side. Please let us know if this continues to occur and we will help you resolve it as quickly as possible."
+                                                                         delegate:self
+                                                                cancelButtonTitle:@"Okay"
+                                                                otherButtonTitles:nil];
+                        [message show];
+                    }
+                }];
         }
     }
-    else {
-        NSLog(@"%@", [error description]);
-    }
-}
-
--(void)removeCard
-{
-    NSLog(@"remove card does not work yet");
-    [[SharedDataHandler sharedInstance] userInvalidateCurrentCard:^(bool successful) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Removed"
-                                                          message:@"Your credit card has been successfully removed. Please keep in mind that you cannot place orders until you associate a credit card with your account."
+    else
+    {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [MBProgressHUD hideHUDForView:self.view animated:YES];
+        });
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Update Error"
+                                                          message:[error description]
                                                          delegate:self
                                                 cancelButtonTitle:@"Okay"
                                                 otherButtonTitles:nil];
         [message show];
-    }];
+        NSLog(@"%@", [error description]);
+    }
+        });
+}
+
+-(void)removeCard
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Removing Card";
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] userInvalidateCurrentCard:^(bool successful)
+        {
+            if (successful)
+            {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Removed"
+                                                                  message:@"Your credit card has been successfully removed. Please keep in mind that you cannot place orders until you associate a credit card with your account."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Okay"
+                                                        otherButtonTitles:nil];
+                [message show];
+                
+                [self refreshCardInfo];
+            }
+            else
+            {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                                  message:@"There was an error removing your credit card. This may be a result of a poor internet connection or a mistake on our end. Please try again, or contact us and we will help you resolve this issue quickly."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Okay"
+                                                        otherButtonTitles:nil];
+                [message show];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [MBProgressHUD hideHUDForView:self.view animated:YES];
+            });
+        }];
+        
+    });
 }
 
 - (void)userDidCancelPaymentViewController:(CardIOPaymentViewController *)scanViewController {

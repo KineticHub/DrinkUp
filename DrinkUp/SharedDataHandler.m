@@ -114,7 +114,7 @@ static id _instance;
             [tempDict setObject:[bar objectForKey:@"pk"] forKey:@"id"];
             [bars addObject:tempDict];
         }
-        NSLog(@"bars: %@", bars);
+//        NSLog(@"bars: %@", bars);
         completionBlock(bars);
     }];
 }
@@ -276,10 +276,13 @@ static id _instance;
         AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-            NSLog(@"response string: %@ ", [responseObject objectAtIndex:0]);
-//            self.userInformation = [[NSMutableDictionary alloc] initWithDictionary:[responseObject objectAtIndex:0]];
-            NSLog(@"username: %@", [[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"username"]);
-            [self.userInformation setObject:[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
+            NSLog(@"response string: %@ ", responseObject);
+            
+            [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
+            
+            [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
+            
+            [self.userInformation setObject:[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
             
             NSString *ua_username;
             if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
@@ -331,6 +334,8 @@ static id _instance;
             NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
             NSLog(@"response string: %@ ", operation.responseString);
             [self userIsAuthenticated:nil];
+            self.userCard = [[NSMutableDictionary alloc] init];
+            self.userInformation = [[NSMutableDictionary alloc] init];
             successBlock(YES);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"error: %@", operation.responseString);
@@ -364,15 +369,17 @@ static id _instance;
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-            NSLog(@"response string: %@ ", operation.responseString);
+            NSLog(@"response string: %@ ", [[responseObject objectFromJSONData] objectAtIndex:1]);
+            
+            id responseDictionary = [[responseObject objectFromJSONData] objectAtIndex:0];
+            id responseDictionary2 = [[responseObject objectFromJSONData] objectAtIndex:1];
             
             NSString *ua_username;
-            if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
-                ua_username = [NSString stringWithFormat:@"appuser%i", [[[[responseObject objectAtIndex:0] objectForKey:@"user"] objectForKey:@"pk"] intValue]];
-            } else {
-                ua_username = [NSString stringWithFormat:@"appuser%i", [[[responseObject objectAtIndex:0] objectForKey:@"pk"] intValue]];
-                
-            }
+            ua_username = [NSString stringWithFormat:@"appuser%i", [[responseDictionary objectForKey:@"pk"] intValue]];
+            [self.userInformation setObject:[[responseDictionary objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
+            [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
+            [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
+
             [self.userInformation setObject:ua_username forKey:@"ua_username"];
             [self userIsAuthenticated:^(bool successful)
              {
@@ -399,6 +406,22 @@ static id _instance;
             {
                 UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Email Registered"
                                                                   message:@"This email is already registered in our system. If you believe this is a mistake, please let us know and we will investigate it immediately."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Okay"
+                                                        otherButtonTitles:nil];
+                [message show];
+            } else if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"invalid email"])
+            {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Email Invalid"
+                                                                  message:@"It seems that the email provided is invalid. If you think this is an error, please email us and we will investigate it further."
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Okay"
+                                                        otherButtonTitles:nil];
+                [message show];
+            } else
+            {
+                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Sign Up Error"
+                                                                  message:@"There was an error creating your account. Please make sure that you have entered a valid email address"
                                                                  delegate:self
                                                         cancelButtonTitle:@"Okay"
                                                         otherButtonTitles:nil];
@@ -441,13 +464,13 @@ static id _instance;
     }];
 }
 
--(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse
+-(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse withSuccess:(SuccessCompletionBlock)successBlock
 {
     NSLog(@"card information: %@", cardResponse);
     if (!self.csrfToken)
     {
         [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-            [self userUpdateCardInfo:cardResponse];
+            [self userUpdateCardInfo:cardResponse withSuccess:successBlock];
         }];
         
     } else {
@@ -464,11 +487,13 @@ static id _instance;
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"cc update operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-            NSLog(@"cc response string: %@ ", operation.responseString);
+            NSLog(@"cc response: %@ ", [responseObject objectFromJSONData]);
+            self.userCard = [NSMutableDictionary dictionaryWithDictionary:[responseObject objectFromJSONData]];
             [self userIsAuthenticated:nil];
-            //            [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
+            successBlock(YES);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             NSLog(@"cc update error: %@", operation.responseString);
+            successBlock(NO);
         }];
         
         [self.queue addOperation:operation];
@@ -487,9 +512,14 @@ static id _instance;
         [self JSONWithPath:requestPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
         {
             NSLog(@"user card returned: %@", JSON);
-            NSLog(@"respponse: %@", response);
-            NSLog(@"error: %@", error);
-            self.userCard = [NSMutableDictionary dictionaryWithDictionary:JSON];
+            NSLog(@"user card response: %@", response);
+            NSLog(@"user card error: %@", error);
+            
+            if ([[JSON objectForKey:@"card_type"] isEqualToString:@"none"]) {
+                NSLog(@"No Card Found");
+            } else {
+                self.userCard = [NSMutableDictionary dictionaryWithDictionary:JSON];
+            }
         }];
     }
 }
@@ -541,11 +571,18 @@ static id _instance;
          {
              NSLog(@"profile pic operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
              NSLog(@"user profile pic response object: %@", [responseObject objectFromJSONData]);
+             [self.userInformation setObject:[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
              successBlock(YES);
          }
         failure:^(AFHTTPRequestOperation *operation, NSError *error)
          {
              NSLog(@"user update profile pic error: %@", operation.responseString);
+             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Image Upload Failed"
+                                                               message:@"There was an error with the image upload. It may be the internet connection or something on our side. Try again in a little bit. If you keep having issues, let us know and we will investigate the problem."
+                                                              delegate:self
+                                                     cancelButtonTitle:@"Okay"
+                                                     otherButtonTitles:nil];
+             [message show];
              successBlock(NO);
          }];
         
@@ -790,6 +827,7 @@ static id _instance;
         [self.userInformation setObject:[result objectForKey:@"id"] forKey:@"fb_id"];
         [self.userInformation setObject:[result objectForKey:@"username"] forKey:@"fb_username"];
         [self.userInformation setObject:[result objectForKey:@"first_name"] forKey:@"fb_firstname"];
+        [self.userInformation setObject:[result objectForKey:@"email"] forKey:@"email"];
         
         [self userLoginFacebookOnServer:userFacebookInfo withSuccess:^(bool successful) {
         }];

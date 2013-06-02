@@ -12,6 +12,7 @@
 		9C17CBD91758FA3400D0EA17 /* AWSRuntime.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C17CBD81758FA3200D0EA17 /* AWSRuntime.framework */; };
 		9C17CBDB1758FA4800D0EA17 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */; };
 		9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CBDC175A652B00D0EA17 /* black_thread.png */; };
+		9C17CBE0175B79DF00D0EA17 /* DrinkUpLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */; };
 		9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3D16F280EE002796B2 /* Icon_57x57.png */; };
 		9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3E16F280EE002796B2 /* Icon_114x114.png */; };
 		9C225E4A16F5CFC8002796B2 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4316F5CFC8002796B2 /* REMenu.m */; };
@@ -164,6 +165,8 @@
 		9C17CBD81758FA3200D0EA17 /* AWSRuntime.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSRuntime.framework; path = "../../../Documents/aws-ios-sdk-1.6.0/AWSRuntime.framework"; sourceTree = "<group>"; };
 		9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AWSS3.framework; path = "../../../Documents/aws-ios-sdk-1.6.0/AWSS3.framework"; sourceTree = "<group>"; };
 		9C17CBDC175A652B00D0EA17 /* black_thread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_thread.png; sourceTree = "<group>"; };
+		9C17CBDE175B79DF00D0EA17 /* DrinkUpLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkUpLoginViewController.h; sourceTree = "<group>"; };
+		9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkUpLoginViewController.m; sourceTree = "<group>"; };
 		9C225E3D16F280EE002796B2 /* Icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57x57.png; sourceTree = "<group>"; };
 		9C225E3E16F280EE002796B2 /* Icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114x114.png; sourceTree = "<group>"; };
 		9C225E4216F5CFC8002796B2 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
@@ -1035,6 +1038,8 @@
 			children = (
 				9C8B70E316DD954D00FB80AF /* UserLoginViewController.h */,
 				9C8B70E416DD954D00FB80AF /* UserLoginViewController.m */,
+				9C17CBDE175B79DF00D0EA17 /* DrinkUpLoginViewController.h */,
+				9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */,
 			);
 			name = "Email Login";
 			sourceTree = "<group>";
@@ -1275,6 +1280,7 @@
 				9CF053641739023C00351DA4 /* BPHCard.m in Sources */,
 				9CF053671739030400351DA4 /* BPHUtils.m in Sources */,
 				9C17CBD717566F3200D0EA17 /* BasicCell.m in Sources */,
+				9C17CBE0175B79DF00D0EA17 /* DrinkUpLoginViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1323,7 +1329,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				"OTHER_LDFLAGS[arch=*]" = "-lxml2";
-				PROVISIONING_PROFILE = "091197E9-8B63-4D99-B200-AA368A30501B";
+				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -1352,7 +1358,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "091197E9-8B63-4D99-B200-AA368A30501B";
+				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "091197E9-8B63-4D99-B200-AA368A30501B";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;

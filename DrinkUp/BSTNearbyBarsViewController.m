@@ -130,6 +130,7 @@
                 NSDictionary *barSection = [objects objectAtIndex:0];
                 [SharedDataHandler sharedInstance].current_section = [[barSection objectForKey:@"id"] intValue];
                 
+                
                 BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
                 [self.navigationController pushViewController:selectionView animated:YES];
                 

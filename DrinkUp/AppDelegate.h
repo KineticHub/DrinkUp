@@ -14,6 +14,7 @@
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) UserLoginViewController* loginViewController;
 @property BOOL isNavigating;
+@property (nonatomic, strong) UINavigationController *rootNavigationController;
 
 // FBSample logic
 // In this sample the app delegate maintains a property for the current
