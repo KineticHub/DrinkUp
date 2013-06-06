@@ -13,7 +13,7 @@
 
 #define BOTTOM_BAR_TAG 55155
 
-@interface BasicSplitTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
+@interface BasicSplitTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 @property (nonatomic, strong) UIView *upperView;
 @property (nonatomic, strong) UITableView *tableView;
 

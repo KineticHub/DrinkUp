@@ -10,8 +10,6 @@
 #import "DrinkSelectCell.h"
 
 @interface DrinkSelectCell ()
-@property (nonatomic, strong) UILabel *drinkCountLabel;
-@property (nonatomic, strong) UILabel *drinkCostLabel;
 @end
 
 @implementation DrinkSelectCell
@@ -54,7 +52,8 @@
     return self;
 }
 
--(void)layoutSubviews {
+-(void)layoutSubviews
+{
     [super layoutSubviews];
     
     [self.cellImageView setHidden:YES];

@@ -99,11 +99,14 @@
     
     NSDictionary *drink = [self.drinks objectAtIndex:[indexPath section]];
     
-    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
-    
     cell.textLabel.text = [drink objectForKey:@"name"];
-    [cell setCostLabelAmount:priceString];
     [cell setDrinkQuantity:[[drink objectForKey:@"quantity"] intValue]];
+    
+    if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+        [cell setCostLabelAmount:[NSString stringWithFormat:@"$%@", [drink objectForKey:@"happyhour_price"]]];
+    } else {
+        [cell setCostLabelAmount:[NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]]];
+    }
     
     return cell;
 }
@@ -145,7 +148,15 @@
     [drinkNameLabel setTextColor:[UIColor blackColor]];
 //    [drinkInfoView addSubview:drinkNameLabel];
     
-    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
+    NSString *priceString;
+    
+    if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+        priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"happyhour_price"]];
+    } else {
+        priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
+    }
+    
+    
     UILabel *drinkPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkNameLabel.frame), 320.0, 45.0)];
     [drinkPriceLabel setText:priceString];
     [drinkPriceLabel setTextAlignment:NSTextAlignmentCenter];

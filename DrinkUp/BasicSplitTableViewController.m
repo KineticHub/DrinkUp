@@ -8,6 +8,7 @@
 
 #import "BasicSplitTableViewController.h"
 #import "ConfirmOrderViewController.h"
+#import "UserLoginViewController.h"
 
 #define BOTTOM_BAR_HEIGHT 60.0
 
@@ -40,6 +41,21 @@ static bool isShowingBottomBar = NO;
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
+    
+    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(showUserProfile)];
+    self.navigationItem.rightBarButtonItem = settingsButton;
+    
+    // Create the refresh, fixed-space (optional), and profile buttons.
+    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(showUserProfile)];
+    
+    //    // Optional: if you want to add space between the refresh & profile buttons
+    //    UIBarButtonItem *fixedSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
+    //    fixedSpaceBarButtonItem.width = 12;
+    
+    UIBarButtonItem *profileBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
+    profileBarButtonItem.style = UIBarButtonItemStyleBordered;
+    
+    self.navigationItem.rightBarButtonItems = @[profileBarButtonItem, /* fixedSpaceBarButtonItem, */ refreshBarButtonItem];
 
     self.bottomBarHeight = BOTTOM_BAR_HEIGHT;
     
@@ -51,10 +67,10 @@ static bool isShowingBottomBar = NO;
     [self.upperView.layer setMasksToBounds:YES];
     
     UIView *shadowUpperView = [[UIView alloc] initWithFrame:CGRectMake(5.0, 5.0, self.view.frame.size.width - 10.0, upperViewHeight - 10.0)];
-    [shadowUpperView.layer setShadowRadius:4.0];
-    [shadowUpperView.layer setShadowOpacity:0.5];
-    [shadowUpperView.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
-    [shadowUpperView.layer setShadowColor:[[UIColor whiteColor] CGColor]];
+//    [shadowUpperView.layer setShadowRadius:4.0];
+//    [shadowUpperView.layer setShadowOpacity:0.5];
+//    [shadowUpperView.layer setShadowOffset:CGSizeMake(1.0, 1.0)];
+//    [shadowUpperView.layer setShadowColor:[[UIColor whiteColor] CGColor]];
     [shadowUpperView addSubview:self.upperView];
     [self.view addSubview:shadowUpperView];
 //    [self.view addSubview:self.upperView];
@@ -164,21 +180,21 @@ static bool isShowingBottomBar = NO;
 {
     NSLog(@"Should Show: %i Is Showing: %i", shouldShow, isShowingBottomBar);
     if (shouldShow != isShowingBottomBar) {
-        [UIView animateWithDuration:duration animations:^{
-            CGRect bottomBarFrame = bottomBar.frame;
-            CGRect tableViewFrame = self.tableView.frame;
-            
-            if (shouldShow) {
-                bottomBarFrame.origin.y -= self.bottomBarHeight;
-                tableViewFrame.size.height -= self.bottomBarHeight;
-            } else {
-                bottomBarFrame.origin.y += self.bottomBarHeight;
-                tableViewFrame.size.height += self.bottomBarHeight;
-            }
-            
-            [bottomBar setFrame:bottomBarFrame];
-            [self.tableView setFrame:tableViewFrame];
-        }];
+//        [UIView animateWithDuration:duration animations:^{
+//            CGRect bottomBarFrame = bottomBar.frame;
+//            CGRect tableViewFrame = self.tableView.frame;
+//            
+//            if (shouldShow) {
+//                bottomBarFrame.origin.y -= self.bottomBarHeight;
+//                tableViewFrame.size.height -= self.bottomBarHeight;
+//            } else {
+//                bottomBarFrame.origin.y += self.bottomBarHeight;
+//                tableViewFrame.size.height += self.bottomBarHeight;
+//            }
+//            
+//            [bottomBar setFrame:bottomBarFrame];
+//            [self.tableView setFrame:tableViewFrame];
+//        }];
         
         isShowingBottomBar = !isShowingBottomBar;
     }
@@ -206,6 +222,42 @@ static bool isShowingBottomBar = NO;
         bottomBarFrame.origin.y += bottomBar.frame.size.height;
         [bottomBar setFrame:bottomBarFrame];
     }];
+}
+
+-(void) showLeavingOptions {
+    
+    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0) {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
+                                                          message:@"Leaving this bar will clear any drinks currently selected at this bar."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Clear Drinks", nil];
+        [message show];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+-(void)showUserProfile
+{
+    UserLoginViewController *userLoginVC = [[UserLoginViewController alloc] init];
+    [self.navigationController pushViewController:userLoginVC animated:YES];
+}
+
+#pragma mark - UIAlertView Method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Clear Drinks"])
+    {
+        NSLog(@"Clearing Drinks");
+        [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
+        [self.navigationController popViewControllerAnimated:YES];
+        
+    } else if([title isEqualToString:@"Cancel"])
+    {
+        NSLog(@"Cancelling");
+    }
 }
 
 #pragma mark - Confirm Order Button Method

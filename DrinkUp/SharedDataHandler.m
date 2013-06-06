@@ -7,6 +7,7 @@
 //
 
 #import <UAPush.h>
+#import <AWSS3/AWSS3.h>
 #import "SharedDataHandler.h"
 #import "AFJSONRequestOperation.h"
 #import "AFHTTPRequestOperation.h"
@@ -64,6 +65,44 @@ static id _instance;
     self.userInformation = [[NSMutableDictionary alloc] init];
     self.currentDrinkOrder = [[NSMutableArray alloc] init];
     self.marketplace = @"/v1/marketplaces/TEST-MP2TVu9e2qymz5T2C1RdEdPs";
+}
+
+-(bool)isBarHappyHour
+{
+    NSString *startTime = [self.currentBar objectForKey:@"happyhour_start"];
+    NSString *endTime = [self.currentBar objectForKey:@"happyhour_end"];
+    
+//    NSDateFormatter *timeFormat = [[NSDateFormatter alloc] init];
+//    [timeFormat setDateFormat:@"HH:mm:ss"];
+//    NSDate *date = [timeFormat dateFromString:startTime];
+    
+    NSDateComponents *components = [[NSCalendar currentCalendar] components:NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit fromDate:[NSDate date]];
+    NSInteger currHr = [components hour];
+    NSInteger currtMin = [components minute];
+    
+    int stHr = [[[startTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
+    int stMin = [[[startTime componentsSeparatedByString:@":"] objectAtIndex:1] intValue];
+    int enHr = [[[endTime componentsSeparatedByString:@":"] objectAtIndex:0] intValue];
+    int enMin = [[[endTime componentsSeparatedByString:@":"] objectAtIndex:1] intValue];
+    
+    int formStTime = (stHr*60)+stMin;
+    int formEnTime = (enHr*60)+enMin;
+    int nowTime = (currHr*60)+currtMin;
+    
+    NSLog(@"now time: %i", nowTime);
+    NSLog(@"start time: %i", formStTime);
+    NSLog(@"end time: %i", formEnTime);
+    
+    if(nowTime >= formStTime && nowTime <= formEnTime)
+    {
+        NSLog(@"currently happy hour");
+        return YES;
+    }
+    else
+    {
+        NSLog(@"not happy hour");
+        return NO;
+    }
 }
 
 -(void)loadUserLocation {
@@ -189,6 +228,23 @@ static id _instance;
     }];
 }
 
+-(void)loadDrinksForOrder:(int)order_id onCompletion:(ObjectsCompletionBlock)completionBlock
+{
+    NSString *drinksPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/orders/drinks/?order_id=%i", order_id];
+    [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
+    {
+        NSMutableArray *drinks = [[NSMutableArray alloc] init];
+        NSMutableDictionary *tempDict;
+        for (NSDictionary *drink in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[drink objectForKey:@"fields"]];
+            [tempDict setObject:[drink objectForKey:@"pk"] forKey:@"id"];
+            [drinks addObject:tempDict];
+        }
+        NSLog(@"drinks: %@", tempDict);
+        completionBlock(drinks);
+    }];
+}
+
 #pragma mark - Primary JSON call and Certificate validation
 - (void)JSONWithPath:(NSString *)requestPath onCompletion:(JsonRequestCompletionBlock)completionBlock {
     
@@ -282,16 +338,20 @@ static id _instance;
             
             [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
             
-            [self.userInformation setObject:[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
-            
             NSString *ua_username;
             if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
-                ua_username = [NSString stringWithFormat:@"appuser%i", [[[[responseObject objectAtIndex:0] objectForKey:@"user"] objectForKey:@"pk"] intValue]];
+                ua_username = [NSString stringWithFormat:@"appuser%i", [[[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"] intValue]];
             } else {
                 ua_username = [NSString stringWithFormat:@"appuser%i", [[[responseObject objectAtIndex:0] objectForKey:@"pk"] intValue]];
                 
             }
             [self.userInformation setObject:ua_username forKey:@"ua_username"];
+            
+            if([[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image_saved"] boolValue] && ![self pictureExistsLocally])
+            {
+                NSLog(@"saving picture locally");
+                [self saveUserPictureLocally];
+            }
             [self userIsAuthenticated:^(bool successful)
             {
 //                NSLog(@"setting push enabled");
@@ -347,7 +407,7 @@ static id _instance;
 
 -(void)userCreateOnServer:(NSMutableDictionary *)userDictionary withSuccess:(SuccessCompletionBlock)successBlock {
     
-    NSLog(@"create user on serer started");
+    NSLog(@"create user on server started");
     
     if (!self.csrfToken)
     {
@@ -369,18 +429,17 @@ static id _instance;
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
             NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-            NSLog(@"response string: %@ ", [[responseObject objectFromJSONData] objectAtIndex:1]);
+            NSLog(@"response object user create: %@ ", [responseObject objectFromJSONData]);
             
             id responseDictionary = [[responseObject objectFromJSONData] objectAtIndex:0];
             id responseDictionary2 = [[responseObject objectFromJSONData] objectAtIndex:1];
             
             NSString *ua_username;
             ua_username = [NSString stringWithFormat:@"appuser%i", [[responseDictionary objectForKey:@"pk"] intValue]];
-            [self.userInformation setObject:[[responseDictionary objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
             [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
             [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
-
             [self.userInformation setObject:ua_username forKey:@"ua_username"];
+            
             [self userIsAuthenticated:^(bool successful)
              {
                  //                NSLog(@"setting push enabled");
@@ -546,47 +605,148 @@ static id _instance;
     }
 }
 
--(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock
+-(void)updateUserProfileImageSaved:(SuccessCompletionBlock)successBlock
 {
     if (!self.csrfToken)
     {
         [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-            [self userUpdateProfilePicture:imageURL withSuccess:successBlock];
+            [self updateUserProfileImageSaved:successBlock];
         }];
     } else {
-        NSMutableDictionary *sendDict = [[NSMutableDictionary alloc] init];
-        [sendDict setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
-        [sendDict setObject:imageURL forKey:@"pictureURL"];
-        
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/update_picture/";
-        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-        
-        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
-        NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDict];
-        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
-        
-        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
-        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+        NSString *requestPath = @"https://DrinkUp-App.com/api/user/picture_saved/";
+        [self JSONWithPath:requestPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
          {
-             NSLog(@"profile pic operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
-             NSLog(@"user profile pic response object: %@", [responseObject objectFromJSONData]);
-             [self.userInformation setObject:[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
-             successBlock(YES);
-         }
-        failure:^(AFHTTPRequestOperation *operation, NSError *error)
-         {
-             NSLog(@"user update profile pic error: %@", operation.responseString);
-             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Image Upload Failed"
-                                                               message:@"There was an error with the image upload. It may be the internet connection or something on our side. Try again in a little bit. If you keep having issues, let us know and we will investigate the problem."
-                                                              delegate:self
-                                                     cancelButtonTitle:@"Okay"
-                                                     otherButtonTitles:nil];
-             [message show];
-             successBlock(NO);
+             NSLog(@"respponse: %@", response);
+             NSLog(@"error: %@", error);
+             if (!error)
+             {
+                 [self saveUserPictureLocally];
+                 successBlock(YES);
+             } else
+             {
+                 successBlock(NO);
+             }
          }];
-        
-        [self.queue addOperation:operation];
+    }
+}
+
+-(void)getUserOrderHistoryWithCompletion:(ObjectsCompletionBlock)completionBlock
+{    
+    NSString *orderHistoryPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/user/order_history/"];
+    [self JSONWithPath:orderHistoryPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
+    {
+        NSMutableArray *orderHistory = [[NSMutableArray alloc] init];
+        NSMutableDictionary *tempDict;
+        for (NSDictionary *order in JSON) {
+            tempDict = [[NSMutableDictionary alloc] initWithDictionary:[order objectForKey:@"fields"]];
+            [tempDict setObject:[order objectForKey:@"pk"] forKey:@"id"];
+            [orderHistory addObject:tempDict];
+        }
+        NSLog(@"order history: %@", orderHistory);
+        completionBlock(orderHistory);
+    }];
+}
+
+//-(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock
+//{
+//    if (!self.csrfToken)
+//    {
+//        [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+//            [self userUpdateProfilePicture:imageURL withSuccess:successBlock];
+//        }];
+//    } else {
+//        NSMutableDictionary *sendDict = [[NSMutableDictionary alloc] init];
+//        [sendDict setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
+//        [sendDict setObject:imageURL forKey:@"pictureURL"];
+//        
+//        NSString *requestPath = @"https://DrinkUp-App.com/api/user/picture_saved/";
+//        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+//        
+//        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+//        NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDict];
+//        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+//        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+//        
+//        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+//        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+//         {
+//             NSLog(@"profile pic operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+//             NSLog(@"user profile pic response object: %@", [responseObject objectFromJSONData]);
+//             [self.userInformation setObject:[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image"] forKey:@"profile_image"];
+//             [self saveUserPictureLocally];
+//             successBlock(YES);
+//         }
+//        failure:^(AFHTTPRequestOperation *operation, NSError *error)
+//         {
+//             NSLog(@"user update profile pic error: %@", operation.responseString);
+//             UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Image Upload Failed"
+//                                                               message:@"There was an error with the image upload. It may be the internet connection or something on our side. Try again in a little bit. If you keep having issues, let us know and we will investigate the problem."
+//                                                              delegate:self
+//                                                     cancelButtonTitle:@"Okay"
+//                                                     otherButtonTitles:nil];
+//             [message show];
+//             successBlock(NO);
+//         }];
+//        
+//        [self.queue addOperation:operation];
+//    }
+//}
+
+-(bool)pictureExistsLocally
+{
+    return ([self getUserProfileImage] != NULL);
+}
+
+-(void)saveUserPictureLocally
+{
+    NSString *fileName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
+    NSLog(@"filename save user profile image: %@", fileName);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    
+    AmazonS3Client *s3Client = [[AmazonS3Client alloc] initWithAccessKey:@"AKIAIXLT3ZDWWR7Q4YKA" withSecretKey:@"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"];
+    
+    NSOutputStream *stream = [[NSOutputStream alloc] initToFileAtPath:filePath append:NO];
+    [stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    [stream open];
+    
+    S3GetObjectRequest *request = [[S3GetObjectRequest alloc] initWithKey:fileName withBucket:@"DrinkUp-Users"];
+    request.outputStream = stream;
+    
+    [s3Client getObject:request];
+}
+
+-(UIImage *)getUserProfileImage
+{
+    NSString *fileName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
+    NSLog(@"filename get user profile image: %@", fileName);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    
+    UIImage *userImage = [[UIImage alloc] initWithContentsOfFile:filePath];
+    return userImage;
+}
+
+-(void)removeLocalProfilePicture
+{
+    NSString *fileName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
+    NSLog(@"filename get user profile image: %@", fileName);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectoryPath = [paths objectAtIndex:0];
+    NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
+    
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error;
+    BOOL fileExists = [fileManager fileExistsAtPath:filePath];
+    NSLog(@"Path to file: %@", filePath);
+    NSLog(@"File exists: %d", fileExists);
+    NSLog(@"Is deletable file at path: %d", [fileManager isDeletableFileAtPath:filePath]);
+    if (fileExists)
+    {
+        BOOL success = [fileManager removeItemAtPath:filePath error:&error];
+        if (!success) NSLog(@"Error: %@", [error localizedDescription]);
     }
 }
 
@@ -835,12 +995,6 @@ static id _instance;
     
     NSLog(@"Request Made: %@", [request graphPath]);
 	NSLog(@"Result of API call: \n%@", result);
-}
-
--(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
-{
-//    [self loadUserLocation];
-//    [self loadBarsWithLocation:^(NSMutableArray *objects) {}];
 }
 
 @end

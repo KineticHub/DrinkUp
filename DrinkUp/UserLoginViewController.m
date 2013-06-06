@@ -17,6 +17,7 @@
 #import "UserPictureViewController.h"
 #import "DrinkUpLoginViewController.h"
 #import "UIImageView+AFNetworking.h"
+#import "OrderHistorySelectionViewController.h"
 
 @interface UserLoginViewController ()
 @property (nonatomic, strong) UIImageView *profilePicView;
@@ -58,7 +59,7 @@
     if (self.isUpdatingProfilePicture)
     {
         self.isUpdatingProfilePicture = NO;
-        [self.profilePicView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"profile_image"]]];
+        [self.profilePicView setImage:[[SharedDataHandler sharedInstance] getUserProfileImage]];
     }
 }
 
@@ -200,8 +201,8 @@
 //    }
 //}
 
--(void)logoutFromServer:(id)sender {
-    
+-(void)logoutFromServer
+{    
     NSLog(@"Logout attempt");
     
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
@@ -288,7 +289,7 @@
     [self.profilePicView.layer setBorderWidth:5.0];
     [self.profilePicView.layer setCornerRadius:8.0];
     [self.profilePicView.layer setMasksToBounds:YES];
-    [self.profilePicView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"profile_image"]]];
+    [self.profilePicView setImage:[[SharedDataHandler sharedInstance] getUserProfileImage]];
     [self.view addSubview:self.profilePicView];
     
     if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid]) {
@@ -336,6 +337,21 @@
     
     y = CGRectGetMaxY(self.profilePicView.frame) + spacer * 2;
     
+    QBFlatButton *orderHistoryButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    orderHistoryButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+    orderHistoryButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+    orderHistoryButton.radius = 6.0;
+    orderHistoryButton.margin = 4.0;
+    orderHistoryButton.depth = 3.0;
+    orderHistoryButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    [orderHistoryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [orderHistoryButton setTitle:@"View Order History" forState:UIControlStateNormal];
+    [orderHistoryButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+    [orderHistoryButton addTarget:self action:@selector(transitionOrderHistory) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:orderHistoryButton];
+    
+    y += orderHistoryButton.frame.size.height + spacer;
+    
     QBFlatButton *changeProfileImageButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
     changeProfileImageButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
     changeProfileImageButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
@@ -379,7 +395,7 @@
     [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
     [logoutButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
-    [logoutButton addTarget:self action:@selector(logoutFromServer:) forControlEvents:UIControlEventTouchUpInside];
+    [logoutButton addTarget:self action:@selector(confirmLogout) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:logoutButton];
     
     y += logoutButton.frame.size.height + spacer;
@@ -687,6 +703,36 @@
     DrinkUpLoginViewController *drinkUpLoginVC = [[DrinkUpLoginViewController alloc] init];
     [self.navigationController presentViewController:drinkUpLoginVC animated:YES completion:^{
     }];
+}
+
+-(void)transitionOrderHistory
+{
+    OrderHistorySelectionViewController *drinkUpHistoryVC = [[OrderHistorySelectionViewController alloc] init];
+    [self.navigationController pushViewController:drinkUpHistoryVC animated:YES];
+}
+
+-(void)confirmLogout
+{
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Account Logout"
+                                                      message:@"Are you sure you want to logout of this account?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Logout", nil];
+    [message show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Cancel"])
+    {
+        NSLog(@"logout cancelled");
+    }
+    else if([title isEqualToString:@"Logout"])
+    {
+        NSLog(@"user logout");
+        [self logoutFromServer];
+    }
 }
 
 @end

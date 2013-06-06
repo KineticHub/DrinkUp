@@ -179,7 +179,13 @@
         
         NSDictionary *drink = [self.drinks objectAtIndex:[indexPath section]];
         
-        NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
+        NSString *priceKey;
+        if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+            priceKey = @"happyhour_price";
+        } else {
+            priceKey = @"price";
+        }
+        NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:priceKey]];
         
         cell.textLabel.text = [drink objectForKey:@"name"];
         cell.detailTextLabel.text = @"Price: $4.50\n Quantity: 0";

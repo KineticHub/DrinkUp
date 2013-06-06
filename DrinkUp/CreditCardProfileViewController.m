@@ -124,7 +124,7 @@
     [removeCardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [removeCardButton setTitle:@"Remove Card" forState:UIControlStateNormal];
     [removeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
-    [removeCardButton addTarget:self action:@selector(removeCard) forControlEvents:UIControlEventTouchUpInside];
+    [removeCardButton addTarget:self action:@selector(confirmRemoveCard) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:removeCardButton];
 }
 
@@ -283,6 +283,30 @@
     {
         [self changeCard:info];
     }];
+}
+
+-(void)confirmRemoveCard
+{
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Remove Credit Card"
+                                                      message:@"Are you sure you want to remove the credit card associated with your account? You will need to provide a new one before being able to order."
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Remove", nil];
+    [message show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Cancel"])
+    {
+        NSLog(@"Cancel was selected.");
+    }
+    else if([title isEqualToString:@"Remove"])
+    {
+        NSLog(@"Remove was selected.");
+        [self removeCard];
+    }
 }
 
 @end

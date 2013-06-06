@@ -138,7 +138,7 @@
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [self.rootNavigationController.view addSubview:background];
     [self.rootNavigationController.view sendSubviewToBack:background];
-    [self.rootNavigationController.navigationBar setTintColor:[UIColor darkGrayColor]];
+    [self.rootNavigationController.navigationBar setTintColor:[UIColor darkTextColor]];
 //    [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     [self.revealController.view addSubview:background];

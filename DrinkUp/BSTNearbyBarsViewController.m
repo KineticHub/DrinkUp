@@ -10,6 +10,7 @@
 #import "BSTDrinkTypeViewController.h"
 #import "DrinkSelectionsViewController.h"
 #import "SelectBarSectionViewController.h"
+#import "CollapsableDrinkViewController.h"
 
 @interface BSTNearbyBarsViewController ()
 @property (nonatomic, strong) NSMutableArray *bars;
@@ -50,6 +51,8 @@
     self.mapView = [[MKMapView alloc] initWithFrame:self.upperView.frame];
     [self.mapView setShowsUserLocation:YES];
     [self.upperView addSubview:self.mapView];
+    
+    [self.tableView setRowHeight:90.0];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -107,7 +110,7 @@
     cell.detailTextLabel.text = address;
     [cell.detailTextLabel setNumberOfLines:2];
     //@" $:  Mon - Thurs, 5pm - 7pm\n@:  %@", [bar objectForKey:@"address"]];
-//    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
+    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
     
     return cell;
 }
@@ -129,10 +132,14 @@
             if ([objects count] == 1) {
                 NSDictionary *barSection = [objects objectAtIndex:0];
                 [SharedDataHandler sharedInstance].current_section = [[barSection objectForKey:@"id"] intValue];
+                [SharedDataHandler sharedInstance].currentBar = [NSDictionary dictionaryWithDictionary:barSection];
                 
                 
-                BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
-                [self.navigationController pushViewController:selectionView animated:YES];
+//                BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+//                [self.navigationController pushViewController:selectionView animated:YES];
+                
+                CollapsableDrinkViewController *test = [[CollapsableDrinkViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+                [self.navigationController pushViewController:test animated:YES];
                 
 //                if ([indexPath section] == 1) {
 //                    BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];

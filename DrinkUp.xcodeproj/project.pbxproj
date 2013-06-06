@@ -13,6 +13,9 @@
 		9C17CBDB1758FA4800D0EA17 /* AWSS3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C17CBDA1758FA4800D0EA17 /* AWSS3.framework */; };
 		9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C17CBDC175A652B00D0EA17 /* black_thread.png */; };
 		9C17CBE0175B79DF00D0EA17 /* DrinkUpLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */; };
+		9C17CBE3175D605100D0EA17 /* OrderHistoryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBE2175D604F00D0EA17 /* OrderHistoryCell.m */; };
+		9C17CBE6175D618D00D0EA17 /* OrderHistorySelectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBE5175D618D00D0EA17 /* OrderHistorySelectionViewController.m */; };
+		9C17CBE9175EB9FE00D0EA17 /* OrderHistoryInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C17CBE8175EB9FD00D0EA17 /* OrderHistoryInfoViewController.m */; };
 		9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3D16F280EE002796B2 /* Icon_57x57.png */; };
 		9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C225E3E16F280EE002796B2 /* Icon_114x114.png */; };
 		9C225E4A16F5CFC8002796B2 /* REMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C225E4316F5CFC8002796B2 /* REMenu.m */; };
@@ -68,6 +71,12 @@
 		9C736FB8174E110C0056713F /* AirshipConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C736FB7174E110C0056713F /* AirshipConfig.plist */; };
 		9C7AFBDD16F7A0DE0010BA43 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AFBDC16F7A0DE0010BA43 /* QBFlatButton.m */; };
 		9C7D290216F7935200CDA4B8 /* DrinkUp-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5A416CD89F800D548F2 /* DrinkUp-Info.plist */; };
+		9C8039BB17601B16008EFC5C /* CollapsableDrinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039BA17601B16008EFC5C /* CollapsableDrinkViewController.m */; };
+		9C8039C517601B66008EFC5C /* CollapseClick.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039BF17601B66008EFC5C /* CollapseClick.m */; };
+		9C8039C617601B66008EFC5C /* CollapseClickArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039C117601B66008EFC5C /* CollapseClickArrow.m */; };
+		9C8039C717601B66008EFC5C /* CollapseClickCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039C317601B66008EFC5C /* CollapseClickCell.m */; };
+		9C8039C817601B66008EFC5C /* CollapseClickCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9C8039C417601B66008EFC5C /* CollapseClickCell.xib */; };
+		9C8039CB176031CA008EFC5C /* NewDrinkSelectCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039CA176031CA008EFC5C /* NewDrinkSelectCell.m */; };
 		9C8B70B116DD901900FB80AF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B703F16DD901800FB80AF /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9C8B70B216DD901900FB80AF /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B704116DD901800FB80AF /* FacebookSDKResources.bundle */; };
 		9C8B70B316DD901900FB80AF /* FBAccessTokenData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B704316DD901800FB80AF /* FBAccessTokenData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -167,6 +176,12 @@
 		9C17CBDC175A652B00D0EA17 /* black_thread.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = black_thread.png; sourceTree = "<group>"; };
 		9C17CBDE175B79DF00D0EA17 /* DrinkUpLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DrinkUpLoginViewController.h; sourceTree = "<group>"; };
 		9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DrinkUpLoginViewController.m; sourceTree = "<group>"; };
+		9C17CBE1175D604B00D0EA17 /* OrderHistoryCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderHistoryCell.h; sourceTree = "<group>"; };
+		9C17CBE2175D604F00D0EA17 /* OrderHistoryCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderHistoryCell.m; sourceTree = "<group>"; };
+		9C17CBE4175D618C00D0EA17 /* OrderHistorySelectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderHistorySelectionViewController.h; sourceTree = "<group>"; };
+		9C17CBE5175D618D00D0EA17 /* OrderHistorySelectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderHistorySelectionViewController.m; sourceTree = "<group>"; };
+		9C17CBE7175EB9FC00D0EA17 /* OrderHistoryInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderHistoryInfoViewController.h; sourceTree = "<group>"; };
+		9C17CBE8175EB9FD00D0EA17 /* OrderHistoryInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderHistoryInfoViewController.m; sourceTree = "<group>"; };
 		9C225E3D16F280EE002796B2 /* Icon_57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_57x57.png; sourceTree = "<group>"; };
 		9C225E3E16F280EE002796B2 /* Icon_114x114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon_114x114.png; sourceTree = "<group>"; };
 		9C225E4216F5CFC8002796B2 /* REMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = REMenu.h; sourceTree = "<group>"; };
@@ -260,6 +275,17 @@
 		9C736FB7174E110C0056713F /* AirshipConfig.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = AirshipConfig.plist; sourceTree = "<group>"; };
 		9C7AFBDB16F7A0DE0010BA43 /* QBFlatButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QBFlatButton.h; sourceTree = "<group>"; };
 		9C7AFBDC16F7A0DE0010BA43 /* QBFlatButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QBFlatButton.m; sourceTree = "<group>"; };
+		9C8039B917601B16008EFC5C /* CollapsableDrinkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapsableDrinkViewController.h; sourceTree = "<group>"; };
+		9C8039BA17601B16008EFC5C /* CollapsableDrinkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapsableDrinkViewController.m; sourceTree = "<group>"; };
+		9C8039BE17601B66008EFC5C /* CollapseClick.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClick.h; sourceTree = "<group>"; };
+		9C8039BF17601B66008EFC5C /* CollapseClick.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClick.m; sourceTree = "<group>"; };
+		9C8039C017601B66008EFC5C /* CollapseClickArrow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickArrow.h; sourceTree = "<group>"; };
+		9C8039C117601B66008EFC5C /* CollapseClickArrow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickArrow.m; sourceTree = "<group>"; };
+		9C8039C217601B66008EFC5C /* CollapseClickCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CollapseClickCell.h; sourceTree = "<group>"; };
+		9C8039C317601B66008EFC5C /* CollapseClickCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CollapseClickCell.m; sourceTree = "<group>"; };
+		9C8039C417601B66008EFC5C /* CollapseClickCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CollapseClickCell.xib; sourceTree = "<group>"; };
+		9C8039C9176031CA008EFC5C /* NewDrinkSelectCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewDrinkSelectCell.h; sourceTree = "<group>"; };
+		9C8039CA176031CA008EFC5C /* NewDrinkSelectCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewDrinkSelectCell.m; sourceTree = "<group>"; };
 		9C8B703E16DD901800FB80AF /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		9C8B703F16DD901800FB80AF /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
 		9C8B704016DD901800FB80AF /* FacebookSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookSDK.h; sourceTree = "<group>"; };
@@ -600,6 +626,10 @@
 			children = (
 				9C69C5BD16CD8BD700D548F2 /* DrinkHistoryViewController.h */,
 				9C69C5BE16CD8BD700D548F2 /* DrinkHistoryViewController.m */,
+				9C17CBE4175D618C00D0EA17 /* OrderHistorySelectionViewController.h */,
+				9C17CBE5175D618D00D0EA17 /* OrderHistorySelectionViewController.m */,
+				9C17CBE7175EB9FC00D0EA17 /* OrderHistoryInfoViewController.h */,
+				9C17CBE8175EB9FD00D0EA17 /* OrderHistoryInfoViewController.m */,
 			);
 			name = "Drink History";
 			sourceTree = "<group>";
@@ -747,6 +777,7 @@
 		9C69C64C16CFF5C600D548F2 /* Imported */ = {
 			isa = PBXGroup;
 			children = (
+				9C8039BD17601B66008EFC5C /* CollapseClick */,
 				9C3F4AB916FFB91C00137FB7 /* JSONKit */,
 				9C7AFBD816F7A0C20010BA43 /* QBFlatButton */,
 				9C225E4E16F5DB40002796B2 /* PKRevealController */,
@@ -810,6 +841,7 @@
 		9C69C65816D00A2900D548F2 /* Drink Selection */ = {
 			isa = PBXGroup;
 			children = (
+				9C8039B817601AF5008EFC5C /* Collapse Drink Selection */,
 				9C8B713816E91D7400FB80AF /* BSTDrinkSelectionViewController.h */,
 				9C8B713916E91D7400FB80AF /* BSTDrinkSelectionViewController.m */,
 			);
@@ -878,6 +910,29 @@
 				9C7AFBDC16F7A0DE0010BA43 /* QBFlatButton.m */,
 			);
 			name = QBFlatButton;
+			sourceTree = "<group>";
+		};
+		9C8039B817601AF5008EFC5C /* Collapse Drink Selection */ = {
+			isa = PBXGroup;
+			children = (
+				9C8039B917601B16008EFC5C /* CollapsableDrinkViewController.h */,
+				9C8039BA17601B16008EFC5C /* CollapsableDrinkViewController.m */,
+			);
+			name = "Collapse Drink Selection";
+			sourceTree = "<group>";
+		};
+		9C8039BD17601B66008EFC5C /* CollapseClick */ = {
+			isa = PBXGroup;
+			children = (
+				9C8039BE17601B66008EFC5C /* CollapseClick.h */,
+				9C8039BF17601B66008EFC5C /* CollapseClick.m */,
+				9C8039C017601B66008EFC5C /* CollapseClickArrow.h */,
+				9C8039C117601B66008EFC5C /* CollapseClickArrow.m */,
+				9C8039C217601B66008EFC5C /* CollapseClickCell.h */,
+				9C8039C317601B66008EFC5C /* CollapseClickCell.m */,
+				9C8039C417601B66008EFC5C /* CollapseClickCell.xib */,
+			);
+			path = CollapseClick;
 			sourceTree = "<group>";
 		};
 		9C8B6F5916DD8F5E00FB80AF /* Facebook iOS SDK */ = {
@@ -1096,6 +1151,10 @@
 				9C8B713016E90F8C00FB80AF /* BasicSplitTableViewController.m */,
 				9C8B781F16ED68C300FB80AF /* DrinkSelectCell.h */,
 				9C8B782016ED68C500FB80AF /* DrinkSelectCell.m */,
+				9C17CBE1175D604B00D0EA17 /* OrderHistoryCell.h */,
+				9C17CBE2175D604F00D0EA17 /* OrderHistoryCell.m */,
+				9C8039C9176031CA008EFC5C /* NewDrinkSelectCell.h */,
+				9C8039CA176031CA008EFC5C /* NewDrinkSelectCell.m */,
 			);
 			name = TableView;
 			sourceTree = "<group>";
@@ -1170,6 +1229,7 @@
 				9C736FB8174E110C0056713F /* AirshipConfig.plist in Resources */,
 				9C17CBD4175661CA00D0EA17 /* stressed_linen.png in Resources */,
 				9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */,
+				9C8039C817601B66008EFC5C /* CollapseClickCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1281,6 +1341,14 @@
 				9CF053671739030400351DA4 /* BPHUtils.m in Sources */,
 				9C17CBD717566F3200D0EA17 /* BasicCell.m in Sources */,
 				9C17CBE0175B79DF00D0EA17 /* DrinkUpLoginViewController.m in Sources */,
+				9C17CBE3175D605100D0EA17 /* OrderHistoryCell.m in Sources */,
+				9C17CBE6175D618D00D0EA17 /* OrderHistorySelectionViewController.m in Sources */,
+				9C17CBE9175EB9FE00D0EA17 /* OrderHistoryInfoViewController.m in Sources */,
+				9C8039BB17601B16008EFC5C /* CollapsableDrinkViewController.m in Sources */,
+				9C8039C517601B66008EFC5C /* CollapseClick.m in Sources */,
+				9C8039C617601B66008EFC5C /* CollapseClickArrow.m in Sources */,
+				9C8039C717601B66008EFC5C /* CollapseClickCell.m in Sources */,
+				9C8039CB176031CA008EFC5C /* NewDrinkSelectCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

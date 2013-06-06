@@ -20,7 +20,7 @@
 {
     [super viewDidLoad];
     
-    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Drinks Claimed!" style:UIBarButtonItemStyleDone target:self action:@selector(drinkOrderCompleteExit)];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Drinks Claimed!" style:UIBarButtonItemStyleDone target:self action:@selector(confirmOrderReceived)];
     self.navigationItem.leftBarButtonItem = backButton;
     
     CGFloat yPosition = 20.0;
@@ -38,7 +38,7 @@
     yPosition += labelHeight + spacer;
     
     UILabel *claimInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition, labelWidth, labelHeight)];
-    [claimInfoLabel setText:@"Your code to claim your drink is"];
+    [claimInfoLabel setText:@"Your code to claim your order is"];
     [claimInfoLabel setTextAlignment:NSTextAlignmentCenter];
     [claimInfoLabel setTextColor:[UIColor whiteColor]];
     [claimInfoLabel setBackgroundColor:[UIColor clearColor]];
@@ -63,6 +63,30 @@
             [self.navigationController popToViewController:controller animated:YES];
             break;
         }
+    }
+}
+
+-(void)confirmOrderReceived
+{
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Order Claimed?"
+                                                      message:@"Did you claim your order?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Not yet"
+                                            otherButtonTitles:@"Yup!", nil];
+    [message show];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Not yet"])
+    {
+        NSLog(@"Not yet drink claimed");
+    }
+    else if([title isEqualToString:@"Yup!"])
+    {
+        NSLog(@"Drink order claimed");
+        [self drinkOrderCompleteExit];
     }
 }
 

@@ -12,6 +12,7 @@
 #import "ThanksViewController.h"
 #import "ActionSheetPicker.h"
 #import "BasicSplitTableViewController.h"
+#import "DrinkSelectCell.h"
 
 @interface ConfirmOrderViewController ()
 @property (nonatomic, strong) NSMutableArray *drinksOrdered;
@@ -36,6 +37,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view setBackgroundColor:[UIColor clearColor]];
     
     self.drinksOrdered = [SharedDataHandler sharedInstance].currentDrinkOrder;
     NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
@@ -45,27 +47,29 @@
     CGFloat splitViewHeight = self.view.frame.size.height/2 - self.navigationController.navigationBar.frame.size.height;
     CGFloat bottomViewHeight = 60.0;
     
-    self.tableViewDrinks = [[UITableView alloc] initWithFrame:CGRectMake(horizontalSpacer, verticlSpacer, self.view.frame.size.width - horizontalSpacer * 2, splitViewHeight - verticlSpacer * 2) style:UITableViewStylePlain];
-    [self.tableViewDrinks setDelegate:self];
-    [self.tableViewDrinks setDataSource:self];
-//    [self.tableView setBackgroundView:nil];
-    [self.tableViewDrinks flashScrollIndicators];
-    [self.tableViewDrinks setTag:0];
-    [self.view addSubview:self.tableViewDrinks];
-    
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - bottomViewHeight, self.view.frame.size.width, bottomViewHeight)];
     [bottomView setBackgroundColor:[UIColor darkGrayColor]];
     [self.view addSubview:bottomView];
     
     [self setupBottomViewWithView:bottomView];
     
-    UIView *priceView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 160.0 - bottomViewHeight, self.view.frame.size.width, 160.0)];
-    [priceView setBackgroundColor:[UIColor lightGrayColor]];
+    UIView *priceView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 120.0 - bottomViewHeight, self.view.frame.size.width, 120.0)];
+    [priceView setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:priceView];
     
     [self setupPriceViewWithView:priceView];
-    
     [self updatePricesAndTotals];
+    
+    self.tableViewDrinks = [[UITableView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - priceView.frame.size.height - bottomView.frame.size.height) style:UITableViewStylePlain];
+    [self.tableViewDrinks setDelegate:self];
+    [self.tableViewDrinks setDataSource:self];
+    //    [self.tableView setBackgroundView:nil];
+    [self.tableViewDrinks flashScrollIndicators];
+    //    [self.tableViewDrinks setTag:0];
+    [self.tableViewDrinks setRowHeight:50];
+    [self.tableViewDrinks setBackgroundColor:[UIColor clearColor]];
+    [self.tableViewDrinks setSeparatorColor:[UIColor clearColor]];
+    [self.view addSubview:self.tableViewDrinks];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -82,28 +86,13 @@
     CGFloat pvWidth = priceView.frame.size.width - pvEdgeInset * 2;
     CGFloat pvHeight = priceView.frame.size.height/3;
     
-    self.taxAndFeeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
-    [self.taxAndFeeCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
-    [self.taxAndFeeCell setBackgroundColor:[UIColor lightGrayColor]];
-    self.taxAndFeeCell.textLabel.text = @"Tax and fees";
-    
-    [priceView addSubview:self.taxAndFeeCell];
-    pvYPosition += pvHeight;
-    
-    self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
-    [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
-    [self.totalCell setBackgroundColor:[UIColor lightGrayColor]];
-    self.totalCell.textLabel.text = @"Total:";
-    self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
-    
-    [priceView addSubview:self.totalCell];
-    pvYPosition += pvHeight;
-    
     self.tipCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier3"];
     [self.tipCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
-    [self.tipCell setBackgroundColor:[UIColor lightGrayColor]];
+    [self.tipCell setBackgroundColor:[UIColor clearColor]];
     self.tipCell.textLabel.text = @"Tip";
     self.tipCell.detailTextLabel.text = @"10%";
+    [self.tipCell.textLabel setTextColor:[UIColor whiteColor]];
+    [self.tipCell.detailTextLabel setTextColor:[UIColor whiteColor]];
     
     self.tipSlider = [[UISlider alloc] initWithFrame:CGRectMake(0, 0, 150.0, 20.0)];
     [self.tipSlider setCenter:CGPointMake(self.tipCell.frame.size.width/2, self.tipCell.frame.size.height/2)];
@@ -114,6 +103,27 @@
     [self.tipCell addSubview:self.tipSlider];
     
     [priceView addSubview:self.tipCell];
+    pvYPosition += pvHeight;
+    
+    self.taxAndFeeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
+    [self.taxAndFeeCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
+    [self.taxAndFeeCell setBackgroundColor:[UIColor clearColor]];
+    self.taxAndFeeCell.textLabel.text = @"Tax and fees";
+    [self.taxAndFeeCell.textLabel setTextColor:[UIColor whiteColor]];
+    [self.taxAndFeeCell.detailTextLabel setTextColor:[UIColor whiteColor]];
+    
+    [priceView addSubview:self.taxAndFeeCell];
+    pvYPosition += pvHeight;
+    
+    self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
+    [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
+    [self.totalCell setBackgroundColor:[UIColor clearColor]];
+    self.totalCell.textLabel.text = @"Total:";
+    self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
+    [self.totalCell.textLabel setTextColor:[UIColor whiteColor]];
+    [self.totalCell.detailTextLabel setTextColor:[UIColor whiteColor]];
+    
+    [priceView addSubview:self.totalCell];
     pvYPosition += pvHeight;
 }
 
@@ -155,7 +165,13 @@
     
     self.totalPrice = 0.00;
     for (NSDictionary *drink in self.drinksOrdered) {
-        self.totalPrice += [[drink objectForKey:@"quantity"] floatValue] * [[drink objectForKey:@"price"] floatValue];
+        NSString *priceKey;
+        if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+            priceKey = @"happyhour_price";
+        } else {
+            priceKey = @"price";
+        }
+        self.totalPrice += [[drink objectForKey:@"quantity"] floatValue] * [[drink objectForKey:priceKey] floatValue];
     }
     
     //NEED TO FIGURE OUT WHERE THIS ACTUALLY COMES FROM
@@ -171,6 +187,22 @@
 
 #pragma mark - TableView DataSource Methods
 
+-(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 30.0)];
+    [headerLabel setBackgroundColor:[UIColor blackColor]];
+    [headerLabel setTextColor:[UIColor whiteColor]];
+    [headerLabel setText:@"Current Order"];
+    [headerLabel setFont:[UIFont boldSystemFontOfSize:17.0]];
+    [headerLabel setTextAlignment:NSTextAlignmentCenter];
+    return headerLabel;
+}
+
+//-(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    return @"Current Order";
+//}
+
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
@@ -182,25 +214,62 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+    DrinkSelectCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
     
 	if (cell == nil) {
-		cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
-        [cell.textLabel setTextAlignment:NSTextAlignmentRight];
+		cell = [[DrinkSelectCell alloc] initWithReuseIdentifier:@"CellIdentifier"];
+        cell.textLabel.textColor = [UIColor whiteColor];
+        cell.textLabel.backgroundColor = [UIColor clearColor];
+        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
+        [cell setBackgroundColor:[UIColor clearColor]];
+        [cell.contentView setBackgroundColor:[UIColor clearColor]];
+        
+        cell.drinkCostLabel.textColor = [UIColor whiteColor];
+        [cell.drinkCostLabel.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        
+        cell.drinkCountLabel.textColor = [UIColor whiteColor];
+        [cell.drinkCountLabel.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        
+        UIView *highlightedBackgroundView = [[UIView alloc] init];
+        [highlightedBackgroundView setBackgroundColor:[UIColor whiteColor]];
+        [highlightedBackgroundView.layer setBorderColor:[[UIColor whiteColor] CGColor]];
+        [highlightedBackgroundView.layer setBorderWidth:2.0];
+        [cell setBackgroundView:highlightedBackgroundView];
+        
+        for (UIView *view in [cell subviews])
+        {
+            NSLog(@"view bg: %@", view.backgroundColor);
+            [view setBackgroundColor:[UIColor clearColor]];
+            NSLog(@"view bg 2: %@", view.backgroundColor);
+        }
 	}
     
     NSDictionary *drink = [self.drinksOrdered objectAtIndex:[indexPath row]];
     
-    NSString *detailString;
-    if ([[drink objectForKey:@"quantity"] integerValue] > 0) {
-        detailString = [NSString stringWithFormat:@"%i  x  $%@", [[drink objectForKey:@"quantity"] integerValue], [drink objectForKey:@"price"]];
+    NSString *priceKey;
+    if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+        priceKey = @"happyhour_price";
     } else {
-        detailString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
+        priceKey = @"price";
     }
+    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:priceKey]];
     
     cell.textLabel.text = [drink objectForKey:@"name"];
-    cell.detailTextLabel.text = detailString;
-    [cell.imageView setImageWithURL:[NSURL URLWithString:[drink objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
+//    [cell.textLabel setFont:[UIFont systemFontOfSize:14.0]];
+    
+    [cell setCostLabelAmount:priceString];
+    [cell setDrinkQuantity:[[drink objectForKey:@"quantity"] intValue]];
+    
+//    NSString *detailString;
+//    if ([[drink objectForKey:@"quantity"] integerValue] > 0) {
+//        detailString = [NSString stringWithFormat:@"%i  x  $%@", [[drink objectForKey:@"quantity"] integerValue], [drink objectForKey:@"price"]];
+//    } else {
+//        detailString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"price"]];
+//    }
+//    
+//    cell.textLabel.text = [drink objectForKey:@"name"];
+//    cell.detailTextLabel.text = detailString;
+//    [cell.imageView setImageWithURL:[NSURL URLWithString:[drink objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
     
     NSLog(@"Drink for row %i: %@", [indexPath row], drink);
     
@@ -210,11 +279,56 @@
 #pragma mark - TableView Delegate Methods
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    
+    [self.tableViewDrinks deselectRowAtIndexPath:[self.tableViewDrinks indexPathForSelectedRow] animated:YES];
+    
     self.SelectedDrinkRow = [indexPath row];
+    NSDictionary *drink = [self.drinksOrdered objectAtIndex:self.SelectedDrinkRow];
+    int currentQuantity = [[drink objectForKey:@"quantity"] intValue];
+    
+    UILabel *drinkTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 45.0)];
+    [drinkTypeLabel setText:[drink objectForKey:@"name"]];
+    [drinkTypeLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
+    [drinkTypeLabel setTextAlignment:NSTextAlignmentCenter];
+    [drinkTypeLabel setBackgroundColor:[UIColor whiteColor]];
+    [drinkTypeLabel setTextColor:[UIColor blackColor]];
+    [drinkTypeLabel.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [drinkTypeLabel.layer setBorderWidth:2.0];
+    
+    UIView *drinkInfoView = [[UIView alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkTypeLabel.frame), 320.0, 210 - 35.0)];
+    [drinkInfoView setBackgroundColor:[UIColor whiteColor]];
+    [drinkInfoView.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [drinkInfoView.layer setBorderWidth:2.0];
+    
+    UITextView *drinkDescription = [[UITextView alloc] initWithFrame:CGRectMake(5.0, 10.0, drinkInfoView.frame.size.width - 10.0, drinkInfoView.frame.size.height - 20.0)];
+    [drinkDescription setText:[drink objectForKey:@"description"]];
+    [drinkDescription setFont:[UIFont systemFontOfSize:16.0]];
+    [drinkInfoView addSubview:drinkDescription];
+    
+    
+    UILabel *drinkNameLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 20.0, 320.0, 45.0)];
+    [drinkNameLabel setText:[drink objectForKey:@"name"]];
+    [drinkNameLabel setTextAlignment:NSTextAlignmentCenter];
+    [drinkNameLabel setBackgroundColor:[UIColor clearColor]];
+    [drinkNameLabel setTextColor:[UIColor blackColor]];
+    //    [drinkInfoView addSubview:drinkNameLabel];
+    
+    NSString *priceKey;
+    if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+        priceKey = @"happyhour_price";
+    } else {
+        priceKey = @"price";
+    }
+    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:priceKey]];
+    UILabel *drinkPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, CGRectGetMaxY(drinkNameLabel.frame), 320.0, 45.0)];
+    [drinkPriceLabel setText:priceString];
+    [drinkPriceLabel setTextAlignment:NSTextAlignmentCenter];
+    [drinkPriceLabel setBackgroundColor:[UIColor clearColor]];
+    [drinkPriceLabel setTextColor:[UIColor blackColor]];
+    //    [drinkInfoView addSubview:drinkPriceLabel];
     
     NSArray *amounts = @[@"0",@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8",@"9",@"10"];
-    [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:0 target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath] customTopSubviews:nil];
+    [ActionSheetStringPicker showPickerWithTitle:@"Select Quantity" rows:amounts initialSelection:currentQuantity target:self successAction:@selector(quantityWasSelected:element:) cancelAction:@selector(actionPickerCancelled:) origin:[tableView cellForRowAtIndexPath:indexPath] customTopSubviews:@[drinkTypeLabel, drinkInfoView]];
 }
 
 -(void)actionPickerCancelled {

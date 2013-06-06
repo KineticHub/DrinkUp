@@ -57,45 +57,54 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self dismissViewControllerAnimated:YES completion:^{}]; //Do this first!!
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    
-    NSString *picName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
-    NSLog(@"starting AWS");
-    
-    [MBProgressHUD showHUDAddedTo:self.imagePicker.view animated:YES];
-    
-    AmazonS3Client *s3 = [[AmazonS3Client alloc] initWithAccessKey:@"AKIAIXLT3ZDWWR7Q4YKA" withSecretKey:@"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"];
-    S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:picName inBucket:@"DrinkUp"];
-    por.contentType = @"image/jpeg";
-    por.data = UIImageJPEGRepresentation(image, 0.7);;
-    [s3 putObject:por];
-    
-    S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
-    override.contentType = @"image/jpeg";
-    
-    S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
-    gpsur.key     = picName;
-    gpsur.bucket  = @"DrinkUp";
-    gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
-    gpsur.responseHeaderOverrides = override;
-    
-    NSURL *url = [s3 getPreSignedURL:gpsur];
-    
-    self.selfie.image = image;
-    
-    [[SharedDataHandler sharedInstance] userUpdateProfilePicture:url withSuccess:^(bool successful) {
-        [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:YES completion:^
+    {
+        UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
+        self.selfie.image = image;
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+        hud.labelText = @"Updating Photo";
+        
+        dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^
+        {
+            NSString *picName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
+            NSLog(@"starting AWS");
+            
+            AmazonS3Client *s3 = [[AmazonS3Client alloc] initWithAccessKey:@"AKIAIXLT3ZDWWR7Q4YKA" withSecretKey:@"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"];
+            S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:picName inBucket:@"DrinkUp-Users"];
+            por.contentType = @"image/jpeg";
+            por.data = UIImageJPEGRepresentation(image, 0.7);;
+            [s3 putObject:por];
+            
+            S3ResponseHeaderOverrides *override = [[S3ResponseHeaderOverrides alloc] init];
+            override.contentType = @"image/jpeg";
+            
+            NSLog(@"ending AWS");
+            
+    //        S3GetPreSignedURLRequest *gpsur = [[S3GetPreSignedURLRequest alloc] init];
+    //        gpsur.key     = picName;
+    //        gpsur.bucket  = @"DrinkUp-Users";
+    //        gpsur.expires = [NSDate dateWithTimeIntervalSinceNow:(NSTimeInterval) 3600];  // Added an hour's worth of seconds to the current time.
+    //        gpsur.responseHeaderOverrides = override;
+    //        
+    //        NSURL *url = [s3 getPreSignedURL:gpsur];
+            
+            [[SharedDataHandler sharedInstance] updateUserProfileImageSaved:^(bool successful)
+            {
+                [self.navigationController popViewControllerAnimated:YES];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                });
+            }];
+        });
     }];
-    
-    [MBProgressHUD hideHUDForView:self.imagePicker.view animated:YES];
-    
-    NSLog(@"ending AWS");
 }
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self dismissViewControllerAnimated:NO completion:^{
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
 }
 
 @end

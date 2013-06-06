@@ -10,6 +10,10 @@
 #import "BasicCell.h"
 
 @interface DrinkSelectCell : BasicCell
+
+@property (nonatomic, strong) UILabel *drinkCountLabel;
+@property (nonatomic, strong) UILabel *drinkCostLabel;
+
 -(id)initWithReuseIdentifier:(NSString *)reuseIdentifier;
 -(void)setDrinkQuantity:(int)count;
 -(void)setCostLabelAmount:(NSString *)labelAmount;

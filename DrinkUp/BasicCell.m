@@ -52,23 +52,24 @@
 //        [self.textLabel setTextColor:[UIColor colorWithRed:(139/255.0) green:(229/255.0) blue:(234/255.0) alpha:1.0]];
         [self.textLabel setFont:DEFAULT_CELL_TITLE_FONT];
         [self.textLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [self.textLabel setNumberOfLines:0];
+        [self.textLabel setNumberOfLines:2];
         [self.textLabel setTextColor:[UIColor whiteColor]];
         
         [self.detailTextLabel setHighlightedTextColor:[UIColor blackColor]];
         [self.detailTextLabel setBackgroundColor:[UIColor clearColor]];
-        [self.detailTextLabel setTextColor:[UIColor lightGrayColor]];
+        [self.detailTextLabel setTextColor:[UIColor darkGrayColor]];
         [self.detailTextLabel setFont:DEFAULT_CELL_DESCRIPTION_FONT];
         [self.detailTextLabel setLineBreakMode:NSLineBreakByWordWrapping];
-        [self.detailTextLabel setNumberOfLines:3];
+        [self.detailTextLabel setNumberOfLines:2];
         [self.detailTextLabel setAlpha:0.9];
         
         self.cellImageBox = [[UIView alloc] initWithFrame:CGRectMake(self.contentView.frame.origin.x + 10.0, 20.0, self.frame.size.height + 20.0, self.frame.size.height - 30.0)];
-//        [self.cellImageBox setBackgroundColor:[UIColor whiteColor]];
+        [self.cellImageBox setBackgroundColor:[UIColor whiteColor]];
+        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
 //        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(181/255.0) green:(163/255.0) blue:(28/255.0) alpha:1.0] CGColor]];
 //        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(205/255.0) green:(205/255.0) blue:(205/255.0) alpha:1.0] CGColor]];
 //        [self.cellImageBox.layer setBorderColor:[[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0] CGColor]];
-//        [self.cellImageBox.layer setBorderWidth:3.0];
+        [self.cellImageBox.layer setBorderWidth:3.0];
         [self.cellImageBox.layer setCornerRadius:20.0];
         [self.cellImageBox.layer setMasksToBounds:YES];
 //        [self.cellImageBox setAlpha:0.8];
@@ -76,6 +77,7 @@
         
         self.cellImageView = [[UIImageView alloc] init];
         self.cellImageView.frame = CGRectMake(0.0, 0.0, 0.0, 0.0);
+        self.cellImageView.contentMode = UIViewContentModeScaleAspectFill;
         [self.cellImageBox addSubview: self.cellImageView];
         
         UIView *highlightedBackgroundView = [[UIView alloc] init];
@@ -110,20 +112,20 @@
     
 //    [self.detailTextLabel.text sizeWithFont:self.detailTextLabel.font constrainedToSize:self.detailTextLabel.frame.size lineBreakMode:NSLineBreakByWordWrapping];
     
-    [self.detailTextLabel sizeToFit];
     [self.textLabel sizeToFit];
+    [self.detailTextLabel sizeToFit];
 //    NSLog(@"frame %@: %f", self.detailTextLabel.text, self.detailTextLabel.frame.size.height);
     
     int totalHeight = self.textLabel.frame.size.height + self.detailTextLabel.frame.size.height + 5.0;
     float topMiddle = round(self.contentView.frame.size.height/2 - totalHeight/2);
     
-    if (!self.cellImageView.image) {
+    if (!self.cellImageView.image)
+    {
         [self.cellImageView setHidden:YES];
         [self.cellImageBox setHidden:YES];
         
         CGRect textLabelRect = self.textLabel.frame;
         textLabelRect.origin.x = round(spacer);
-//        textLabelRect.origin.y = round(self.cellImageBox.frame.origin.y + self.cellImageBox.frame.size.height/2 - textLabelRect.size.height);
         textLabelRect.origin.y = topMiddle;
         [self.textLabel setFrame:textLabelRect];
         
@@ -139,19 +141,32 @@
         
         CGRect textLabelRect = self.textLabel.frame;
         textLabelRect.origin.x = round(CGRectGetMaxX(self.cellImageBox.frame) + spacer);
-//        textLabelRect.origin.y = round(self.cellImageBox.frame.origin.y);
-        textLabelRect.origin.y = topMiddle;
+        textLabelRect.size.width = round(self.contentView.frame.size.width - textLabelRect.origin.x - 5.0);
         [self.textLabel setFrame:textLabelRect];
+        [self.textLabel sizeToFit];
         
         CGRect detailLabelRect = self.detailTextLabel.frame;
         detailLabelRect.origin.x = round(textLabelRect.origin.x);
         detailLabelRect.origin.y = round(textLabelRect.size.height + textLabelRect.origin.y + 5.0);
         detailLabelRect.size.width = round(self.contentView.frame.size.width - detailLabelRect.origin.x - 5.0);
         [self.detailTextLabel setFrame:detailLabelRect];
+        [self.detailTextLabel sizeToFit];
+        
+        totalHeight = self.textLabel.frame.size.height + self.detailTextLabel.frame.size.height + 5.0;
+        topMiddle = round(self.contentView.frame.size.height/2 - totalHeight/2);
+        
+        textLabelRect.origin.y = topMiddle;
+        [self.textLabel setFrame:textLabelRect];
+        [self.textLabel sizeToFit];
+        
+        detailLabelRect.origin.y = round(self.textLabel.frame.size.height + self.textLabel.frame.origin.y + 5.0);
+        [self.detailTextLabel setFrame:detailLabelRect];
+        [self.detailTextLabel sizeToFit];
     }
     
     if ([self.detailTextLabel.text length] == 0) {
         self.textLabel.center = CGPointMake(self.textLabel.center.x, self.frame.size.height/2);
+        [self.textLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
     }
 }
 

@@ -29,6 +29,7 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 
 + (SharedDataHandler *)sharedInstance;
 -(void)initializeLocationTracking;
+-(bool)isBarHappyHour;
 
 #pragma mark - Selection API Functions
 -(void)loadUserLocation;
@@ -37,6 +38,7 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock;
+-(void)loadDrinksForOrder:(int)order_id onCompletion:(ObjectsCompletionBlock)completionBlock;
 
 #pragma mark - User API Functions
 -(void)userLoginToServerWithCredentials:(NSMutableDictionary *)credentials andCompletion:(SuccessCompletionBlock)successBlock;
@@ -45,7 +47,9 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)userUpdateCardInfo:(NSMutableDictionary *)cardResponse withSuccess:(SuccessCompletionBlock)successBlock;
 -(void)userCurrentCardInfo;
 -(void)userInvalidateCurrentCard:(SuccessCompletionBlock)successBlock;
--(void)userUpdateProfilePicture:(NSURL *)imageURL withSuccess:(SuccessCompletionBlock)successBlock;
+-(void)updateUserProfileImageSaved:(SuccessCompletionBlock)successBlock;
+-(UIImage *)getUserProfileImage;
+-(void)getUserOrderHistoryWithCompletion:(ObjectsCompletionBlock)completionBlock;
 
 #pragma mark - Order API Functions
 -(void)placeOrder:(NSMutableDictionary *)order withSuccess:(SuccessCompletionBlock)successBlock;

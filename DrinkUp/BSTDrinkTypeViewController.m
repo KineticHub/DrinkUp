@@ -19,7 +19,7 @@
 @implementation BSTDrinkTypeViewController
 
 -(id)initWithBarSection:(int)section_id {
-    self = [super initWithUpperViewHieght:150.0];
+    self = [super initWithUpperViewHieght:60.0];
     if (self) {
         self.section_id = section_id;
     }
@@ -29,11 +29,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
     self.navigationItem.leftBarButtonItem = backButton;
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(showUserProfile)];
-    self.navigationItem.rightBarButtonItem = settingsButton;
+    [[SharedDataHandler sharedInstance] isBarHappyHour];
     
 //    CGFloat width = self.view.frame.size.width;
 //    CGFloat height = 60.0;
@@ -73,32 +73,30 @@
     [barNameTitleBar setBackgroundColor:[UIColor blackColor]];
 //    [self.upperView addSubview:barNameTitleBar];
     
-    UILabel *barNameTitle = [[UILabel alloc] initWithFrame:barNameTitleBar.frame];
-    [barNameTitle setText:@"Top of the Stairs"];
-    [barNameTitle setTextAlignment:NSTextAlignmentCenter];
-    [barNameTitle setTextColor:[UIColor whiteColor]];
-    [barNameTitle setBackgroundColor:[UIColor clearColor]];
-    [barNameTitleBar addSubview:barNameTitle];
+//    UILabel *barNameTitle = [[UILabel alloc] initWithFrame:barNameTitleBar.frame];
+//    [barNameTitle setText:@"Top of the Stairs"];
+//    [barNameTitle setTextAlignment:NSTextAlignmentCenter];
+//    [barNameTitle setTextColor:[UIColor whiteColor]];
+//    [barNameTitle setBackgroundColor:[UIColor clearColor]];
+//    [barNameTitleBar addSubview:barNameTitle];
     
-    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 120.0)];
-    [logoImageView setCenter:CGPointMake(self.upperView.center.x, self.upperView.center.y + 0.0)];
-    [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
-    [self.upperView addSubview:logoImageView];
-    [self.upperView setBackgroundColor:[UIColor whiteColor]];
-}
-
--(void) showLeavingOptions {
+    UILabel *barLabel = [[UILabel alloc] initWithFrame:CGRectMake(4.0, 0.0, self.upperView.frame.size.width - 8.0, self.upperView.frame.size.height)];
+    [barLabel setTextAlignment:NSTextAlignmentCenter];
+    [barLabel setText:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"name"]];
+    [barLabel setFont:[UIFont boldSystemFontOfSize:36.0]];
+    [barLabel setLineBreakMode:NSLineBreakByWordWrapping];
+    [barLabel setNumberOfLines:1];
+    [barLabel setAdjustsFontSizeToFitWidth:YES];
+    [self.upperView addSubview:barLabel];
     
-    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
-                                                          message:@"Leaving this bar will clear any drinks currently selected at this bar."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Cancel"
-                                                otherButtonTitles:@"Clear Drinks", nil];
-        [message show];
-    } else {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
+    [self.tableView setRowHeight:60.0];
+    
+//    UIImageView *logoImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 200.0, 120.0)];
+//    logoImageView.contentMode = UIViewContentModeScaleAspectFill;
+//    [logoImageView setCenter:CGPointMake(self.upperView.center.x, self.upperView.center.y + 0.0)];
+//    [logoImageView setImageWithURL:[NSURL URLWithString:[[SharedDataHandler sharedInstance].currentBar objectForKey:@"icon"]] placeholderImage:[UIImage imageNamed:@"blank_square"]];
+//    [self.upperView addSubview:logoImageView];
+//    [self.upperView setBackgroundColor:[UIColor whiteColor]];
 }
 
 -(void)showUserProfile
