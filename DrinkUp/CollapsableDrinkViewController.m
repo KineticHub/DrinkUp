@@ -25,6 +25,7 @@
 @property int section_id;
 @property (nonatomic, retain) ZKRevealingTableViewCell *currentlyRevealedCell;
 @property (nonatomic, strong) CollapseClick *collapsableDrinkTypes;
+@property (nonatomic, strong) UIBarButtonItem *orderBarButtonItem;
 @property (nonatomic, strong) NSMutableDictionary *tableViewDictionary;
 @property (nonatomic, strong) NSMutableDictionary *selectedIndexes;
 @property (nonatomic, strong) NSMutableArray *selectedCollapses;
@@ -52,22 +53,24 @@
     viewFrame.size.height -= self.navigationController.navigationBar.frame.size.height;
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar" style:UIBarButtonItemStyleDone target:self action:@selector(showLeavingOptions)];
+    [backButton setTintColor:[UIColor whiteColor]];
+    [backButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
     self.navigationItem.leftBarButtonItem = backButton;
     
-    UIBarButtonItem *settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleDone target:self action:@selector(showUserProfile)];
-    self.navigationItem.rightBarButtonItem = settingsButton;
-    
     // Create the refresh, fixed-space (optional), and profile buttons.
-    UIBarButtonItem *refreshBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(showUserProfile)];
+    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc]
+                                             initWithImage:[UIImage imageNamed:@"settings_icon"]
+                                             style:UIBarButtonItemStylePlain
+                                             target:self action:@selector(showUserProfile)];
+    [settingsProfileButton setTintColor:[UIColor whiteColor]];
     
     //    // Optional: if you want to add space between the refresh & profile buttons
     //    UIBarButtonItem *fixedSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     //    fixedSpaceBarButtonItem.width = 12;
     
-    UIBarButtonItem *profileBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
-    profileBarButtonItem.style = UIBarButtonItemStyleBordered;
+    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
     
-    self.navigationItem.rightBarButtonItems = @[profileBarButtonItem, /* fixedSpaceBarButtonItem, */ refreshBarButtonItem];
+    self.navigationItem.rightBarButtonItems = @[self.orderBarButtonItem, /* fixedSpaceBarButtonItem, */ settingsProfileButton];
 	
     self.collapsableDrinkTypes = [[CollapseClick alloc] initWithFrame:viewFrame];
     [self.collapsableDrinkTypes setCollapseClickDelegate:self];
@@ -120,6 +123,7 @@
                     drinkLoadingCounter--;
                     if (drinkLoadingCounter == 0)
                     {
+                        [self updateOrderButton];
                         [self.collapsableDrinkTypes reloadCollapseClick];
                         dispatch_async(dispatch_get_main_queue(), ^{
                             [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -334,6 +338,20 @@
     
     if (quantity == 0) {
         [cell.quantityLabel setHidden:YES];
+    }
+    
+    [self updateOrderButton];
+}
+
+-(void)updateOrderButton
+{
+    if ([self.drinksOrder count] > 0)
+    {
+        [self.orderBarButtonItem setTintColor:[UIColor blueColor]];
+        [self.orderBarButtonItem setEnabled:YES];
+    } else {
+        [self.orderBarButtonItem setTintColor:[UIColor grayColor]];
+        [self.orderBarButtonItem setEnabled:NO];
     }
 }
 

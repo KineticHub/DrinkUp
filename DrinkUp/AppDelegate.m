@@ -97,16 +97,24 @@
                                   target:self action:@selector(viewHistoryController:)];
     [navItemsArray addObject:historyButton];
     
+//    self.mapButton = [[UIBarButtonItem alloc]
+//                                      initWithTitle:@"Map"
+//                                      style:UIBarButtonItemStylePlain
+//                                      target:self action:@selector(showMap)];
+//    [self.mapButton setTintColor:[UIColor whiteColor]];
+//    [self.mapButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
     self.mapButton = [[UIBarButtonItem alloc]
-                                      initWithTitle:@"Map"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self action:@selector(showMap)];
+                           initWithImage:[UIImage imageNamed:@"marker_icon"]
+                           style:UIBarButtonItemStylePlain
+                           target:self action:@selector(showMap)];
+    [self.mapButton setTintColor:[UIColor whiteColor]];
     
     // Instantiate a New button to invoke the addTask: method when tapped.
     self.settingsButton = [[UIBarButtonItem alloc]
-                                      initWithTitle:@"Settings"
-                                      style:UIBarButtonItemStylePlain
-                                      target:self action:@selector(showMenu)];
+                                                                    initWithImage:[UIImage imageNamed:@"settings_icon"]
+                                                                    style:UIBarButtonItemStylePlain
+                                                                    target:self action:@selector(showMenu)];
+    [self.settingsButton setTintColor:[UIColor whiteColor]];
 //    [navItemsArray addObject:settingsButton];
     
     // Set up the Add custom button on the right of the navigation bar

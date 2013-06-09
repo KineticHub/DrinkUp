@@ -39,12 +39,15 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
     
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
+    
     self.drinksOrdered = [SharedDataHandler sharedInstance].currentDrinkOrder;
     NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
     
-    CGFloat verticlSpacer = 10.0;
-    CGFloat horizontalSpacer = 10.0;
-    CGFloat splitViewHeight = self.view.frame.size.height/2 - self.navigationController.navigationBar.frame.size.height;
+//    CGFloat verticlSpacer = 10.0;
+//    CGFloat horizontalSpacer = 10.0;
+//    CGFloat splitViewHeight = self.view.frame.size.height/2 - self.navigationController.navigationBar.frame.size.height;
     CGFloat bottomViewHeight = 60.0;
     
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - bottomViewHeight, self.view.frame.size.width, bottomViewHeight)];

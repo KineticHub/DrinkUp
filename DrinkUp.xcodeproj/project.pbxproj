@@ -93,6 +93,10 @@
 		9C8039EE17614E9D008EFC5C /* UIStepperRightPressed.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8039DE17614E9D008EFC5C /* UIStepperRightPressed.png */; };
 		9C8039EF17614E9D008EFC5C /* UIStepperRightPressed@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8039DF17614E9D008EFC5C /* UIStepperRightPressed@2x.png */; };
 		9C8039F017614E9D008EFC5C /* TextStepperField.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039E117614E9D008EFC5C /* TextStepperField.m */; };
+		9C8039FE1763AE0C008EFC5C /* settings_icon_old.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C8039FD1763AE0B008EFC5C /* settings_icon_old.png */; };
+		9C803A061763B41F008EFC5C /* marker_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A051763B41E008EFC5C /* marker_icon.png */; };
+		9C803A081763BD2B008EFC5C /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A071763BD2B008EFC5C /* settings_icon.png */; };
+		9C803A0B1764AC10008EFC5C /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C803A0A1764AC10008EFC5C /* OrderViewController.m */; };
 		9C8B70B116DD901900FB80AF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B703F16DD901800FB80AF /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9C8B70B216DD901900FB80AF /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B704116DD901800FB80AF /* FacebookSDKResources.bundle */; };
 		9C8B70B316DD901900FB80AF /* FBAccessTokenData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B704316DD901800FB80AF /* FBAccessTokenData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -320,6 +324,11 @@
 		9C8039DF17614E9D008EFC5C /* UIStepperRightPressed@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "UIStepperRightPressed@2x.png"; sourceTree = "<group>"; };
 		9C8039E017614E9D008EFC5C /* TextStepperField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextStepperField.h; sourceTree = "<group>"; };
 		9C8039E117614E9D008EFC5C /* TextStepperField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TextStepperField.m; sourceTree = "<group>"; };
+		9C8039FD1763AE0B008EFC5C /* settings_icon_old.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon_old.png; sourceTree = "<group>"; };
+		9C803A051763B41E008EFC5C /* marker_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = marker_icon.png; sourceTree = "<group>"; };
+		9C803A071763BD2B008EFC5C /* settings_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon.png; sourceTree = "<group>"; };
+		9C803A091764AC0F008EFC5C /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
+		9C803A0A1764AC10008EFC5C /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
 		9C8B703E16DD901800FB80AF /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		9C8B703F16DD901800FB80AF /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
 		9C8B704016DD901800FB80AF /* FacebookSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookSDK.h; sourceTree = "<group>"; };
@@ -842,6 +851,9 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9C803A071763BD2B008EFC5C /* settings_icon.png */,
+				9C803A051763B41E008EFC5C /* marker_icon.png */,
+				9C8039FD1763AE0B008EFC5C /* settings_icon_old.png */,
 				9C17CBDC175A652B00D0EA17 /* black_thread.png */,
 				9C17CBD3175661CA00D0EA17 /* stressed_linen.png */,
 				9C225E3D16F280EE002796B2 /* Icon_57x57.png */,
@@ -926,6 +938,8 @@
 			children = (
 				9C69C67616D23EC100D548F2 /* ConfirmOrderViewController.h */,
 				9C69C67716D23EC100D548F2 /* ConfirmOrderViewController.m */,
+				9C803A091764AC0F008EFC5C /* OrderViewController.h */,
+				9C803A0A1764AC10008EFC5C /* OrderViewController.m */,
 			);
 			name = "Confirm Order";
 			sourceTree = "<group>";
@@ -1322,6 +1336,9 @@
 				9C8039ED17614E9D008EFC5C /* UIStepperRight@2x.png in Resources */,
 				9C8039EE17614E9D008EFC5C /* UIStepperRightPressed.png in Resources */,
 				9C8039EF17614E9D008EFC5C /* UIStepperRightPressed@2x.png in Resources */,
+				9C8039FE1763AE0C008EFC5C /* settings_icon_old.png in Resources */,
+				9C803A061763B41F008EFC5C /* marker_icon.png in Resources */,
+				9C803A081763BD2B008EFC5C /* settings_icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1443,6 +1460,7 @@
 				9C8039CB176031CA008EFC5C /* NewDrinkSelectCell.m in Sources */,
 				9C8039CF17610B13008EFC5C /* ZKRevealingTableViewCell.m in Sources */,
 				9C8039F017614E9D008EFC5C /* TextStepperField.m in Sources */,
+				9C803A0B1764AC10008EFC5C /* OrderViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
