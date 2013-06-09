@@ -140,8 +140,8 @@ static id _instance;
     float latitude=coordinate.latitude;
     float radius = 3.0;
     
-//    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/nearby/?lat=%f&long=%f&radius=%f", latitude, longitude, radius];
-    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/all/"];
+    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/nearby/?lat=%f&long=%f&radius=%f", latitude, longitude, radius];
+//    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/all/"];
     NSLog(@"bars path: %@", barsPath);
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         

@@ -11,6 +11,10 @@
 #import "MBProgressHUD.h"
 #import "SharedDataHandler.h"
 #import "TextStepperField.h"
+#import "NewDrinkSelectCell.h"
+#import "ThanksViewController.h"
+#import "UserLoginViewController.h"
+#import "QBFlatButton.h"
 
 @interface OrderViewController ()
 {
@@ -20,6 +24,7 @@
 @property (nonatomic, strong) CollapseClick *collapsableDrinkOrder;
 @property (nonatomic, strong) NSMutableArray *drinksOrdered;
 @property (nonatomic, strong) UITableView *tableViewDrinks;
+@property (nonatomic, strong) QBFlatButton *placeOrderButton;
 
 @property (nonatomic, strong) UITableViewCell *totalCell;
 @property (nonatomic, strong) UITableViewCell *taxAndFeeCell;
@@ -46,7 +51,7 @@
     CGFloat bottomViewHeight = 60.0;
     
     UIView *bottomView = [[UIView alloc] initWithFrame:CGRectMake(0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - bottomViewHeight, self.view.frame.size.width, bottomViewHeight)];
-    [bottomView setBackgroundColor:[UIColor darkGrayColor]];
+    [bottomView setBackgroundColor:[UIColor blackColor]];
     [self.view addSubview:bottomView];
     
     [self setupBottomViewWithView:bottomView];
@@ -58,12 +63,65 @@
     [self setupPriceViewWithView:priceView];
     [self updatePricesAndTotals];
     
+    self.tableViewDrinks = [[UITableView alloc] initWithFrame:CGRectMake(10.0, 0.0, 300, 165)];
+    [self.tableViewDrinks setBackgroundColor:[UIColor whiteColor]];
+    [self.tableViewDrinks setDelegate:self];
+    [self.tableViewDrinks setDataSource:self];
+    [self.tableViewDrinks setRowHeight:65.0];
+    
     CGRect collapseFrame = self.view.frame;
-    collapseFrame.size.height -= self.navigationController.navigationBar.frame.size.height - bottomViewHeight - priceView.frame.size.height;
+    collapseFrame.origin.x = 0.0;
+    collapseFrame.origin.y = 0.0;
+    collapseFrame.size.height = 460.0 - self.navigationController.navigationBar.frame.size.height - bottomViewHeight - priceView.frame.size.height;
     
     self.collapsableDrinkOrder = [[CollapseClick alloc] initWithFrame:collapseFrame];
+    [self.collapsableDrinkOrder setBackgroundColor:[UIColor clearColor]];
+    [self.collapsableDrinkOrder setScrollEnabled:NO];
     [self.collapsableDrinkOrder setCollapseClickDelegate:self];
+    [self.collapsableDrinkOrder reloadCollapseClick];
+    [self.collapsableDrinkOrder openCollapseClickCellAtIndex:0 animated:NO];
     [self.view addSubview:self.collapsableDrinkOrder];
+    
+    QBFlatButton *settingsButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    settingsButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+    settingsButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+    settingsButton.radius = 6.0;
+    settingsButton.margin = 2.0;
+    settingsButton.depth = 2.0;
+    [settingsButton setFrame:CGRectMake(0.0, 0.0, 40.0, 28.0)];
+    [settingsButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
+    [settingsButton setImage:[UIImage imageNamed:@"settings_icon"] forState:UIControlStateNormal];
+    [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] init];
+    [settingsProfileButton setCustomView:settingsButton];
+    
+//    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc]
+//                                              initWithImage:[UIImage imageNamed:@"settings_icon"]
+//                                              style:UIBarButtonItemStylePlain
+//                                              target:self action:@selector(showUserProfile)];
+//    [settingsProfileButton setTintColor:[UIColor whiteColor]];
+    
+//    UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear Drinks" style:UIBarButtonItemStyleDone target:self action:@selector(cancelCurrentOrderCheck)];
+//    [clearButton setTintColor:[UIColor redColor]];
+    
+    QBFlatButton *clearButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    clearButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+    clearButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+    clearButton.radius = 6.0;
+    clearButton.margin = 2.0;
+    clearButton.depth = 2.0;
+    clearButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    [clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [clearButton setTitle:@"Clear Order" forState:UIControlStateNormal];
+    [clearButton setFrame:CGRectMake(0.0, 0.0, 95.0, 28.0)];
+    [clearButton addTarget:self action:@selector(cancelCurrentOrderCheck) forControlEvents:UIControlEventTouchUpInside];
+    
+    //    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
+    UIBarButtonItem *clearBarButton = [[UIBarButtonItem alloc] init];
+    [clearBarButton setCustomView:clearButton];
+    
+    self.navigationItem.rightBarButtonItems = @[clearBarButton, /* fixedSpaceBarButtonItem, */ settingsProfileButton];
 }
 
 #pragma mark - Subviews Setup
@@ -117,15 +175,22 @@
 }
 
 -(void)setupBottomViewWithView:(UIView *)bottomView
-{    
-    UIButton *placeOrder = [UIButton  buttonWithType:UIButtonTypeRoundedRect];
-    [placeOrder setFrame:CGRectMake(0.0, 0.0, 300.0, bottomView.frame.size.height - 10.0)];
-    [placeOrder setCenter: CGPointMake(bottomView.center.x, bottomView.frame.size.height/2)];
-    [placeOrder setTitle:@"Place Order" forState:UIControlStateNormal];
-    placeOrder.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    placeOrder.titleLabel.textAlignment = NSTextAlignmentCenter;
-    [placeOrder addTarget:self action:@selector(placeOrder) forControlEvents:UIControlEventTouchUpInside];
-    [bottomView addSubview:placeOrder];
+{
+    self.placeOrderButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    self.placeOrderButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+    self.placeOrderButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+    self.placeOrderButton.radius = 6.0;
+    self.placeOrderButton.margin = 4.0;
+    self.placeOrderButton.depth = 3.0;
+    [self.placeOrderButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.placeOrderButton setFrame:CGRectMake(0.0, 0.0, 300.0, bottomView.frame.size.height - 10.0)];
+    [self.placeOrderButton setCenter: CGPointMake(bottomView.center.x, bottomView.frame.size.height/2)];
+    [self.placeOrderButton setTitle:@"Place Order" forState:UIControlStateNormal];
+    self.placeOrderButton.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    self.placeOrderButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    self.placeOrderButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+    [self.placeOrderButton addTarget:self action:@selector(placeOrderCheck) forControlEvents:UIControlEventTouchUpInside];
+    [bottomView addSubview:self.placeOrderButton];
 }
 
 -(void)tipPercentChanged:(id)sender {
@@ -156,6 +221,225 @@
     int tipValue = roundf(self.tipSlider.value);
     self.tipCell.detailTextLabel.text = [NSString stringWithFormat:@"%i%%", tipValue];
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
+}
+
+#pragma  mark - Profile Transition
+-(void) showUserProfile
+{
+    UserLoginViewController *userLoginVC = [[UserLoginViewController alloc] init];
+    [self.navigationController pushViewController:userLoginVC animated:YES];
+}
+
+#pragma mark - Confirm Order Button Method
+-(void)placeCurrentOrderView
+{
+    UIRemoteNotificationType status = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
+    
+    if (![SharedDataHandler sharedInstance].isUserAuthenticated)
+    {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Login Required"
+                                                          message:@"You must be logged in to place orders. Please go to the settings menu and login."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else if (![SharedDataHandler sharedInstance].userCard)
+    {
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Required"
+                                                          message:@"You must have a credit card associated with your account to place and order."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else if (status == UIRemoteNotificationTypeNone)
+    {
+        NSLog(@"User doesn't want to receive push-notifications, need to force use");
+        [SharedDataHandler sharedInstance].isNotificationsEnabled = NO;
+        
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Push Notifications Disabled"
+                                                          message:@"We cannot let you know when your order is ready without notifications. Please turn notifications on in the Settings App to place the order."
+                                                         delegate:self
+                                                cancelButtonTitle:@"Okay"
+                                                otherButtonTitles:nil];
+        [message show];
+    }
+    else
+    {
+        [self placeOrder];
+    }
+    
+}
+
+#pragma mark - UIAlertView Method
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"Clear Drinks"])
+    {
+        NSLog(@"Clearing Drinks");
+        [self cancelCurrentOrder];
+        
+    } else if([title isEqualToString:@"Place Order"])
+    {
+        NSLog(@"Placing Order");
+        [self placeCurrentOrderView];
+    }
+}
+
+#pragma mark - Ordering Options
+
+-(void)cancelCurrentOrderCheck
+{
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Drinks?"
+                                                      message:@"Are you sure you want to clear your current order?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Clear Drinks", nil];
+    [message show];
+}
+
+-(void)cancelCurrentOrder {
+    [self.drinksOrdered removeAllObjects];
+    [self.tableViewDrinks reloadData];
+    [self updatePricesAndTotals];
+    [self updatePlaceOrderButton];
+}
+
+-(void)placeOrderCheck
+{
+    NSLog(@"place order button hit");
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Place Order?"
+                                                      message:@"Would you like to place this order?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Place Order", nil];
+    [message show];
+}
+
+-(void)placeOrder
+{
+    NSMutableDictionary *order = [[NSMutableDictionary alloc] init];
+    [order setObject:[NSNumber numberWithInt:[SharedDataHandler sharedInstance].current_section] forKey:@"bar_id"];
+    [order setObject:[NSNumber numberWithFloat:self.totalPrice] forKey:@"total"];
+    [order setObject:[NSNumber numberWithFloat:2.40] forKey:@"tax"];
+    [order setObject:[NSNumber numberWithFloat:self.totalPrice + 2.40] forKey:@"sub_total"];
+    [order setObject:[NSNumber numberWithFloat:((self.totalPrice + 2.40 + 0.35) * self.tipPercent)] forKey:@"tip"];
+    [order setObject:[NSNumber numberWithFloat:0.35] forKey:@"fees"];
+    [order setObject:[NSNumber numberWithFloat:self.finalPrice] forKey:@"grand_total"];
+    [order setObject:[SharedDataHandler sharedInstance].currentDrinkOrder forKey:@"drinks"];
+    //    [[SharedDataHandler sharedInstance] placeOrder:order];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] placeOrder:order withSuccess:^(bool successful)
+         {
+             [[SharedDataHandler sharedInstance].currentDrinkOrder removeAllObjects];
+             ThanksViewController *thanksVC = [[ThanksViewController alloc] init];
+             [self.navigationController pushViewController:thanksVC animated:YES];
+             
+             dispatch_async(dispatch_get_main_queue(), ^{
+                 [MBProgressHUD hideHUDForView:self.view animated:YES];
+             });
+         }];
+    });
+}
+
+
+#pragma mark - UITableView Delegate
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.drinksOrdered count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString * CellIdentifier = @"SpecialCell";
+    NewDrinkSelectCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (!cell)
+    {
+        cell = [[NewDrinkSelectCell alloc] initWithReuseIdentifier:CellIdentifier];
+        cell.delegate = self;
+        [cell.stepper addTarget:self action:@selector(stepperDidStep:) forControlEvents:UIControlEventValueChanged];
+        cell.stepper.tag = indexPath.row;
+    }
+    
+    NSMutableDictionary *drink = [self.drinksOrdered objectAtIndex:indexPath.row];
+    
+    NSLog(@"drink in collapse: %@", drink);
+    if ([[SharedDataHandler sharedInstance] isBarHappyHour]) {
+        [cell.priceLabel setText:[NSString stringWithFormat:@" $%.2f ", [[drink objectForKey:@"happyhour_price"] floatValue]]];
+    } else {
+        [cell.priceLabel setText:[NSString stringWithFormat:@" $%.2f ", [[drink objectForKey:@"price"] floatValue]]];
+    }
+    
+    cell.quantityLabel.text = [NSString stringWithFormat:@" ADDED x %i ", [[drink objectForKey:@"quantity"] intValue]];
+    cell.stepper.Current = [[drink objectForKey:@"quantity"] intValue];
+    
+    if ([[drink objectForKey:@"quantity"] intValue] == 0)
+    {
+        [cell.quantityLabel setHidden:YES];
+    }
+    
+    cell.textLabel.text = [drink objectForKey:@"name"];
+    
+    return cell;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+	
+	if ([cell isKindOfClass:[ZKRevealingTableViewCell class]]) {
+		ZKRevealingTableViewCell *panningTableViewCell = (ZKRevealingTableViewCell*)cell;
+        [panningTableViewCell setRevealing:![panningTableViewCell isRevealing]];
+	}
+}
+
+#pragma mark - Stepper Delegate
+
+- (void)stepperDidStep:(TextStepperField *)stepper
+{
+    int quantity = (int)stepper.Current;
+    
+    int tag = stepper.tag;
+    
+    NSMutableDictionary *dicDrink = [NSMutableDictionary dictionaryWithDictionary:[self.drinksOrdered objectAtIndex:tag]];
+    [dicDrink setObject:[NSNumber numberWithInteger:quantity] forKey:@"quantity"];
+    [self.drinksOrdered replaceObjectAtIndex:tag withObject:dicDrink];
+    
+    NSLog(@"dic drink: %@", dicDrink);
+    
+    NSIndexPath *path = [NSIndexPath indexPathForRow:tag inSection:0];
+    if ([[dicDrink objectForKey:@"quantity"] intValue] == 0) {
+        [self.drinksOrdered removeObjectAtIndex:tag];
+        [self.tableViewDrinks deleteRowsAtIndexPaths:@[path] withRowAnimation:UITableViewRowAnimationLeft];
+    } else {
+        NewDrinkSelectCell *cell = (NewDrinkSelectCell *)[self.tableViewDrinks cellForRowAtIndexPath:path];
+        cell.quantityLabel.text = [NSString stringWithFormat:@" ADDED x %i ", quantity];
+        [cell.stepper setCurrent:quantity];
+    }
+
+    [self updatePricesAndTotals];
+    [self updatePlaceOrderButton];
+}
+
+-(void)updatePlaceOrderButton
+{
+    if ([self.drinksOrdered count] > 0) {
+        [self.placeOrderButton setEnabled:YES];
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+        [self.placeOrderButton setEnabled:NO];
+    }
 }
 
 #pragma mark - Accessors
@@ -235,6 +519,9 @@
 
 -(void)didClickCollapseClickCellAtIndex:(int)index isNowOpen:(BOOL)open
 {
+    if (!open) {
+        [self.collapsableDrinkOrder openCollapseClickCellAtIndex:index animated:NO];
+    }
 }
 
 @end

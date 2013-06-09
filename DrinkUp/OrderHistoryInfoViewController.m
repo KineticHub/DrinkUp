@@ -9,7 +9,7 @@
 #import "OrderHistoryInfoViewController.h"
 #import "SharedDataHandler.h"
 #import "BasicSplitTableViewController.h"
-#import "DrinkSelectCell.h"
+#import "NewDrinkSelectCell.h"
 
 @interface OrderHistoryInfoViewController ()
 @property (nonatomic, strong) NSMutableArray *drinksOrdered;
@@ -66,7 +66,7 @@
     //    [self.tableView setBackgroundView:nil];
     [self.tableViewDrinks flashScrollIndicators];
     //    [self.tableViewDrinks setTag:0];
-    [self.tableViewDrinks setRowHeight:50];
+    [self.tableViewDrinks setRowHeight:65.0];
     [self.tableViewDrinks setBackgroundColor:[UIColor clearColor]];
     [self.tableViewDrinks setSeparatorColor:[UIColor clearColor]];
     [self.view addSubview:self.tableViewDrinks];
@@ -179,49 +179,25 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    DrinkSelectCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier"];
+    static NSString * CellIdentifier = @"NormalCell";
+    UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     
-	if (cell == nil)
+    if (!cell)
     {
-		cell = [[DrinkSelectCell alloc] initWithReuseIdentifier:@"CellIdentifier"];
-        cell.textLabel.textColor = [UIColor whiteColor];
-        cell.textLabel.backgroundColor = [UIColor clearColor];
-        cell.detailTextLabel.backgroundColor = [UIColor clearColor];
-        [cell setBackgroundColor:[UIColor clearColor]];
-        [cell.contentView setBackgroundColor:[UIColor clearColor]];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier];
+        [cell.contentView setBackgroundColor: [UIColor whiteColor] ];
         
-        cell.drinkCostLabel.textColor = [UIColor whiteColor];
-        [cell.drinkCostLabel.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-        
-        cell.drinkCountLabel.textColor = [UIColor whiteColor];
-        [cell.drinkCountLabel.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-        
-        UIView *highlightedBackgroundView = [[UIView alloc] init];
-        [highlightedBackgroundView setBackgroundColor:[UIColor whiteColor]];
-        [highlightedBackgroundView.layer setBorderColor:[[UIColor whiteColor] CGColor]];
-        [highlightedBackgroundView.layer setBorderWidth:2.0];
-        [cell setBackgroundView:highlightedBackgroundView];
-        
-        for (UIView *view in [cell subviews])
-        {
-            NSLog(@"view bg: %@", view.backgroundColor);
-            [view setBackgroundColor:[UIColor clearColor]];
-            NSLog(@"view bg 2: %@", view.backgroundColor);
-        }
-        
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-	}
+        [cell.textLabel setTextColor:[UIColor blackColor]];
+        [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+    }
     
     NSDictionary *drink = [self.drinksOrdered objectAtIndex:[indexPath row]];
     
-    NSString *priceString = [NSString stringWithFormat:@"$%@", [drink objectForKey:@"unit_price"]];
+    NSString *priceString = [NSString stringWithFormat:@"%i x $%@",[[drink objectForKey:@"quantity"] intValue], [drink objectForKey:@"unit_price"]];
     
     cell.textLabel.text = [drink objectForKey:@"drink_name"];
+    cell.detailTextLabel.text = priceString;
     
-    [cell setCostLabelAmount:priceString];
-    [cell setDrinkQuantity:[[drink objectForKey:@"quantity"] intValue]];
-    
-    NSLog(@"Drink for row %i: %@", [indexPath row], drink);
     
     return cell;
 }

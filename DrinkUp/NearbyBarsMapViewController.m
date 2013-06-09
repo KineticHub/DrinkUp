@@ -65,7 +65,7 @@
     for (NSDictionary *bar in self.bars) {
         MKPointAnnotation *barAnnotation = [[MKPointAnnotation alloc] init];
         barAnnotation.title = [bar objectForKey:@"name"];
-        barAnnotation.subtitle = [NSString stringWithFormat:@"Happy Hour: 4:00 to 9:00"];
+        barAnnotation.subtitle = [bar objectForKey:@"street_address"];
         
         CLLocationCoordinate2D barLocation = CLLocationCoordinate2DMake([[bar objectForKey:@"latitude"] floatValue], [[bar objectForKey:@"longitude"] floatValue]);
         barAnnotation.coordinate = barLocation;

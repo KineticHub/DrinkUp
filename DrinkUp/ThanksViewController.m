@@ -9,6 +9,7 @@
 #import "ThanksViewController.h"
 #import "BSTDrinkTypeViewController.h"
 #import "SharedDataHandler.h"
+#import "CollapsableDrinkViewController.h"
 
 @interface ThanksViewController ()
 @property (nonatomic, strong) UILabel *claimLabel;
@@ -59,7 +60,7 @@
 
 -(void)drinkOrderCompleteExit {
     for (UIViewController *controller in self.navigationController.viewControllers) {
-        if ([controller isKindOfClass:[BSTDrinkTypeViewController class]]) {
+        if ([controller isKindOfClass:[CollapsableDrinkViewController class]]) {
             [self.navigationController popToViewController:controller animated:YES];
             break;
         }

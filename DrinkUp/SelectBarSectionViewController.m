@@ -9,6 +9,7 @@
 #import "SelectBarSectionViewController.h"
 #import "UIImageView+AFNetworking.h"
 #import "BSTDrinkTypeViewController.h"
+#import "CollapsableDrinkViewController.h"
 
 @interface SelectBarSectionViewController ()
 @property (nonatomic, strong) NSMutableArray *barSections;
@@ -91,8 +92,11 @@
     [SharedDataHandler sharedInstance].current_section = [[barSection objectForKey:@"id"] intValue];
     [SharedDataHandler sharedInstance].currentBar = [NSDictionary dictionaryWithDictionary:barSection];
     
-    BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+    CollapsableDrinkViewController *selectionView = [[CollapsableDrinkViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
     [self.navigationController pushViewController:selectionView animated:YES];
+    
+//    BSTDrinkTypeViewController *selectionView = [[BSTDrinkTypeViewController alloc] initWithBarSection:[[barSection objectForKey:@"id"] intValue]];
+//    [self.navigationController pushViewController:selectionView animated:YES];
 }
 
 @end

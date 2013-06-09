@@ -11,6 +11,7 @@
 #import "SharedDataHandler.h"
 #import "OrderHistoryCell.h"
 #import "OrderHistoryInfoViewController.h"
+#import "NewDrinkSelectCell.h"
 
 @interface OrderHistorySelectionViewController ()
 @property (nonatomic, strong) UITableView *tableView;
