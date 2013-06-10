@@ -189,6 +189,8 @@
         
         [cell.textLabel setTextColor:[UIColor blackColor]];
         [cell.detailTextLabel setTextColor:[UIColor blackColor]];
+        
+        [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     }
     
     NSDictionary *drink = [self.drinksOrdered objectAtIndex:[indexPath row]];

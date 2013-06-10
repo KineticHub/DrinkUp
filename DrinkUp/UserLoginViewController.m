@@ -375,7 +375,7 @@
     changePaymentButton.depth = 3.0;
     changePaymentButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
     [changePaymentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [changePaymentButton setTitle:@"Change Payment Card" forState:UIControlStateNormal];
+    [changePaymentButton setTitle:@"Change Credit Card" forState:UIControlStateNormal];
     [changePaymentButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
     [changePaymentButton addTarget:self action:@selector(transitionChangeCreditCard) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changePaymentButton];

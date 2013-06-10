@@ -213,7 +213,7 @@
     }
     
     //NEED TO FIGURE OUT WHERE THIS ACTUALLY COMES FROM
-    self.taxAndFees = 2.75;
+    self.taxAndFees = 0.05 * self.totalPrice + 0.05;
     self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.taxAndFees];
     
     self.finalPrice = self.totalPrice + self.taxAndFees + ((self.totalPrice + self.taxAndFees) * self.tipPercent);

@@ -576,6 +576,7 @@ static id _instance;
             
             if ([[JSON objectForKey:@"card_type"] isEqualToString:@"none"]) {
                 NSLog(@"No Card Found");
+                self.userCard = nil;
             } else {
                 self.userCard = [NSMutableDictionary dictionaryWithDictionary:JSON];
             }

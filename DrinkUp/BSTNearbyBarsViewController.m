@@ -36,15 +36,38 @@
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[SharedDataHandler sharedInstance] loadUserLocation];
-        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects) {
+        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
+        {
+            if ([objects count] == 0)
+            {
+                [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects)
+                {
+                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Nearby Bars"
+                                                                      message:@"No DrinkUp bars were found nearby. Showing all participating bars."
+                                                                     delegate:self
+                                                            cancelButtonTitle:@"Okay"
+                                                            otherButtonTitles:nil];
+                    [message show];
+                    
+                    self.bars = [NSMutableArray arrayWithArray:objects];
+                    [self.tableView reloadData];
+                    [self setupMap];
+                    
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [MBProgressHUD hideHUDForView:self.view animated:YES];
+                    });
+                }];
+            } else {
+                self.bars = [NSMutableArray arrayWithArray:objects];
+                [self.tableView reloadData];
+                [self setupMap];
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [MBProgressHUD hideHUDForView:self.view animated:YES];
+                });
+            }
             
-            self.bars = [NSMutableArray arrayWithArray:objects];
-            [self.tableView reloadData];
-            [self setupMap];
             
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [MBProgressHUD hideHUDForView:self.view animated:YES];
-            });
         }];
     });
     

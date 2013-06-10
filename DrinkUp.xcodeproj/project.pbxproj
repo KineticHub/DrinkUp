@@ -34,7 +34,6 @@
 		9C69C5A916CD89F800D548F2 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5A816CD89F800D548F2 /* main.m */; };
 		9C69C5AD16CD89F800D548F2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5AC16CD89F800D548F2 /* AppDelegate.m */; };
 		9C69C5AF16CD89F800D548F2 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5AE16CD89F800D548F2 /* Default.png */; };
-		9C69C5B116CD89F800D548F2 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5B016CD89F800D548F2 /* Default@2x.png */; };
 		9C69C5B316CD89F800D548F2 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5B216CD89F800D548F2 /* Default-568h@2x.png */; };
 		9C69C5BF16CD8BD700D548F2 /* DrinkHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5BE16CD8BD700D548F2 /* DrinkHistoryViewController.m */; };
 		9C69C5D716CF8A1300D548F2 /* MainSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C69C5D616CF8A1300D548F2 /* MainSettingsViewController.m */; };
@@ -97,6 +96,9 @@
 		9C803A061763B41F008EFC5C /* marker_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A051763B41E008EFC5C /* marker_icon.png */; };
 		9C803A081763BD2B008EFC5C /* settings_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A071763BD2B008EFC5C /* settings_icon.png */; };
 		9C803A0B1764AC10008EFC5C /* OrderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C803A0A1764AC10008EFC5C /* OrderViewController.m */; };
+		9C803A0F17658770008EFC5C /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A0E1765876F008EFC5C /* Default.png */; };
+		9C803A11176587AE008EFC5C /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A10176587AC008EFC5C /* Default@2x.png */; };
+		9C803A13176587BA008EFC5C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 9C803A12176587B7008EFC5C /* Default-568h@2x.png */; };
 		9C8B70B116DD901900FB80AF /* Facebook.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B703F16DD901800FB80AF /* Facebook.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		9C8B70B216DD901900FB80AF /* FacebookSDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B704116DD901800FB80AF /* FacebookSDKResources.bundle */; };
 		9C8B70B316DD901900FB80AF /* FBAccessTokenData.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8B704316DD901800FB80AF /* FBAccessTokenData.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -329,6 +331,9 @@
 		9C803A071763BD2B008EFC5C /* settings_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings_icon.png; sourceTree = "<group>"; };
 		9C803A091764AC0F008EFC5C /* OrderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OrderViewController.h; sourceTree = "<group>"; };
 		9C803A0A1764AC10008EFC5C /* OrderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OrderViewController.m; sourceTree = "<group>"; };
+		9C803A0E1765876F008EFC5C /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		9C803A10176587AC008EFC5C /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		9C803A12176587B7008EFC5C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		9C8B703E16DD901800FB80AF /* Facebook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Facebook.h; sourceTree = "<group>"; };
 		9C8B703F16DD901800FB80AF /* Facebook.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Facebook.m; sourceTree = "<group>"; };
 		9C8B704016DD901800FB80AF /* FacebookSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FacebookSDK.h; sourceTree = "<group>"; };
@@ -585,6 +590,9 @@
 		9C69C59016CD89F800D548F2 = {
 			isa = PBXGroup;
 			children = (
+				9C803A12176587B7008EFC5C /* Default-568h@2x.png */,
+				9C803A10176587AC008EFC5C /* Default@2x.png */,
+				9C803A0E1765876F008EFC5C /* Default.png */,
 				9C736FB7174E110C0056713F /* AirshipConfig.plist */,
 				9C736FB5174E10300056713F /* libUAirship-1.4.0.a */,
 				9C69C5A216CD89F800D548F2 /* DrinkUp */,
@@ -1304,7 +1312,6 @@
 			files = (
 				9C69C5A716CD89F800D548F2 /* InfoPlist.strings in Resources */,
 				9C69C5AF16CD89F800D548F2 /* Default.png in Resources */,
-				9C69C5B116CD89F800D548F2 /* Default@2x.png in Resources */,
 				9C69C5B316CD89F800D548F2 /* Default-568h@2x.png in Resources */,
 				9C69C64F16CFFA1400D548F2 /* blank_square.png in Resources */,
 				9C69C66D16D01F2600D548F2 /* AUTHORS in Resources */,
@@ -1339,6 +1346,9 @@
 				9C8039FE1763AE0C008EFC5C /* settings_icon_old.png in Resources */,
 				9C803A061763B41F008EFC5C /* marker_icon.png in Resources */,
 				9C803A081763BD2B008EFC5C /* settings_icon.png in Resources */,
+				9C803A0F17658770008EFC5C /* Default.png in Resources */,
+				9C803A11176587AE008EFC5C /* Default@2x.png in Resources */,
+				9C803A13176587BA008EFC5C /* Default-568h@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1490,7 +1500,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1509,7 +1519,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				"OTHER_LDFLAGS[arch=*]" = "-lxml2";
-				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
+				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
 				SDKROOT = iphoneos;
 			};
@@ -1527,7 +1537,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1538,7 +1548,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
+				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "091197E9-8B63-4D99-B200-AA368A30501B";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1548,7 +1558,7 @@
 		9C69C5B716CD89F800D548F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1575,7 +1585,7 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
+				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1583,7 +1593,7 @@
 		9C69C5B816CD89F800D548F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)\"",
@@ -1605,7 +1615,7 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "1A7EAFB9-0C50-4540-978B-2B2B341DF529";
+				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
