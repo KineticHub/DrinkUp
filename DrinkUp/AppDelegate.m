@@ -11,6 +11,7 @@
 #import <UAPush.h>
 #import "FacebookSDK.h"
 #import "QBFlatButton.h"
+#import "CustomBarButton.h"
 
 #import "RecentBarsViewController.h"
 #import "BSTNearbyBarsViewController.h"
@@ -105,20 +106,14 @@
 //    [self.mapButton setTintColor:[UIColor whiteColor]];
 //    [self.mapButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
 //    self.mapButton = [[UIBarButtonItem alloc]
-//                           initWithImage:[UIImage imageNamed:@"marker_icon"]
+//                           initWithImage:[UIImage imageNamed:@"location"]
 //                           style:UIBarButtonItemStylePlain
 //                           target:self action:@selector(showMap)];
-//    [self.mapButton setTintColor:[UIColor whiteColor]];
+//    [self.mapButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
     
-    QBFlatButton *mapButtonFlat = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    mapButtonFlat.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    mapButtonFlat.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    mapButtonFlat.radius = 6.0;
-    mapButtonFlat.margin = 2.0;
-    mapButtonFlat.depth = 2.0;
-    [mapButtonFlat setFrame:CGRectMake(0.0, 0.0, 40.0, 28.0)];
-    [mapButtonFlat.imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [mapButtonFlat setImage:[UIImage imageNamed:@"marker_icon"] forState:UIControlStateNormal];
+    UIImage *mapImage = [UIImage imageNamed:@"location"];
+    CustomBarButton *mapButtonFlat = [[CustomBarButton alloc] init];
+    [mapButtonFlat setButtonWithImage:mapImage];
     [mapButtonFlat addTarget:self action:@selector(showMap) forControlEvents:UIControlEventTouchUpInside];
     
     self.mapButton = [[UIBarButtonItem alloc] init];
@@ -126,20 +121,15 @@
     
     // Instantiate a New button to invoke the addTask: method when tapped.
 //    self.settingsButton = [[UIBarButtonItem alloc]
-//                                                                    initWithImage:[UIImage imageNamed:@"settings_icon"]
+//                                                                    initWithImage:[UIImage imageNamed:@"gears"]
 //                                                                    style:UIBarButtonItemStylePlain
 //                                                                    target:self action:@selector(showMenu)];
-//    [self.settingsButton setTintColor:[UIColor whiteColor]];
-//    [navItemsArray addObject:settingsButton];
-    QBFlatButton *settingsButtonFlat = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    settingsButtonFlat.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    settingsButtonFlat.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    settingsButtonFlat.radius = 6.0;
-    settingsButtonFlat.margin = 2.0;
-    settingsButtonFlat.depth = 2.0;
-    [settingsButtonFlat setFrame:CGRectMake(0.0, 0.0, 40.0, 28.0)];
-    [settingsButtonFlat.imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [settingsButtonFlat setImage:[UIImage imageNamed:@"settings_icon"] forState:UIControlStateNormal];
+//    [self.settingsButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
+//    [navItemsArray addObject:self.settingsButton];
+    
+    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
+    CustomBarButton *settingsButtonFlat = [[CustomBarButton alloc] init];
+    [settingsButtonFlat setButtonWithImage:settingsImage];
     [settingsButtonFlat addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
     
     self.settingsButton = [[UIBarButtonItem alloc] init];

@@ -28,48 +28,12 @@
 {
     [super viewDidLoad];
     
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
+    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
+    
     [[SharedDataHandler sharedInstance] initializeLocationTracking];
     
     self.bars = [[NSMutableArray alloc] init];
-    
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
-        
-        [[SharedDataHandler sharedInstance] loadUserLocation];
-        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
-        {
-            if ([objects count] == 0)
-            {
-                [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects)
-                {
-                    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Nearby Bars"
-                                                                      message:@"No DrinkUp bars were found nearby. Showing all participating bars."
-                                                                     delegate:self
-                                                            cancelButtonTitle:@"Okay"
-                                                            otherButtonTitles:nil];
-                    [message show];
-                    
-                    self.bars = [NSMutableArray arrayWithArray:objects];
-                    [self.tableView reloadData];
-                    [self setupMap];
-                    
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [MBProgressHUD hideHUDForView:self.view animated:YES];
-                    });
-                }];
-            } else {
-                self.bars = [NSMutableArray arrayWithArray:objects];
-                [self.tableView reloadData];
-                [self setupMap];
-                
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [MBProgressHUD hideHUDForView:self.view animated:YES];
-                });
-            }
-            
-            
-        }];
-    });
     
     self.mapView = [[MKMapView alloc] initWithFrame:self.upperView.frame];
     [self.mapView setShowsUserLocation:YES];
@@ -80,12 +44,44 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
-     {
-         self.bars = [NSMutableArray arrayWithArray:objects];
-         [[SharedDataHandler sharedInstance] loadUserLocation];
-         [self.tableView reloadData];
-     }];
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+        
+        [[SharedDataHandler sharedInstance] loadUserLocation];
+        [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
+         {
+             if ([objects count] == 0)
+             {
+                 [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects)
+                  {
+                      UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Nearby Bars"
+                                                                        message:@"No DrinkUp bars were found near you. Showing all participating bars."
+                                                                       delegate:self
+                                                              cancelButtonTitle:@"Okay"
+                                                              otherButtonTitles:nil];
+                      [message show];
+                      
+                      self.bars = [NSMutableArray arrayWithArray:objects];
+                      [self.tableView reloadData];
+                      [self setupMap];
+                      
+                      dispatch_async(dispatch_get_main_queue(), ^{
+                          [MBProgressHUD hideHUDForView:self.view animated:YES];
+                      });
+                  }];
+             } else {
+                 self.bars = [NSMutableArray arrayWithArray:objects];
+                 [self.tableView reloadData];
+                 [self setupMap];
+                 
+                 dispatch_async(dispatch_get_main_queue(), ^{
+                     [MBProgressHUD hideHUDForView:self.view animated:YES];
+                 });
+             }
+             
+             
+         }];
+    });
 }
 
 #pragma mark - TableView DataSource Methods

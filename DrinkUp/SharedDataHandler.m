@@ -64,7 +64,7 @@ static id _instance;
     self.userCard = nil;
     self.userInformation = [[NSMutableDictionary alloc] init];
     self.currentDrinkOrder = [[NSMutableArray alloc] init];
-    self.marketplace = @"/v1/marketplaces/TEST-MP2TVu9e2qymz5T2C1RdEdPs";
+    self.marketplace = @"/v1/marketplaces/MP6oQ3gotJ83HcBLJXNS6oLm";
 }
 
 -(bool)isBarHappyHour

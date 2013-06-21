@@ -17,6 +17,7 @@
 #import "ConfirmOrderViewController.h"
 #import "OrderViewController.h"
 #import "QBFlatButton.h"
+#import "CustomBarButton.h"
 
 #define kCellHeight 65.0
 
@@ -71,7 +72,7 @@
     leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [leaveButton setTitle:@"Leave Bar" forState:UIControlStateNormal];
-    [leaveButton setFrame:CGRectMake(0.0, 0.0, 85.0, 28.0)];
+    [leaveButton setFrame:CGRectMake(0.0, 0.0, 85.0, 32.0)];
     [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:leaveButton];
     
@@ -86,15 +87,9 @@
 //                                             target:self action:@selector(showUserProfile)];
 //    [settingsProfileButton setTintColor:[UIColor whiteColor]];
     
-    QBFlatButton *settingsButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    settingsButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    settingsButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    settingsButton.radius = 6.0;
-    settingsButton.margin = 2.0;
-    settingsButton.depth = 2.0;
-    [settingsButton setFrame:CGRectMake(0.0, 0.0, 40.0, 28.0)];
-    [settingsButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [settingsButton setImage:[UIImage imageNamed:@"settings_icon"] forState:UIControlStateNormal];
+    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
+    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
+    [settingsButton setButtonWithImage:settingsImage];
     [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] init];
@@ -113,7 +108,7 @@
     orderButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     [orderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [orderButton setTitle:@"View Order" forState:UIControlStateNormal];
-    [orderButton setFrame:CGRectMake(0.0, 0.0, 95.0, 28.0)];
+    [orderButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
     [orderButton addTarget:self action:@selector(viewCurrentOrderView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:orderButton];
     

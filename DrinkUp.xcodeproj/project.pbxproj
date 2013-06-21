@@ -183,6 +183,10 @@
 		9C8B782716F14F9A00FB80AF /* DrinkUp-App.com.der in Resources */ = {isa = PBXBuildFile; fileRef = 9C8B782616F14F9900FB80AF /* DrinkUp-App.com.der */; };
 		9C95ACF91738EB8E00B8FFBB /* CreditCardProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C95ACF81738EB8D00B8FFBB /* CreditCardProfileViewController.m */; };
 		9C95ACFB1738EFEF00B8FFBB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C95ACFA1738EFEF00B8FFBB /* CoreTelephony.framework */; };
+		9CD3FB231772A1AB0046B9BF /* gears.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD3FB221772A1AB0046B9BF /* gears.png */; };
+		9CD3FB271772A25C0046B9BF /* location.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD3FB261772A25C0046B9BF /* location.png */; };
+		9CD3FB291772A7DC0046B9BF /* Settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CD3FB281772A7DB0046B9BF /* Settings.png */; };
+		9CD3FB2D1772AEAF0046B9BF /* CustomBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CD3FB2C1772AEAF0046B9BF /* CustomBarButton.m */; };
 		9CF05361173901FC00351DA4 /* BalancedHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF05360173901FC00351DA4 /* BalancedHelper.m */; };
 		9CF053641739023C00351DA4 /* BPHCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053631739023C00351DA4 /* BPHCard.m */; };
 		9CF053671739030400351DA4 /* BPHUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053661739030400351DA4 /* BPHUtils.m */; };
@@ -499,6 +503,11 @@
 		9C95ACF71738EB8D00B8FFBB /* CreditCardProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CreditCardProfileViewController.h; sourceTree = "<group>"; };
 		9C95ACF81738EB8D00B8FFBB /* CreditCardProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CreditCardProfileViewController.m; sourceTree = "<group>"; };
 		9C95ACFA1738EFEF00B8FFBB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		9CD3FB221772A1AB0046B9BF /* gears.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gears.png; sourceTree = "<group>"; };
+		9CD3FB261772A25C0046B9BF /* location.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = location.png; sourceTree = "<group>"; };
+		9CD3FB281772A7DB0046B9BF /* Settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Settings.png; sourceTree = "<group>"; };
+		9CD3FB2B1772AEAF0046B9BF /* CustomBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomBarButton.h; sourceTree = "<group>"; };
+		9CD3FB2C1772AEAF0046B9BF /* CustomBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomBarButton.m; sourceTree = "<group>"; };
 		9CF0535F173901FC00351DA4 /* BalancedHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalancedHelper.h; sourceTree = "<group>"; };
 		9CF05360173901FC00351DA4 /* BalancedHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BalancedHelper.m; sourceTree = "<group>"; };
 		9CF053621739023C00351DA4 /* BPHCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHCard.h; sourceTree = "<group>"; };
@@ -847,6 +856,7 @@
 		9C69C64D16CFF5F900D548F2 /* Global */ = {
 			isa = PBXGroup;
 			children = (
+				9CD3FB2A1772AE970046B9BF /* BarButtons */,
 				9C8B712816E80E6300FB80AF /* TableView */,
 				9C69C5D816CFD58700D548F2 /* Data Handler */,
 				9C69C65016CFFA1900D548F2 /* Images */,
@@ -859,6 +869,9 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9CD3FB281772A7DB0046B9BF /* Settings.png */,
+				9CD3FB261772A25C0046B9BF /* location.png */,
+				9CD3FB221772A1AB0046B9BF /* gears.png */,
 				9C803A071763BD2B008EFC5C /* settings_icon.png */,
 				9C803A051763B41E008EFC5C /* marker_icon.png */,
 				9C8039FD1763AE0B008EFC5C /* settings_icon_old.png */,
@@ -1259,6 +1272,15 @@
 			name = TableView;
 			sourceTree = "<group>";
 		};
+		9CD3FB2A1772AE970046B9BF /* BarButtons */ = {
+			isa = PBXGroup;
+			children = (
+				9CD3FB2B1772AEAF0046B9BF /* CustomBarButton.h */,
+				9CD3FB2C1772AEAF0046B9BF /* CustomBarButton.m */,
+			);
+			name = BarButtons;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1349,6 +1371,9 @@
 				9C803A0F17658770008EFC5C /* Default.png in Resources */,
 				9C803A11176587AE008EFC5C /* Default@2x.png in Resources */,
 				9C803A13176587BA008EFC5C /* Default-568h@2x.png in Resources */,
+				9CD3FB231772A1AB0046B9BF /* gears.png in Resources */,
+				9CD3FB271772A25C0046B9BF /* location.png in Resources */,
+				9CD3FB291772A7DC0046B9BF /* Settings.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1471,6 +1496,7 @@
 				9C8039CF17610B13008EFC5C /* ZKRevealingTableViewCell.m in Sources */,
 				9C8039F017614E9D008EFC5C /* TextStepperField.m in Sources */,
 				9C803A0B1764AC10008EFC5C /* OrderViewController.m in Sources */,
+				9CD3FB2D1772AEAF0046B9BF /* CustomBarButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1501,7 +1527,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Khair Alnajar";
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1519,8 +1545,8 @@
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = "-lxml2";
 				"OTHER_LDFLAGS[arch=*]" = "-lxml2";
-				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5936AF87-449C-447A-9291-508579680B09";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1538,7 +1564,7 @@
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Khair Alnajar";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
@@ -1548,8 +1574,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "091197E9-8B63-4D99-B200-AA368A30501B";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5936AF87-449C-447A-9291-508579680B09";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1585,7 +1611,7 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -1615,7 +1641,7 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8D39E2E4-C735-48D0-819F-CB157DAF0121";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

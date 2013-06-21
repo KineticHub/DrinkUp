@@ -39,9 +39,6 @@
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
     
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
-    
     self.drinksOrdered = [SharedDataHandler sharedInstance].currentDrinkOrder;
     NSLog(@"drinks ordered currently: %@", self.drinksOrdered);
     

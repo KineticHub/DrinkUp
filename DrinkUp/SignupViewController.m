@@ -250,6 +250,26 @@
     }
 }
 
+-(void)loginWithFacebook:(id)sender
+{
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Logging In";
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(facebookAuthorized:)
+                                                 name:@"FacebookServerLoginAuthorized"
+                                               object:nil];
+    
+    [[SharedDataHandler sharedInstance] authorizeFacebook];
+}
+
+-(void)facebookAuthorized:(NSNotification *) notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{}];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
 #pragma mark - UITextField delegate methods
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {

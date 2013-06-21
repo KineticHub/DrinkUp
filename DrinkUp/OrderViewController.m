@@ -15,6 +15,7 @@
 #import "ThanksViewController.h"
 #import "UserLoginViewController.h"
 #import "QBFlatButton.h"
+#import "CustomBarButton.h"
 
 @interface OrderViewController ()
 {
@@ -82,15 +83,9 @@
     [self.collapsableDrinkOrder openCollapseClickCellAtIndex:0 animated:NO];
     [self.view addSubview:self.collapsableDrinkOrder];
     
-    QBFlatButton *settingsButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    settingsButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    settingsButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    settingsButton.radius = 6.0;
-    settingsButton.margin = 2.0;
-    settingsButton.depth = 2.0;
-    [settingsButton setFrame:CGRectMake(0.0, 0.0, 40.0, 28.0)];
-    [settingsButton.imageView setContentMode:UIViewContentModeScaleAspectFill];
-    [settingsButton setImage:[UIImage imageNamed:@"settings_icon"] forState:UIControlStateNormal];
+    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
+    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
+    [settingsButton setButtonWithImage:settingsImage];
     [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
     
     UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] init];
@@ -114,7 +109,7 @@
     clearButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
     [clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [clearButton setTitle:@"Clear Order" forState:UIControlStateNormal];
-    [clearButton setFrame:CGRectMake(0.0, 0.0, 95.0, 28.0)];
+    [clearButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
     [clearButton addTarget:self action:@selector(cancelCurrentOrderCheck) forControlEvents:UIControlEventTouchUpInside];
     
     //    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
@@ -240,8 +235,8 @@
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Login Required"
                                                           message:@"You must be logged in to place orders. Please go to the settings menu and login."
                                                          delegate:self
-                                                cancelButtonTitle:@"Okay"
-                                                otherButtonTitles:nil];
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Login", nil];
         [message show];
     }
     else if (![SharedDataHandler sharedInstance].userCard)
@@ -267,7 +262,13 @@
     }
     else
     {
-        [self placeOrder];
+        NSLog(@"place order button hit");
+        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Place Order?"
+                                                          message:@"Would you like to place this order?"
+                                                         delegate:self
+                                                cancelButtonTitle:@"Cancel"
+                                                otherButtonTitles:@"Place Order", nil];
+        [message show];
     }
     
 }
@@ -283,8 +284,11 @@
         
     } else if([title isEqualToString:@"Place Order"])
     {
-        NSLog(@"Placing Order");
-        [self placeCurrentOrderView];
+        [self placeOrder];
+        
+    } else if([title isEqualToString:@"Login"])
+    {
+        [self showUserProfile];
     }
 }
 
@@ -309,13 +313,8 @@
 
 -(void)placeOrderCheck
 {
-    NSLog(@"place order button hit");
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Place Order?"
-                                                      message:@"Would you like to place this order?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Place Order", nil];
-    [message show];
+    NSLog(@"Placing Order");
+    [self placeCurrentOrderView];
 }
 
 -(void)placeOrder

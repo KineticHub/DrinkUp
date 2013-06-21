@@ -7,6 +7,10 @@
 	<key>DEVELOPMENT_APP_KEY</key>
 	<string>eKW8DeUHRBeIUkcKKAbc1g</string>
 	<key>APP_STORE_OR_AD_HOC_BUILD</key>
-	<false/>
+	<true/>
+	<key>PRODUCTION_APP_KEY</key>
+	<string>KqdTDnAMSsmtk2SDyV5YVg</string>
+	<key>PRODUCTION_APP_SECRET</key>
+	<string>PyGiTKt6S-Cg8d0mHhOwWw</string>
 </dict>
 </plist>
