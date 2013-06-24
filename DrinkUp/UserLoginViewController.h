@@ -11,6 +11,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import "FacebookSDK.h"
 
-@interface UserLoginViewController : UIViewController <UITextFieldDelegate>
+@interface UserLoginViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error;
 @end

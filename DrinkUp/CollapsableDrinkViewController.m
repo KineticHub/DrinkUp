@@ -364,6 +364,8 @@
 
 -(void)updateOrderButton
 {
+    NSLog(@"print drinks: %@", [SharedDataHandler sharedInstance].currentDrinkOrder);
+    
     if ([self.drinksOrder count] > 0)
     {
 //        [self.orderBarButtonItem setTintColor:[UIColor blueColor]];

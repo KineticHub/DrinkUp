@@ -14,6 +14,8 @@
 #import "AFHTTPClient.h"
 #import "User.h"
 #import "JSONKit.h"
+#import "CreditCardProfileViewController.h"
+#import "AppDelegate.h"
 
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSString *csrfToken;
@@ -577,10 +579,22 @@ static id _instance;
             if ([[JSON objectForKey:@"card_type"] isEqualToString:@"none"]) {
                 NSLog(@"No Card Found");
                 self.userCard = nil;
+                [self userCreditCardPrompt];
             } else {
                 self.userCard = [NSMutableDictionary dictionaryWithDictionary:JSON];
             }
         }];
+    }
+}
+
+-(void)userCreditCardPrompt
+{
+    if ([SharedDataHandler sharedInstance].isUserAuthenticated) {
+        [[[UIAlertView alloc] initWithTitle:@"Register Credit Card?"
+                                    message:@"DrinkUp cannot find a valid credit card. A credit card is required for purchasing drinks. Would you like to add one now?"
+                                   delegate:self
+                          cancelButtonTitle:@"Not Now"
+                          otherButtonTitles:@"Add Card", nil] show];
     }
 }
 
@@ -996,6 +1010,18 @@ static id _instance;
     
     NSLog(@"Request Made: %@", [request graphPath]);
 	NSLog(@"Result of API call: \n%@", result);
+}
+
+#pragma mark - AlertView Delegate
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if ([title isEqualToString:@"Add Card"])
+    {
+        CreditCardProfileViewController *cardVC = [[CreditCardProfileViewController alloc] init];
+        AppDelegate *delegate = (AppDelegate *) [UIApplication sharedApplication].delegate;
+        [delegate.rootNavigationController pushViewController:cardVC animated:YES];
+    }
 }
 
 @end

@@ -268,6 +268,23 @@
 {
     self.isShowingProfileView = YES;
     
+    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    leaveButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+    leaveButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+    leaveButton.radius = 6.0;
+    leaveButton.margin = 2.0;
+    leaveButton.depth = 2.0;
+    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [leaveButton setTitle:@"Let's order drinks!" forState:UIControlStateNormal];
+    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
+    [leaveButton addTarget:self action:@selector(transitionLeaving) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:leaveButton];
+    
+    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
+    [backButton setCustomView:leaveButton];
+    self.navigationItem.leftBarButtonItem = backButton;
+    
     CGFloat y = 10.0;
     CGFloat spacer = 10.0;
     CGFloat edgeInset = 10.0;
@@ -542,6 +559,23 @@
 {
     self.isShowingProfileView = NO;
     
+    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+    leaveButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+    leaveButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+    leaveButton.radius = 6.0;
+    leaveButton.margin = 2.0;
+    leaveButton.depth = 2.0;
+    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+    [leaveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [leaveButton setTitle:@"Leave Settings" forState:UIControlStateNormal];
+    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
+    [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:leaveButton];
+    
+    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
+    [backButton setCustomView:leaveButton];
+    self.navigationItem.leftBarButtonItem = backButton;
+    
     CGFloat y = 5.0;
     CGFloat spacer = 10.0;
     CGFloat edgeInset = 10.0;
@@ -666,6 +700,16 @@
     [firstTimeContainer addSubview:signupButton];
 }
 
+-(void)showLeavingOptions
+{
+    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Not Logged In"
+                                                      message:@"If you leave witout logging in, you cannot order drinks. Are you sure?"
+                                                     delegate:self
+                                            cancelButtonTitle:@"Cancel"
+                                            otherButtonTitles:@"Leave", nil];
+    [message show];
+}
+
 #pragma mark - UITextField delegate methods
 -(void)textFieldDidEndEditing:(UITextField *)textField
 {
@@ -711,10 +755,15 @@
     [self.navigationController pushViewController:drinkUpHistoryVC animated:YES];
 }
 
+-(void)transitionLeaving
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 -(void)confirmLogout
 {
     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Account Logout"
-                                                      message:@"Are you sure you want to logout of this account?"
+                                                      message:@"Are you sure you want to logout?"
                                                      delegate:self
                                             cancelButtonTitle:@"Cancel"
                                             otherButtonTitles:@"Logout", nil];
@@ -732,6 +781,10 @@
     {
         NSLog(@"user logout");
         [self logoutFromServer];
+    }
+    else if ([title isEqualToString:@"Leave"])
+    {
+        [self transitionLeaving];
     }
 }
 
