@@ -11,6 +11,10 @@
 #import "MBProgressHUD.h"
 #import "QBFlatButton.h"
 #import "SharedDataHandler.h"
+#import "UIColor+FlatUI.h"
+#import "FUIAlertView.h"
+#import "FUIButton.h"
+#import "UIFont+FlatUI.h"
 
 @interface DrinkUpLoginViewController ()
 @property (nonatomic, strong) UITextField *loginUsernameOrEmailField;
@@ -22,89 +26,115 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+//    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+    [self.view setBackgroundColor:[UIColor cloudsColor]];
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    CGFloat y = 5.0;
+    CGFloat y = 4.0;
     CGFloat spacer = 10.0;
-    CGFloat edgeInset = 10.0;
-    CGFloat fieldWidth = 300.0;
+    CGFloat edgeInset = 15.0;
+    CGFloat fieldWidth = 290.0;
     CGFloat fieldHeight = 40.0;
     
     UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
     [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
     [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor whiteColor]];
+    [drinkUpLabel setTextColor:[UIColor blackColor]];
     [drinkUpLabel setText:@"DrinkUp Login"];
     [self.view addSubview:drinkUpLabel];
     
-    y += drinkUpLabel.frame.size.height + spacer;
+    y += drinkUpLabel.frame.size.height;
     
-    UIView *coloredBgView1 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [coloredBgView1 setBackgroundColor:[UIColor clearColor]];
-    [coloredBgView1.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
-    [coloredBgView1.layer setBorderWidth:3.0];
-    [coloredBgView1.layer setCornerRadius:5.0];
-    [self.view addSubview:coloredBgView1];
+//    UIView *coloredBgView1 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [coloredBgView1 setBackgroundColor:[UIColor clearColor]];
+//    [coloredBgView1.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+//    [coloredBgView1.layer setBorderWidth:3.0];
+//    [coloredBgView1.layer setCornerRadius:5.0];
+//    [self.view addSubview:coloredBgView1];
 
-    self.loginUsernameOrEmailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight)];
+    self.loginUsernameOrEmailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [self.loginUsernameOrEmailField setPlaceholder:@"Email"];
-    [self.loginUsernameOrEmailField setTextColor:[UIColor whiteColor]];
     [self.loginUsernameOrEmailField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    [self.loginUsernameOrEmailField setFont:[UIFont systemFontOfSize:16.0]];
-    [self.loginUsernameOrEmailField setBackgroundColor:[UIColor clearColor]];
+    self.loginUsernameOrEmailField.backgroundColor = [UIColor silverColor];
+    self.loginUsernameOrEmailField.layer.cornerRadius = 3.0f;
+    self.loginUsernameOrEmailField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.loginUsernameOrEmailField.leftView = leftView1;
     [self.loginUsernameOrEmailField setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.view addSubview:self.loginUsernameOrEmailField];
 
-    y += self.loginUsernameOrEmailField.frame.size.height + spacer/2;
+    y += self.loginUsernameOrEmailField.frame.size.height + spacer - 3.0;
 
-    UIView *coloredBgView2 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [coloredBgView2 setBackgroundColor:[UIColor clearColor]];
-    [coloredBgView2.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
-    [coloredBgView2.layer setBorderWidth:3.0];
-    [coloredBgView2.layer setCornerRadius:5.0];
-    [self.view addSubview:coloredBgView2];
+//    UIView *coloredBgView2 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [coloredBgView2 setBackgroundColor:[UIColor clearColor]];
+//    [coloredBgView2.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+//    [coloredBgView2.layer setBorderWidth:3.0];
+//    [coloredBgView2.layer setCornerRadius:5.0];
+//    [self.view addSubview:coloredBgView2];
 
-    self.loginPasswordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight)];
+    self.loginPasswordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [self.loginPasswordField setPlaceholder:@"Password"];
     [self.loginPasswordField setSecureTextEntry:YES];
-    [self.loginPasswordField setTextColor:[UIColor whiteColor]];
     [self.loginPasswordField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    [self.loginPasswordField setFont:[UIFont systemFontOfSize:16.0]];
-    [self.loginPasswordField setBackgroundColor:[UIColor clearColor]];
+    self.loginPasswordField.backgroundColor = [UIColor silverColor];
+    self.loginPasswordField.layer.cornerRadius = 3.0f;
+    self.loginPasswordField.leftViewMode = UITextFieldViewModeAlways;
+    UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
+    self.loginPasswordField.leftView = leftView2;
     [self.loginPasswordField setAutocorrectionType:UITextAutocorrectionTypeNo];
     [self.view addSubview:self.loginPasswordField];
     
-    y += self.loginPasswordField.frame.size.height + spacer;
+    y += self.loginPasswordField.frame.size.height + spacer + 2.0;
     
-    QBFlatButton *loginButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    loginButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    loginButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    loginButton.radius = 6.0;
-    loginButton.margin = 4.0;
-    loginButton.depth = 3.0;
-    loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [loginButton setTitle:@"Log In" forState:UIControlStateNormal];
-    [loginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
+//    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
+//    [loginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+//    [loginButton setTitle:@"Log In" forState:UIControlStateNormal];
+//    loginButton.buttonColor = [UIColor midnightBlueColor];
+//    loginButton.shadowColor = [UIColor blackColor];
+//    loginButton.shadowHeight = 3.0f;
+//    loginButton.cornerRadius = 6.0f;
+//    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+//    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+//    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
+//    [self.view addSubview:loginButton];
+    
+    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(0.0, y, self.view.frame.size.width, fieldHeight + 15.0)];
     [loginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+    [loginButton setTitle:@"LOG IN" forState:UIControlStateNormal];
+    loginButton.buttonColor = [UIColor midnightBlueColor];
+    loginButton.shadowColor = [UIColor blackColor];
+    loginButton.shadowHeight = 0.0f;
+    loginButton.cornerRadius = 0.0f;
+    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:22];
+    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [loginButton setTitleColor:[UIColor concreteColor] forState:UIControlStateHighlighted];
     [self.view addSubview:loginButton];
     
-    y += loginButton.frame.size.height + spacer;
+    y += loginButton.frame.size.height + spacer - 3.0;
     
-    QBFlatButton *cancelButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    cancelButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
-    cancelButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
-    cancelButton.radius = 6.0;
-    cancelButton.margin = 4.0;
-    cancelButton.depth = 3.0;
-    cancelButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [cancelButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    FUIButton *cancelButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, 43.0)];
+//    cancelButton.buttonColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+//    cancelButton.shadowColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+//    [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
+//    cancelButton.shadowHeight = 3.0f;
+//    cancelButton.cornerRadius = 6.0f;
+//    cancelButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+//    [cancelButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+//    [cancelButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
+//    [cancelButton addTarget:self action:@selector(leaveSignUpView) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:cancelButton];
+    
+    FUIButton *cancelButton = [[FUIButton alloc] initWithFrame:CGRectMake(0.0, y, 80.0, 40.0)];
+    [cancelButton setCenter:CGPointMake(self.view.center.x, cancelButton.center.y)];
+    cancelButton.buttonColor = [UIColor clearColor];
+    cancelButton.shadowColor = [UIColor clearColor];
     [cancelButton setTitle:@"Cancel" forState:UIControlStateNormal];
-    [cancelButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
+    cancelButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [cancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+    [cancelButton setTitleColor:[UIColor pomegranateColor] forState:UIControlStateHighlighted];
     [cancelButton addTarget:self action:@selector(leaveSignUpView) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:cancelButton];
 }

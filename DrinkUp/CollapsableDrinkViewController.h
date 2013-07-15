@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "CollapseClick.h"
 #import "ZKRevealingTableViewCell.h"
+#import "FUIAlertView.h"
 
-@interface CollapsableDrinkViewController : UIViewController <ZKRevealingTableViewCellDelegate, CollapseClickDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface CollapsableDrinkViewController : UIViewController <FUIAlertViewDelegate, ZKRevealingTableViewCellDelegate, CollapseClickDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 - (id)initWithBarSection:(int)section_id;
 @end

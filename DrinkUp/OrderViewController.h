@@ -9,7 +9,9 @@
 #import <UIKit/UIKit.h>
 #import "ZKRevealingTableViewCell.h"
 #import "CollapseClick.h"
+#import "UnlockSliderView.h"
+#import "FUIAlertView.h"
 
-@interface OrderViewController : UIViewController <ZKRevealingTableViewCellDelegate, CollapseClickDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
+@interface OrderViewController : UIViewController <FUIAlertViewDelegate, UnlockSliderDelegate, ZKRevealingTableViewCellDelegate, CollapseClickDelegate, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate>
 
 @end

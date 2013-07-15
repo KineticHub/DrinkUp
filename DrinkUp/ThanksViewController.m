@@ -39,7 +39,7 @@
     yPosition += labelHeight + spacer;
     
     UILabel *claimInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition, labelWidth, labelHeight)];
-    [claimInfoLabel setText:@"Your code to claim your order is"];
+    [claimInfoLabel setText:@"Show this code to the bartender to claim your drink:"];
     [claimInfoLabel setTextAlignment:NSTextAlignmentCenter];
     [claimInfoLabel setTextColor:[UIColor whiteColor]];
     [claimInfoLabel setBackgroundColor:[UIColor clearColor]];

@@ -16,8 +16,10 @@
 #import "JSONKit.h"
 #import "CreditCardProfileViewController.h"
 #import "AppDelegate.h"
+#import <UAirship.h>
 
 @interface SharedDataHandler ()
+@property (nonatomic, strong) NSString *baseURL;
 @property (nonatomic, strong) NSString *csrfToken;
 @property (nonatomic, strong) NSOperationQueue *queue;
 @property (nonatomic, strong) CLLocationManager *locationManager;
@@ -66,7 +68,16 @@ static id _instance;
     self.userCard = nil;
     self.userInformation = [[NSMutableDictionary alloc] init];
     self.currentDrinkOrder = [[NSMutableArray alloc] init];
+    
+#ifdef DEV
+    NSLog(@"SETTING UP DEV");
+    self.baseURL = @"https://54.225.126.238";
+    self.marketplace = @"/v1/marketplaces/TEST-MP2TVu9e2qymz5T2C1RdEdPs";
+#else
+    NSLog(@"SETTING UP PROD");
+    self.baseURL = @"https://DrinkUp-App.com";
     self.marketplace = @"/v1/marketplaces/MP6oQ3gotJ83HcBLJXNS6oLm";
+#endif
 }
 
 -(bool)isBarHappyHour
@@ -120,7 +131,7 @@ static id _instance;
     float longitude=coordinate.longitude;
     float latitude=coordinate.latitude;
     
-    NSString *locationPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/user/location/?lat=%f&long=%f", latitude, longitude];
+    NSString *locationPath = [NSString stringWithFormat:@"%@/api/user/location/?lat=%f&long=%f", self.baseURL, latitude, longitude];
 
     [self JSONWithPath:locationPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         NSLog(@"location: %@", JSON);
@@ -142,8 +153,8 @@ static id _instance;
     float latitude=coordinate.latitude;
     float radius = 3.0;
     
-    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/nearby/?lat=%f&long=%f&radius=%f", latitude, longitude, radius];
-//    NSString *barsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/all/"];
+    NSString *barsPath = [NSString stringWithFormat:@"%@/api/venues/nearby/?lat=%f&long=%f&radius=%f", self.baseURL, latitude, longitude, radius];
+//    NSString *barsPath = [NSString stringWithFormat:@"DrinkUp-App.com/api/venues/all/"];
     NSLog(@"bars path: %@", barsPath);
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
@@ -155,14 +166,17 @@ static id _instance;
             [tempDict setObject:[bar objectForKey:@"pk"] forKey:@"id"];
             [bars addObject:tempDict];
         }
-//        NSLog(@"bars: %@", bars);
         completionBlock(bars);
+        
+        if (error) {
+            NSLog(@"load bars nearby error: %@", error);
+        }
     }];
 }
 
 -(void)loadBars:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *barsPath = @"https://DrinkUp-App.com/api/venues/all/";
+    NSString *barsPath = [NSString stringWithFormat:@"%@/api/venues/all/", self.baseURL];
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *bars = [[NSMutableArray alloc] init];
@@ -179,7 +193,7 @@ static id _instance;
 
 -(void)loadBarSectionsForBar:(int)bar_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *barSectionsPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/%i/", bar_id];
+    NSString *barSectionsPath = [NSString stringWithFormat:@"%@/api/venues/bars/%i/", self.baseURL, bar_id];
     NSLog(@"Path: %@", barSectionsPath);
     [self JSONWithPath:barSectionsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
     {
@@ -197,7 +211,7 @@ static id _instance;
 
 -(void)loadDrinkTypesForBarSection:(int)section_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *drinkTypesPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/drinks/types/%i/", section_id];
+    NSString *drinkTypesPath = [NSString stringWithFormat:@"%@/api/venues/bars/drinks/types/%i/", self.baseURL, section_id];
     [self JSONWithPath:drinkTypesPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *drinkTypes = [[NSMutableArray alloc] init];
@@ -214,7 +228,7 @@ static id _instance;
 
 -(void)loadDrinksForSection:(int)section_id withType:(int)type_id onCompletion:(ObjectsCompletionBlock)completionBlock {
     
-    NSString *drinksPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/venues/bars/drinks/%i/%i/", section_id, type_id];
+    NSString *drinksPath = [NSString stringWithFormat:@"%@/api/venues/bars/drinks/%i/%i/", self.baseURL, section_id, type_id];
     [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *drinks = [[NSMutableArray alloc] init];
@@ -232,7 +246,7 @@ static id _instance;
 
 -(void)loadDrinksForOrder:(int)order_id onCompletion:(ObjectsCompletionBlock)completionBlock
 {
-    NSString *drinksPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/orders/drinks/?order_id=%i", order_id];
+    NSString *drinksPath = [NSString stringWithFormat:@"%@/api/orders/drinks/?order_id=%i", self.baseURL, order_id];
     [self JSONWithPath:drinksPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
     {
         NSMutableArray *drinks = [[NSMutableArray alloc] init];
@@ -263,31 +277,34 @@ static id _instance;
     [self.queue addOperation:operation];
 }
 
--(void)checkOperationCertificate:(AFHTTPRequestOperation *)operation {
+-(void)checkOperationCertificate:(AFHTTPRequestOperation *)operation
+{
+    
+#ifdef DEV
+    NSLog(@"No Challenge");
+#else
     [operation setAuthenticationAgainstProtectionSpaceBlock:^BOOL(NSURLConnection *connection, NSURLProtectionSpace *protectionSpace)
     {
         SecTrustRef trust = [protectionSpace serverTrust];
-        
         SecCertificateRef certificate = SecTrustGetCertificateAtIndex(trust, 0);
-        
         NSData* ServerCertificateData = (__bridge NSData*) SecCertificateCopyData(certificate);
         
         // Check if the certificate returned from the server is identical to the saved certificate in
         // the main bundle
         BOOL areCertificatesEqual = ([ServerCertificateData
                                       isEqualToData:[self getCertificate]]);
-        
-        if (!areCertificatesEqual)
-        {
+
+        // If the certificates are not equal we should not talk to the server;
+        if (!areCertificatesEqual) {
             NSLog(@"Bad Certificate, canceling request");
             [connection cancel];
         } else {
             NSLog(@"Good Certificate, continue request");
         }
         
-        // If the certificates are not equal we should not talk to the server;
         return areCertificatesEqual;
     }];
+#endif
 }
 
 -(NSData *)getCertificate
@@ -297,18 +314,124 @@ static id _instance;
     return derdata;
 }
 
+//- (void)connection:(NSURLConnection *)connection willSendRequestForAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge {
+//    if ([challenge previousFailureCount] > 0) {
+//        //this will cause an authentication failure
+//        [[challenge sender] cancelAuthenticationChallenge:challenge];
+//        NSLog(@"Bad Username Or Password");
+//        return;
+//    }
+//    
+//    //this is checking the server certificate
+//    if ([challenge.protectionSpace.authenticationMethod isEqualToString:NSURLAuthenticationMethodServerTrust]) {
+//        SecTrustResultType result;
+//        //This takes the serverTrust object and checkes it against your keychain
+//        SecTrustEvaluate(challenge.protectionSpace.serverTrust, &result);
+//        
+//        //if we want to ignore invalid server for certificates, we just accept the server
+//        if (kSPAllowInvalidServerCertificates) {
+//            [challenge.sender useCredential:[NSURLCredential credentialForTrust: challenge.protectionSpace.serverTrust] forAuthenticationChallenge: challenge];
+//            return;
+//        } else if(result == kSecTrustResultProceed || result == kSecTrustResultConfirm ||  result == kSecTrustResultUnspecified) {
+//            //When testing this against a trusted server I got kSecTrustResultUnspecified every time. But the other two match the description of a trusted server
+//            [challenge.sender useCredential:[NSURLCredential credentialForTrust: challenge.protectionSpace.serverTrust] forAuthenticationChallenge: challenge];
+//            return;
+//        }
+//    } else if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodClientCertificate) {
+//        //this handles authenticating the client certificate
+//        
+//        /*
+//         What we need to do here is get the certificate and an an identity so we can do this:
+//         NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identity certificates:myCerts persistence:NSURLCredentialPersistencePermanent];
+//         [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+//         
+//         It's easy to load the certificate using the code in -installCertificate
+//         It's more difficult to get the identity.
+//         We can get it from a .p12 file, but you need a passphrase:
+//         */
+//        
+//        NSString *p12Path = [[NSBundle mainBundle] pathForResource:@"DrinkUp-App.com" ofType:@"der"];
+//        NSData *p12Data = [[NSData alloc] initWithContentsOfFile:p12Path];
+//        
+//        CFStringRef password = CFSTR("PASSWORD");
+//        const void *keys[] = { kSecImportExportPassphrase };
+//        const void *values[] = { password };
+//        CFDictionaryRef optionsDictionary = CFDictionaryCreate(NULL, keys, values, 1, NULL, NULL);
+//        CFArrayRef p12Items;
+//        
+//        OSStatus result = SecPKCS12Import((__bridge CFDataRef)p12Data, optionsDictionary, &p12Items);
+//        
+//        if(result == noErr) {
+//            CFDictionaryRef identityDict = CFArrayGetValueAtIndex(p12Items, 0);
+//            SecIdentityRef identityApp =(SecIdentityRef)CFDictionaryGetValue(identityDict,kSecImportItemIdentity);
+//            
+//            SecCertificateRef certRef;
+//            SecIdentityCopyCertificate(identityApp, &certRef);
+//            
+//            SecCertificateRef certArray[1] = { certRef };
+//            CFArrayRef myCerts = CFArrayCreate(NULL, (void *)certArray, 1, NULL);
+//            CFRelease(certRef);
+//            
+//            NSURLCredential *credential = [NSURLCredential credentialWithIdentity:identityApp certificates:(__bridge NSArray *)myCerts persistence:NSURLCredentialPersistencePermanent];
+//            CFRelease(myCerts);
+//            
+//            [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+//        }
+//    }
+////    else if ([[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodDefault || [[challenge protectionSpace] authenticationMethod] == NSURLAuthenticationMethodNTLM) {
+////        // For normal authentication based on username and password. This could be NTLM or Default.
+////        
+////        DAVCredentials *cred = _parentSession.credentials;
+////        NSURLCredential *credential = [NSURLCredential credentialWithUser:cred.username password:cred.password persistence:NSURLCredentialPersistenceForSession];
+////        [[challenge sender] useCredential:credential forAuthenticationChallenge:challenge];
+////    }
+//    else {
+//        //If everything fails, we cancel the challenge.
+//        [[challenge sender] cancelAuthenticationChallenge:challenge];
+//    }
+//}
+
 #pragma mark - User API Functions
 
 -(void)getEmptyCSRFToken:(JsonRequestCompletionBlock)completionBlock {
-    NSString *tokenPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/token/"];
-    [self JSONWithPath:tokenPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
-        NSDictionary *headers = [response allHeaderFields];
+//#ifdef DEV
+//    self.csrfToken = @"dev";
+//    completionBlock(nil, nil, nil, nil);
+//#else
+//    NSString *tokenPath = [NSString stringWithFormat:@"%@/api/token/", self.baseURL];
+    
+    NSString *requestPath = [NSString stringWithFormat:@"%@/api/token/", self.baseURL];
+    NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+    NSMutableURLRequest *request2 = [client requestWithMethod:@"GET" path:@"" parameters:nil];
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+        NSLog(@"Headers: %@", [operation.response allHeaderFields]);
+        NSDictionary *headers = [operation.response  allHeaderFields];
         NSString *fullTokenString = [[[headers objectForKey:@"Set-Cookie"] componentsSeparatedByString:@";"] objectAtIndex:0];
         NSString *tokenString = [fullTokenString substringFromIndex:[fullTokenString rangeOfString:@"="].location + 1];
-        
+        NSLog(@"Token string: %@", tokenString);
         self.csrfToken = tokenString;
-        completionBlock(request, response, JSON, error);
+        completionBlock(nil, responseObject, nil, nil);
+
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Token call failed: %@", error);
     }];
+    [self.queue addOperation:operation];
+//    [self JSONWithPath:tokenPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+//        NSDictionary *headers = [response allHeaderFields];
+//        NSString *fullTokenString = [[[headers objectForKey:@"Set-Cookie"] componentsSeparatedByString:@";"] objectAtIndex:0];
+//        NSString *tokenString = [fullTokenString substringFromIndex:[fullTokenString rangeOfString:@"="].location + 1];
+//        if (error!=NULL) {
+//            NSLog(@"CSRF token error: %@", error);
+//        }
+//        NSLog(@"Token string: %@", tokenString);
+//        self.csrfToken = tokenString;
+//        completionBlock(request, response, JSON, error);
+//    }];
+//#endif
 }
 
 -(void)userLoginToServerWithCredentials:(NSMutableDictionary *)credentials andCompletion:(SuccessCompletionBlock)successBlock {
@@ -323,13 +446,13 @@ static id _instance;
         
         [credentials setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/login/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/login/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:credentials];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
         
         AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -342,10 +465,7 @@ static id _instance;
             
             NSString *ua_username;
             if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
-                ua_username = [NSString stringWithFormat:@"appuser%i", [[[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"] intValue]];
-            } else {
                 ua_username = [NSString stringWithFormat:@"appuser%i", [[[responseObject objectAtIndex:0] objectForKey:@"pk"] intValue]];
-                
             }
             [self.userInformation setObject:ua_username forKey:@"ua_username"];
             
@@ -365,7 +485,7 @@ static id _instance;
                 successBlock(successful);
             }];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog(@"error: %@", operation.responseString);
+            NSLog(@"user login to server error: %@", operation.responseString);
             [self userIsAuthenticated:successBlock];
         }];
         
@@ -383,13 +503,13 @@ static id _instance;
         
     } else {
         
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/logout/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/logout/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:@{@"csrfmiddlewaretoken": self.csrfToken}];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
     
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -409,8 +529,6 @@ static id _instance;
 
 -(void)userCreateOnServer:(NSMutableDictionary *)userDictionary withSuccess:(SuccessCompletionBlock)successBlock {
     
-    NSLog(@"create user on server started");
-    
     if (!self.csrfToken)
     {
         [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
@@ -418,15 +536,16 @@ static id _instance;
         }];
         
     } else {
+        NSLog(@"create user on server started");
         [userDictionary setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/create/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/create/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:userDictionary];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -497,7 +616,7 @@ static id _instance;
 
 -(void)userIsAuthenticated:(SuccessCompletionBlock)successBlock
 {
-    NSString *authPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/user/authenticated/"];
+    NSString *authPath = [NSString stringWithFormat:@"%@/api/user/authenticated/", self.baseURL];
     [self JSONWithPath:authPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         if (!error)
         {
@@ -509,9 +628,10 @@ static id _instance;
              object:self];
             
         }
-        else {
+        else
+        {
             self.isUserAuthenticated = NO;
-            NSLog(@"error returned");
+            NSLog(@"user authentication check error: %@", error);
             
             [[NSNotificationCenter defaultCenter]
              postNotificationName:@"UserDeauthorized"
@@ -537,13 +657,13 @@ static id _instance;
     } else {
         [cardResponse setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/update_card/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/update_card/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:cardResponse];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
@@ -569,7 +689,7 @@ static id _instance;
             [self userCurrentCardInfo];
         }];
     } else {
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/valid_card/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/valid_card/", self.baseURL];
         [self JSONWithPath:requestPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
         {
             NSLog(@"user card returned: %@", JSON);
@@ -606,7 +726,7 @@ static id _instance;
             [self userInvalidateCurrentCard:successBlock];
         }];
     } else {
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/invalidate_card/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/invalidate_card/", self.baseURL];
         [self JSONWithPath:requestPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
          {
              NSLog(@"respponse: %@", response);
@@ -628,7 +748,7 @@ static id _instance;
             [self updateUserProfileImageSaved:successBlock];
         }];
     } else {
-        NSString *requestPath = @"https://DrinkUp-App.com/api/user/picture_saved/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/picture_saved/", self.baseURL];
         [self JSONWithPath:requestPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
          {
              NSLog(@"respponse: %@", response);
@@ -647,7 +767,7 @@ static id _instance;
 
 -(void)getUserOrderHistoryWithCompletion:(ObjectsCompletionBlock)completionBlock
 {    
-    NSString *orderHistoryPath = [NSString stringWithFormat:@"https://DrinkUp-App.com/api/user/order_history/"];
+    NSString *orderHistoryPath = [NSString stringWithFormat:@"%@/api/user/order_history/", self.baseURL];
     [self JSONWithPath:orderHistoryPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error)
     {
         NSMutableArray *orderHistory = [[NSMutableArray alloc] init];
@@ -674,13 +794,13 @@ static id _instance;
 //        [sendDict setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
 //        [sendDict setObject:imageURL forKey:@"pictureURL"];
 //        
-//        NSString *requestPath = @"https://DrinkUp-App.com/api/user/picture_saved/";
+//        NSString *requestPath = @"/api/user/picture_saved/";
 //        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 //        
 //        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
 //        NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:sendDict];
 //        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-//        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+//        [request2 setValue:@"/" forHTTPHeaderField:@"Referer"];
 //        
 //        AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
 //        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -715,7 +835,7 @@ static id _instance;
 -(void)saveUserPictureLocally
 {
     NSString *fileName = [[SharedDataHandler sharedInstance].userInformation objectForKey:@"ua_username"];
-    NSLog(@"filename save user profile image: %@", fileName);
+    NSLog(@"filename to retrieve from AWS S3: %@", fileName);
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectoryPath = [paths objectAtIndex:0];
     NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
@@ -778,7 +898,7 @@ static id _instance;
     } else {
         [order setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
-        NSString *requestPath = @"https://DrinkUp-App.com/api/orders/create/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/orders/create/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         id orderJSON = [[order objectForKey:@"drinks"] JSONString];
@@ -787,7 +907,7 @@ static id _instance;
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:order];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
@@ -897,13 +1017,13 @@ static id _instance;
         
         [userFacebookInfo setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
-        NSString *requestPath = @"https://DrinkUp-App.com/facebook/mobile_login/";
+        NSString *requestPath = [NSString stringWithFormat:@"%@/facebook/mobile_login/", self.baseURL];
         NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
         
         AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
         NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:userFacebookInfo];
         [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
-        [request2 setValue:@"https://drinkup-app.com/" forHTTPHeaderField:@"Referer"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
         
         AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request2];
         

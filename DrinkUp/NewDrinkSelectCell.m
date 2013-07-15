@@ -8,6 +8,7 @@
 
 #import "NewDrinkSelectCell.h"
 #import "TextStepperField.h"
+#import "UIColor+FlatUI.h"
 
 @interface NewDrinkSelectCell ()
 @end
@@ -31,7 +32,7 @@
         [self.quantityLabel setTextColor:[UIColor whiteColor]];
         [self.quantityLabel setAlpha:0.65];
         [self.quantityLabel setTextAlignment:NSTextAlignmentCenter];
-        [self.quantityLabel setFont:[UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]]];
+        [self.quantityLabel setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]];
         [self.contentView addSubview:self.quantityLabel];
         
         self.priceLabel = [[UILabel alloc] initWithFrame:CGRectZero];
@@ -39,7 +40,7 @@
         [self.priceLabel setTextColor:[UIColor whiteColor]];
         [self.priceLabel setAlpha:0.65];
         [self.priceLabel setTextAlignment:NSTextAlignmentCenter];
-        [self.priceLabel setFont:[UIFont boldSystemFontOfSize:[UIFont buttonFontSize]]];
+        [self.priceLabel setFont:[UIFont boldSystemFontOfSize:[UIFont systemFontSize]]];
         [self.contentView addSubview:self.priceLabel];
         
         UIView *stepperContainer = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, self.frame.size.width, self.frame.size.height)];
@@ -62,6 +63,7 @@
         textFrame.origin.y = 0.0;
         [self.stepper.textField setFrame:textFrame];
         [self.stepper addTarget:self action:@selector(endReveal) forControlEvents:UIControlEventTouchUpInside];
+        [self.stepper changeToFlatWithColor:[UIColor peterRiverColor] buttonsFlatColor:[UIColor belizeHoleColor] buttonsHighlightedFlatColor:[UIColor midnightBlueColor] titleColor:[UIColor whiteColor]];
         
         [stepperContainer addSubview:self.stepper];
         

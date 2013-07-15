@@ -71,7 +71,12 @@
             NSLog(@"starting AWS");
             
             AmazonS3Client *s3 = [[AmazonS3Client alloc] initWithAccessKey:@"AKIAIXLT3ZDWWR7Q4YKA" withSecretKey:@"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"];
+#ifdef DEV
+            NSLog(@"Amazon dev image bucket");
+            S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:picName inBucket:@"DrinkUp-Users-Dev"];
+#else
             S3PutObjectRequest *por = [[S3PutObjectRequest alloc] initWithKey:picName inBucket:@"DrinkUp-Users"];
+#endif
             por.contentType = @"image/jpeg";
             por.data = UIImageJPEGRepresentation(image, 0.7);;
             [s3 putObject:por];

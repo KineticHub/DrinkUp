@@ -11,6 +11,13 @@
 #import "DrinkSelectionsViewController.h"
 #import "SelectBarSectionViewController.h"
 #import "CollapsableDrinkViewController.h"
+#import "FeedCell1.h"
+#import "UIImageView+AFNetworking.h"
+
+#import "UIColor+FlatUI.h"
+#import "FUIAlertView.h"
+#import "UIColor+FlatUI.h"
+#import "UIFont+FlatUI.h"
 
 @interface BSTNearbyBarsViewController ()
 @property (nonatomic, strong) NSMutableArray *bars;
@@ -27,10 +34,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTintColor:[UIColor whiteColor]];
-    [[UIBarButtonItem appearanceWhenContainedIn:[UINavigationBar class], nil] setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
-    
     [[SharedDataHandler sharedInstance] initializeLocationTracking];
     
     self.bars = [[NSMutableArray alloc] init];
@@ -40,26 +43,40 @@
     [self.upperView addSubview:self.mapView];
     
     [self.tableView setRowHeight:90.0];
+    [self.tableView setBackgroundColor:[UIColor colorWithWhite:0.9 alpha:1.0]];
+    [self.tableView setSeparatorColor:[UIColor clearColor]];
+    [self.tableView setRowHeight:320.0];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    NSLog(@"View will appear");
+    MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    hud.labelText = @"Loading Bars...";
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[SharedDataHandler sharedInstance] loadUserLocation];
         [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
          {
+             NSLog(@"Bars loaded with location");
              if ([objects count] == 0)
              {
                  [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects)
                   {
-                      UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"No Nearby Bars"
-                                                                        message:@"No DrinkUp bars were found near you. Showing all participating bars."
-                                                                       delegate:self
-                                                              cancelButtonTitle:@"Okay"
-                                                              otherButtonTitles:nil];
-                      [message show];
+                      NSLog(@"No location bars found, loading all bars");
+                      
+                      FUIAlertView *noBarsAlert = [[FUIAlertView alloc] initWithTitle:@"No Nearby Bars" message:@"No DrinkUp bars were found near you. Showing all participating bars." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                      noBarsAlert.titleLabel.textColor = [UIColor cloudsColor];
+                      noBarsAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+                      noBarsAlert.messageLabel.textColor = [UIColor cloudsColor];
+                      noBarsAlert.messageLabel.font = [UIFont flatFontOfSize:14];
+                      noBarsAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+                      noBarsAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+                      noBarsAlert.defaultButtonColor = [UIColor cloudsColor];
+                      noBarsAlert.defaultButtonShadowColor = [UIColor asbestosColor];
+                      noBarsAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+                      noBarsAlert.defaultButtonTitleColor = [UIColor asbestosColor];
+                      [noBarsAlert show];
                       
                       self.bars = [NSMutableArray arrayWithArray:objects];
                       [self.tableView reloadData];
@@ -96,7 +113,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     UIView *nearbyView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 25.0)];
-    [nearbyView setBackgroundColor:[UIColor darkGrayColor]];
+    [nearbyView setBackgroundColor:[UIColor peterRiverColor]];
     [nearbyView setAlpha:0.8];
     
     UILabel *nearbyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 15.0)];
@@ -104,7 +121,7 @@
     [nearbyLabel setFont:[UIFont systemFontOfSize:14.0]];
     [nearbyLabel setBackgroundColor:[UIColor clearColor]];
     [nearbyLabel setTextAlignment:NSTextAlignmentCenter];
-    [nearbyLabel setTextColor:[UIColor lightGrayColor]];
+    [nearbyLabel setTextColor:[UIColor whiteColor]];
     [nearbyLabel setText:[SharedDataHandler sharedInstance].user_location];
     [nearbyView addSubview:nearbyLabel];
     
@@ -121,15 +138,26 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    BasicCell *cell = (BasicCell *) [super tableView:tableView cellForRowAtIndexPath:indexPath];
+    FeedCell1 *cell = [tableView dequeueReusableCellWithIdentifier:@"BarCell"];
+    
+	if (cell == nil) {
+		cell = [[FeedCell1 alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:@"BarCell"];
+	}
     
     NSDictionary *bar = [self.bars objectAtIndex:[indexPath section]];
-    cell.textLabel.text = [bar objectForKey:@"name"];
-    NSString *address = [NSString stringWithFormat:@"%@", [bar objectForKey:@"street_address"]];
-    cell.detailTextLabel.text = address;
-    [cell.detailTextLabel setNumberOfLines:2];
-    //@" $:  Mon - Thurs, 5pm - 7pm\n@:  %@", [bar objectForKey:@"address"]];
-    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
+    
+//    cell.textLabel.text = [bar objectForKey:@"name"];
+//    NSString *address = [NSString stringWithFormat:@"%@", [bar objectForKey:@"street_address"]];
+//    cell.detailTextLabel.text = address;
+//    [cell.detailTextLabel setNumberOfLines:2];
+//    [cell setCellImage:[NSURLRequest requestWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]]];
+    
+    cell.nameLabel.text = [bar objectForKey:@"name"];
+    cell.updateLabel.text = [NSString stringWithFormat:@"%@", [bar objectForKey:@"street_address"]];
+    cell.dateLabel.text = @"0.5 mi";
+    cell.likeCountLabel.text = @"";
+    cell.commentCountLabel.text = @"";
+    [cell.picImageView setImageWithURL:[NSURL URLWithString:[bar objectForKey:@"icon"]]];
     
     return cell;
 }

@@ -19,6 +19,10 @@
 #import "QBFlatButton.h"
 #import "CustomBarButton.h"
 
+#import "UIColor+FlatUI.h"
+#import "FUIAlertView.h"
+#import "UIFont+FlatUI.h"
+
 #define kCellHeight 65.0
 
 @interface CollapsableDrinkViewController ()
@@ -63,21 +67,27 @@
 //    [backButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
 //    self.navigationItem.leftBarButtonItem = backButton;
     
-    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    leaveButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    leaveButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    leaveButton.radius = 6.0;
-    leaveButton.margin = 2.0;
-    leaveButton.depth = 2.0;
-    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [leaveButton setTitle:@"Leave Bar" forState:UIControlStateNormal];
-    [leaveButton setFrame:CGRectMake(0.0, 0.0, 85.0, 32.0)];
-    [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leaveButton];
+//    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    leaveButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    leaveButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    leaveButton.radius = 6.0;
+//    leaveButton.margin = 2.0;
+//    leaveButton.depth = 2.0;
+//    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [leaveButton setTitle:@"Leave Bar" forState:UIControlStateNormal];
+//    [leaveButton setFrame:CGRectMake(0.0, 0.0, 85.0, 32.0)];
+//    [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:leaveButton];
     
-    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
-    [backButton setCustomView:leaveButton];
+//    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
+//    [backButton setCustomView:leaveButton];
+
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Leave Bar"
+                                                                   style:UIBarButtonItemStylePlain
+                                                                  target:self
+                                                                  action:@selector(showLeavingOptions)];
+    
     self.navigationItem.leftBarButtonItem = backButton;
     
     // Create the refresh, fixed-space (optional), and profile buttons.
@@ -192,13 +202,20 @@
 
 -(void) showLeavingOptions {
     
-    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
-                                                          message:@"Leaving this bar will clear any drinks currently selected at this bar."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Cancel"
-                                                otherButtonTitles:@"Clear Drinks", nil];
-        [message show];
+    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0)
+    {
+        FUIAlertView *leaveAlert = [[FUIAlertView alloc] initWithTitle:@"Clear Selected Drinks?" message:@"Leaving this bar will clear any drinks currently selected at this bar." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Clear Drinks", nil];
+        leaveAlert.titleLabel.textColor = [UIColor cloudsColor];
+        leaveAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+        leaveAlert.messageLabel.textColor = [UIColor cloudsColor];
+        leaveAlert.messageLabel.font = [UIFont flatFontOfSize:14];
+        leaveAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+        leaveAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+        leaveAlert.defaultButtonColor = [UIColor cloudsColor];
+        leaveAlert.defaultButtonShadowColor = [UIColor asbestosColor];
+        leaveAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+        leaveAlert.defaultButtonTitleColor = [UIColor asbestosColor];
+        [leaveAlert show];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -400,16 +417,19 @@
 // Optional Methods
 
 -(UIColor *)colorForCollapseClickTitleViewAtIndex:(int)index {
-    return [UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0];
+//    return [UIColor colorWithRed:0.0/255.0f green:0.0/255.0f blue:0.0/255.0f alpha:1.0];
+    return [UIColor belizeHoleColor];
 }
 
 
 -(UIColor *)colorForTitleLabelAtIndex:(int)index {
-    return [UIColor colorWithWhite:1.0 alpha:0.85];
+//    return [UIColor colorWithWhite:1.0 alpha:0.85];
+    return [UIColor whiteColor];
 }
 
 -(UIColor *)colorForTitleArrowAtIndex:(int)index {
-    return [UIColor colorWithWhite:1.0 alpha:0.25];
+//    return [UIColor colorWithWhite:1.0 alpha:0.25];
+    return [UIColor colorWithWhite:1.0 alpha:0.8];
 }
 
 -(void)didClickCollapseClickCellAtIndex:(int)index isNowOpen:(BOOL)open

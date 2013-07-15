@@ -42,4 +42,7 @@ typedef enum {
 // set editable TextField
 @property (nonatomic,assign) BOOL IsEditableTextField;
 
+// set flat mode
+-(void)changeToFlatWithColor:(UIColor *)flatColor buttonsFlatColor:(UIColor *)buttonsFlatColor buttonsHighlightedFlatColor:(UIColor *)buttonsHighlightedFlatColor titleColor:(UIColor *)titleColor;
+
 @end

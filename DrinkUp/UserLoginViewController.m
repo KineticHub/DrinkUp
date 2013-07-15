@@ -19,6 +19,11 @@
 #import "UIImageView+AFNetworking.h"
 #import "OrderHistorySelectionViewController.h"
 
+#import "UIColor+FlatUI.h"
+#import "FUIButton.h"
+#import "FUIAlertView.h"
+#import "UIFont+FlatUI.h"
+
 @interface UserLoginViewController ()
 @property (nonatomic, strong) UIImageView *profilePicView;
 @property (nonatomic, strong) FBProfilePictureView *fbProfilePicView;
@@ -298,7 +303,7 @@
     [bgDarkView setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:bgDarkView];
     
-    self.profilePicView = [[UIImageView alloc] initWithFrame:CGRectMake(edgeInset, y, 100, 100)];
+    self.profilePicView = [[UIImageView alloc] initWithFrame:CGRectMake(round(edgeInset), round(y), 100, 100)];
 //    self.profilePicView.contentMode = UIViewContentModeScaleAspectFit;
     self.profilePicView.contentMode = UIViewContentModeScaleAspectFill;
     [self.profilePicView setBackgroundColor:[UIColor clearColor]];
@@ -321,7 +326,7 @@
     
 //    y += profilePicView.frame.size.height + spacer;
     
-    UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(self.profilePicView.frame.size.width + edgeInset + edgeInset,  self.profilePicView.frame.origin.y, fieldWidth, fieldHeight * 3)];
+    UILabel *profileName = [[UILabel alloc] initWithFrame:CGRectMake(round(self.profilePicView.frame.size.width + edgeInset + edgeInset),  round(self.profilePicView.frame.origin.y), fieldWidth, fieldHeight * 3)];
     [profileName setBackgroundColor:[UIColor clearColor]];
     [profileName setTextAlignment:NSTextAlignmentLeft];
     NSString *profileNameText = [NSString stringWithFormat:@"%@", [[SharedDataHandler sharedInstance].userInformation objectForKey:@"username" ]];
@@ -341,7 +346,7 @@
     [profileName sizeToFit];
     [profileName setCenter:CGPointMake(profileName.center.x, self.profilePicView.center.y)];
     
-    UILabel *emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(profileName.frame.origin.x, CGRectGetMaxY(profileName.frame) + 5.0, fieldWidth, fieldHeight)];
+    UILabel *emailLabel = [[UILabel alloc] initWithFrame:CGRectMake(round(profileName.frame.origin.x), round(CGRectGetMaxY(profileName.frame) + 5.0), fieldWidth, fieldHeight)];
     [emailLabel setText:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"email"]];
     [emailLabel setBackgroundColor:[UIColor clearColor]];
     [emailLabel setTextAlignment:NSTextAlignmentLeft];
@@ -431,7 +436,7 @@
     [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
     [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
     [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor whiteColor]];
+    [drinkUpLabel setTextColor:[UIColor blackColor]];
     [drinkUpLabel setText:@"DrinkUp Account"];
     [self.view addSubview:drinkUpLabel];
     
@@ -477,35 +482,31 @@
     
     y += self.loginPasswordField.frame.size.height + spacer;
     
-    QBFlatButton *loginButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-//    loginButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
-//    loginButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
-    loginButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    loginButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    loginButton.radius = 6.0;
-    loginButton.margin = 4.0;
-    loginButton.depth = 3.0;
-    loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [loginButton setTitle:@"Login to DrinkUp" forState:UIControlStateNormal];
-    [loginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [loginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
+    loginButton.buttonColor = [UIColor midnightBlueColor];
+    loginButton.shadowColor = [UIColor blackColor];
+    loginButton.shadowHeight = 3.0f;
+    loginButton.cornerRadius = 6.0f;
+    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:loginButton];
     
     y += loginButton.frame.size.height + spacer;
     y += spacer;
     
-    QBFlatButton *facebookButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    facebookButton.faceColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
-    facebookButton.sideColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
-    facebookButton.radius = 6.0;
-    facebookButton.margin = 4.0;
-    facebookButton.depth = 3.0;
-    facebookButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [facebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    FUIButton *facebookButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [facebookButton setTitle:@"Login with Facebook" forState:UIControlStateNormal];
-    [facebookButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [facebookButton addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
+    facebookButton.buttonColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
+    facebookButton.shadowColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
+    facebookButton.shadowHeight = 3.0f;
+    facebookButton.cornerRadius = 6.0f;
+    facebookButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:facebookButton];
     
     y += facebookButton.frame.size.height + spacer;
@@ -522,7 +523,7 @@
     [newLabel setText:@"First time here?"];
     [newLabel setTextAlignment:NSTextAlignmentCenter];
     [newLabel setBackgroundColor:[UIColor clearColor]];
-    [newLabel setTextColor:[UIColor lightGrayColor]];
+    [newLabel setTextColor:[UIColor blackColor]];
     [bottomView1 addSubview:newLabel];
     
     UIButton *signupButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -544,7 +545,7 @@
     [recoverLabel setText:@"Forget password?"];
     [recoverLabel setTextAlignment:NSTextAlignmentCenter];
     [recoverLabel setBackgroundColor:[UIColor clearColor]];
-    [recoverLabel setTextColor:[UIColor lightGrayColor]];
+    [recoverLabel setTextColor:[UIColor blackColor]];
     [bottomView2 addSubview:recoverLabel];
     
     UIButton *forgotButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -559,21 +560,27 @@
 {
     self.isShowingProfileView = NO;
     
-    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    leaveButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
-    leaveButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
-    leaveButton.radius = 6.0;
-    leaveButton.margin = 2.0;
-    leaveButton.depth = 2.0;
-    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    [leaveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [leaveButton setTitle:@"Leave Settings" forState:UIControlStateNormal];
-    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
-    [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leaveButton];
+//    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    leaveButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+//    leaveButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+//    leaveButton.radius = 6.0;
+//    leaveButton.margin = 2.0;
+//    leaveButton.depth = 2.0;
+//    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    [leaveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [leaveButton setTitle:@"Leave Settings" forState:UIControlStateNormal];
+//    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
+//    [leaveButton addTarget:self action:@selector(showLeavingOptions) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:leaveButton];
+//    
+//    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
+//    [backButton setCustomView:leaveButton];
     
-    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
-    [backButton setCustomView:leaveButton];
+    UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back"
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(showLeavingOptions)];
+    
     self.navigationItem.leftBarButtonItem = backButton;
     
     CGFloat y = 5.0;
@@ -586,7 +593,7 @@
     [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
     [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
     [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor whiteColor]];
+    [drinkUpLabel setTextColor:[UIColor blackColor]];
     [drinkUpLabel setText:@"DrinkUp Account"];
     [self.view addSubview:drinkUpLabel];
     
@@ -629,17 +636,16 @@
 //    
 //    y += self.loginPasswordField.frame.size.height + spacer;
     
-    QBFlatButton *loginButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    loginButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    loginButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    loginButton.radius = 6.0;
-    loginButton.margin = 4.0;
-    loginButton.depth = 3.0;
-    loginButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [loginButton setTitle:@"Log In with DrinkUp" forState:UIControlStateNormal];
-    [loginButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
     [loginButton addTarget:self action:@selector(transitionLoginView) forControlEvents:UIControlEventTouchUpInside];
+    loginButton.buttonColor = [UIColor midnightBlueColor];
+    loginButton.shadowColor = [UIColor blackColor];
+    loginButton.shadowHeight = 3.0f;
+    loginButton.cornerRadius = 6.0f;
+    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:loginButton];
     
     y += loginButton.frame.size.height + spacer;
@@ -653,17 +659,16 @@
 //    
 //    y += orLabel.frame.size.height + 5.0;
     
-    QBFlatButton *facebookButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    facebookButton.faceColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
-    facebookButton.sideColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
-    facebookButton.radius = 6.0;
-    facebookButton.margin = 4.0;
-    facebookButton.depth = 3.0;
-    facebookButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [facebookButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [facebookButton setTitle:@"Log In via Facebook" forState:UIControlStateNormal];
-    [facebookButton setFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
+    FUIButton *facebookButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
+    [facebookButton setTitle:@"Log In with Facebook" forState:UIControlStateNormal];
     [facebookButton addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
+    facebookButton.buttonColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
+    facebookButton.shadowColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
+    facebookButton.shadowHeight = 3.0f;
+    facebookButton.cornerRadius = 6.0f;
+    facebookButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:facebookButton];
     
     y += facebookButton.frame.size.height + spacer;
@@ -676,38 +681,41 @@
     [firstTimeLabel setText:@"First time here?"];
     [firstTimeLabel setTextAlignment:NSTextAlignmentCenter];
     [firstTimeLabel setBackgroundColor:[UIColor clearColor]];
-    [firstTimeLabel setTextColor:[UIColor whiteColor]];
+    [firstTimeLabel setTextColor:[UIColor blackColor]];
     [firstTimeContainer addSubview:firstTimeLabel];
     
-    UIButton *signupButton2 = [UIButton buttonWithType:UIButtonTypeCustom];
+    FUIButton *signupButton2 = [[FUIButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight)];
     [signupButton2 setTitle:@"Sign Up" forState:UIControlStateNormal];
-    [signupButton2 setTitleColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] forState:UIControlStateNormal];
-    [signupButton2 setFrame:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight)];
     [signupButton2 addTarget:self action:@selector(showSignupView) forControlEvents:UIControlEventTouchUpInside];
 //    [firstTimeContainer addSubview:signupButton2];
     
-    QBFlatButton *signupButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    signupButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    signupButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    signupButton.radius = 6.0;
-    signupButton.margin = 4.0;
-    signupButton.depth = 3.0;
-    signupButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [signupButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    FUIButton *signupButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight)];
     [signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
-    [signupButton setFrame:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight)];
     [signupButton addTarget:self action:@selector(showSignupView) forControlEvents:UIControlEventTouchUpInside];
+    signupButton.buttonColor = [UIColor midnightBlueColor];
+    signupButton.shadowColor = [UIColor blackColor];
+    signupButton.shadowHeight = 3.0f;
+    signupButton.cornerRadius = 6.0f;
+    signupButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    [signupButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
+    [signupButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [firstTimeContainer addSubview:signupButton];
 }
 
 -(void)showLeavingOptions
 {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Not Logged In"
-                                                      message:@"If you leave witout logging in, you cannot order drinks. Are you sure?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Leave", nil];
-    [message show];
+    FUIAlertView *leaveAlert = [[FUIAlertView alloc] initWithTitle:@"Not Logged In" message:@"If you leave witout logging in, you cannot order drinks. Are you sure?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Leave", nil];
+    leaveAlert.titleLabel.textColor = [UIColor cloudsColor];
+    leaveAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
+    leaveAlert.messageLabel.textColor = [UIColor cloudsColor];
+    leaveAlert.messageLabel.font = [UIFont flatFontOfSize:14];
+    leaveAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
+    leaveAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
+    leaveAlert.defaultButtonColor = [UIColor cloudsColor];
+    leaveAlert.defaultButtonShadowColor = [UIColor asbestosColor];
+    leaveAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
+    leaveAlert.defaultButtonTitleColor = [UIColor asbestosColor];
+    [leaveAlert show];
 }
 
 #pragma mark - UITextField delegate methods

@@ -9,12 +9,13 @@
 #import <Foundation/Foundation.h>
 #import <MapKit/MapKit.h>
 #import "FBConnect.h"
+#import "AFNetworking.h"
 
 typedef void(^JsonRequestCompletionBlock)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error);
 typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 typedef void(^SuccessCompletionBlock)(bool successful);
 
-@interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate>
+@interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate, NSURLConnectionDelegate>
 
 @property int current_section;
 @property (nonatomic, strong) NSMutableArray *currentDrinkOrder;

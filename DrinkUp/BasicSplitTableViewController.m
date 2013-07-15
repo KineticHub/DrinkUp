@@ -9,6 +9,7 @@
 #import "BasicSplitTableViewController.h"
 #import "ConfirmOrderViewController.h"
 #import "UserLoginViewController.h"
+#import "UIColor+FlatUI.h"
 
 #define BOTTOM_BAR_HEIGHT 60.0
 
@@ -76,7 +77,8 @@ static bool isShowingBottomBar = NO;
 //    [self.view addSubview:self.upperView];
     
     UIView *background = [[UIView alloc] init];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+//    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+    [background setBackgroundColor:[UIColor cloudsColor]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0.0, upperViewHeight, self.view.frame.size.width, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - upperViewHeight) style:UITableViewStylePlain];

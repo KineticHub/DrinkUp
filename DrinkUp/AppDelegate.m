@@ -27,6 +27,11 @@
 #import "REMenu.h"
 #import "PKRevealController.h"
 
+#import "UIBarButtonItem+FlatUI.h"
+#import "UIColor+FlatUI.h"
+#import "UINavigationBar+FlatUI.h"
+#import "UIFont+FlatUI.h"
+
 @interface AppDelegate ()
 @property (nonatomic, strong) REMenu *menu;
 @property (nonatomic, strong) PKRevealController *revealController;
@@ -42,6 +47,12 @@
     // the app is launched from a push notification
     NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
     [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
+    
+#ifdef DEV
+    [takeOffOptions setValue:@"NO" forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
+#else
+    [takeOffOptions setValue:@"YES" forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
+#endif
     
     // This prevents the UA Library from registering with UIApplcation by default when
     // registerForRemoteNotifications is called. This will allow you to prompt your
@@ -85,61 +96,73 @@
     
     UITabBarController *tbvc = [[UITabBarController alloc] init];
     
-//    [tbvc addChildViewController:rbvc];
     [tbvc addChildViewController:nbvc];
     [tbvc addChildViewController:fbvc];
-    
-//    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:tbvc];
-//    self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:nbvc];
 
     NSMutableArray *navItemsArray = [[NSMutableArray alloc] init];
-    UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
-                                  initWithTitle:@"History"
-                                  style:UIBarButtonItemStylePlain
-                                  target:self action:@selector(viewHistoryController:)];
-    [navItemsArray addObject:historyButton];
+//    UIBarButtonItem *historyButton = [[UIBarButtonItem alloc]
+//                                  initWithTitle:@"History"
+//                                  style:UIBarButtonItemStylePlain
+//                                  target:self action:@selector(viewHistoryController:)];
+//    [navItemsArray addObject:historyButton];
     
-//    self.mapButton = [[UIBarButtonItem alloc]
-//                                      initWithTitle:@"Map"
-//                                      style:UIBarButtonItemStylePlain
-//                                      target:self action:@selector(showMap)];
-//    [self.mapButton setTintColor:[UIColor whiteColor]];
-//    [self.mapButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
-//    self.mapButton = [[UIBarButtonItem alloc]
-//                           initWithImage:[UIImage imageNamed:@"location"]
-//                           style:UIBarButtonItemStylePlain
-//                           target:self action:@selector(showMap)];
-//    [self.mapButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
+//    //    self.mapButton = [[UIBarButtonItem alloc]
+//    //                                      initWithTitle:@"Map"
+//    //                                      style:UIBarButtonItemStylePlain
+//    //                                      target:self action:@selector(showMap)];
+//    //    [self.mapButton setTintColor:[UIColor whiteColor]];
+//    //    [self.mapButton setTitleTextAttributes:[NSDictionary dictionaryWithObjectsAndKeys: [UIColor blackColor],  UITextAttributeTextColor,nil] forState:UIControlStateNormal];
+//    //    self.mapButton = [[UIBarButtonItem alloc]
+//    //                           initWithImage:[UIImage imageNamed:@"location"]
+//    //                           style:UIBarButtonItemStylePlain
+//    //                           target:self action:@selector(showMap)];
+//    //    [self.mapButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
     
-    UIImage *mapImage = [UIImage imageNamed:@"location"];
-    CustomBarButton *mapButtonFlat = [[CustomBarButton alloc] init];
-    [mapButtonFlat setButtonWithImage:mapImage];
-    [mapButtonFlat addTarget:self action:@selector(showMap) forControlEvents:UIControlEventTouchUpInside];
+//    UIImage *mapImage = [UIImage imageNamed:@"location"];
+//    CustomBarButton *mapButtonFlat = [[CustomBarButton alloc] init];
+//    [mapButtonFlat setButtonWithImage:mapImage];
+//    [mapButtonFlat addTarget:self action:@selector(showMap) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    self.mapButton = [[UIBarButtonItem alloc] init];
+//    [self.mapButton setCustomView:mapButtonFlat];
     
-    self.mapButton = [[UIBarButtonItem alloc] init];
-    [self.mapButton setCustomView:mapButtonFlat];
+//    // Instantiate a New button to invoke the addTask: method when tapped.
+////    self.settingsButton = [[UIBarButtonItem alloc]
+////                                                                    initWithImage:[UIImage imageNamed:@"gears"]
+////                                                                    style:UIBarButtonItemStylePlain
+////                                                                    target:self action:@selector(showMenu)];
+////    [self.settingsButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
+////    [navItemsArray addObject:self.settingsButton];
     
-    // Instantiate a New button to invoke the addTask: method when tapped.
-//    self.settingsButton = [[UIBarButtonItem alloc]
-//                                                                    initWithImage:[UIImage imageNamed:@"gears"]
-//                                                                    style:UIBarButtonItemStylePlain
-//                                                                    target:self action:@selector(showMenu)];
-//    [self.settingsButton setTintColor:[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0]];
-//    [navItemsArray addObject:self.settingsButton];
+//    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
+//    CustomBarButton *settingsButtonFlat = [[CustomBarButton alloc] init];
+//    [settingsButtonFlat setButtonWithImage:settingsImage];
+//    [settingsButtonFlat addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    self.settingsButton = [[UIBarButtonItem alloc] init];
+//    [self.settingsButton setCustomView:settingsButtonFlat];
     
-    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
-    CustomBarButton *settingsButtonFlat = [[CustomBarButton alloc] init];
-    [settingsButtonFlat setButtonWithImage:settingsImage];
-    [settingsButtonFlat addTarget:self action:@selector(showMenu) forControlEvents:UIControlEventTouchUpInside];
+    //////// FLAT STYLE
+    self.settingsButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+                                                           style:UIBarButtonItemStylePlain
+                                                          target:self
+                                                          action:@selector(showMenu)];
     
-    self.settingsButton = [[UIBarButtonItem alloc] init];
-    [self.settingsButton setCustomView:settingsButtonFlat];
+    self.mapButton = [[UIBarButtonItem alloc] initWithTitle:@"Map"
+                                                          style:UIBarButtonItemStylePlain
+                                                         target:self
+                                                         action:@selector(showMap)];
     
     // Set up the Add custom button on the right of the navigation bar
     tbvc.navigationItem.rightBarButtonItems = navItemsArray;
     nbvc.navigationItem.rightBarButtonItems = navItemsArray;
     
 //    nbvc.navigationItem.leftBarButtonItem = settingsButton;
+    
+    [UIBarButtonItem configureFlatButtonsWithColor:[UIColor peterRiverColor]
+                                  highlightedColor:[UIColor belizeHoleColor]
+                                      cornerRadius:3
+                                   whenContainedIn:[UINavigationBar class], nil];
     
 //////////////////////
     MainSettingsViewController *msvc = [[MainSettingsViewController alloc] init];
@@ -153,25 +176,26 @@
 //////////////////////
     
     self.rootNavigationController = [[UINavigationController alloc] initWithRootViewController:self.revealController];
+    self.rootNavigationController.navigationBar.titleTextAttributes = @{UITextAttributeFont: [UIFont boldFlatFontOfSize:18],
+                                                                        UITextAttributeTextColor: [UIColor whiteColor]};
+    [self.rootNavigationController.navigationBar configureFlatNavigationBarWithColor:[UIColor midnightBlueColor]];
     
 //    UIImageView *background = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"main_background.jpg"]];
     UIView *background = [[UIView alloc] init];
     
-//    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"pw_maze_white_@2X"]]];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+//    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
-//    [background setBackgroundColor:[UIColor colorWithRed:(0/255.0) green:(0/255.0) blue:(0/255.0) alpha:1.0]];
+    [background setBackgroundColor:[UIColor cloudsColor]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [self.rootNavigationController.view addSubview:background];
     [self.rootNavigationController.view sendSubviewToBack:background];
-    [self.rootNavigationController.navigationBar setTintColor:[UIColor darkTextColor]];
-//    [self.rootNavigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
+    
+    [self.rootNavigationController.view setBackgroundColor:[UIColor cloudsColor]];
     
     [self.revealController.view addSubview:background];
     [self.revealController.view sendSubviewToBack:background];
     [self.revealController.frontViewController.navigationController.view addSubview:background];
     [self.revealController.frontViewController.navigationController.view sendSubviewToBack:background];
-//    [self.revealController.navigationController.navigationBar setTintColor:[UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0]];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:self.rootNavigationController];

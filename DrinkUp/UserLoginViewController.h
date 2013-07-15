@@ -10,7 +10,8 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <QuartzCore/QuartzCore.h>
 #import "FacebookSDK.h"
+#import "FUIAlertView.h"
 
-@interface UserLoginViewController : UIViewController <UITextFieldDelegate, UIAlertViewDelegate>
+@interface UserLoginViewController : UIViewController <FUIAlertViewDelegate, UITextFieldDelegate, UIAlertViewDelegate>
 - (void)loginView:(FBLoginView *)loginView handleError:(NSError *)error;
 @end

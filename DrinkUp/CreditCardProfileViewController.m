@@ -13,6 +13,7 @@
 #import "CreditCardProfileViewController.h"
 #import "QBFlatButton.h"
 #import "MBProgressHUD.h"
+#import "UIColor+FlatUI.h"
 
 @interface CreditCardProfileViewController ()
 @property (nonatomic, strong) UILabel *cardTypeDataLabel;
@@ -27,7 +28,8 @@
     [super viewDidLoad];
     
     UIView *background = [[UIView alloc] init];
-    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+//    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
+    [background setBackgroundColor:[UIColor cloudsColor]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
     CGFloat y = 10.0;
@@ -38,7 +40,7 @@
     
     UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
-    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
     [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
     [drinkUpLabel setTextColor:[UIColor whiteColor]];
     [drinkUpLabel setText:@"Payment Info"];
@@ -46,19 +48,19 @@
     
     y += drinkUpLabel.frame.size.height + spacer;
     
-//    UILabel *cardTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-//    [cardTypeLabel setBackgroundColor:[UIColor clearColor]];
-//    [cardTypeLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
-//    [cardTypeLabel setTextAlignment:NSTextAlignmentLeft];
-//    [cardTypeLabel setTextColor:[UIColor whiteColor]];
-//    [cardTypeLabel setText:@"Card Type:"];
-//    [self.view addSubview:cardTypeLabel];
-//    
-//    y += cardTypeLabel.frame.size.height;
+    UILabel *cardTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [cardTypeLabel setBackgroundColor:[UIColor clearColor]];
+    [cardTypeLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [cardTypeLabel setTextAlignment:NSTextAlignmentLeft];
+    [cardTypeLabel setTextColor:[UIColor grayColor]];
+    [cardTypeLabel setText:@"Card Type:"];
+    [self.view addSubview:cardTypeLabel];
     
-    NSString *cardTypeData = [NSString stringWithFormat:@"Card Type: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"]];
+    y += cardTypeLabel.frame.size.height;
+    
+    NSString *cardTypeData = [NSString stringWithFormat:@"  %@",[[[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"] uppercaseString]];
     self.cardTypeDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
-    [self.cardTypeDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardTypeDataLabel setBackgroundColor:[UIColor colorWithRed:15.0/255.0 green:15.0/255.0 blue:15.0/255.0 alpha:0.5]];
     [self.cardTypeDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
     [self.cardTypeDataLabel setTextAlignment:NSTextAlignmentLeft];
     [self.cardTypeDataLabel setTextColor:[UIColor whiteColor]];
@@ -67,19 +69,19 @@
     
     y += self.cardTypeDataLabel.frame.size.height;
     
-//    UILabel *cardDigitsLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-//    [cardDigitsLabel setBackgroundColor:[UIColor clearColor]];
-//    [cardDigitsLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
-//    [cardDigitsLabel setTextAlignment:NSTextAlignmentLeft];
-//    [cardDigitsLabel setTextColor:[UIColor whiteColor]];
-//    [cardDigitsLabel setText:@"Last 4 Digits:"];
-//    [self.view addSubview:cardDigitsLabel];
-//    
-//    y += cardDigitsLabel.frame.size.height;
+    UILabel *cardDigitsLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [cardDigitsLabel setBackgroundColor:[UIColor clearColor]];
+    [cardDigitsLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [cardDigitsLabel setTextAlignment:NSTextAlignmentLeft];
+    [cardDigitsLabel setTextColor:[UIColor grayColor]];
+    [cardDigitsLabel setText:@"Card Ending In:"];
+    [self.view addSubview:cardDigitsLabel];
     
-    NSString *cardDigitsData = [NSString stringWithFormat:@"Last 4 Digits: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
+    y += cardDigitsLabel.frame.size.height;
+    
+    NSString *cardDigitsData = [NSString stringWithFormat:@"  %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
     self.cardDigitsDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
-    [self.cardDigitsDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardDigitsDataLabel setBackgroundColor:[UIColor colorWithRed:15.0/255.0 green:15.0/255.0 blue:15.0/255.0 alpha:0.5]];
     [self.cardDigitsDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
     [self.cardDigitsDataLabel setTextAlignment:NSTextAlignmentLeft];
     [self.cardDigitsDataLabel setTextColor:[UIColor whiteColor]];
@@ -88,9 +90,19 @@
     
     y += self.cardDigitsDataLabel.frame.size.height;
     
-    NSString *cardExpirationData = [NSString stringWithFormat:@"Card Expiration: %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
+    UILabel *cardExpirationLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+    [cardExpirationLabel setBackgroundColor:[UIColor clearColor]];
+    [cardExpirationLabel setFont:[UIFont boldSystemFontOfSize:20.0]];
+    [cardExpirationLabel setTextAlignment:NSTextAlignmentLeft];
+    [cardExpirationLabel setTextColor:[UIColor grayColor]];
+    [cardExpirationLabel setText:@"Card Expiration:"];
+    [self.view addSubview:cardExpirationLabel];
+    
+    y += cardExpirationLabel.frame.size.height;
+    
+    NSString *cardExpirationData = [NSString stringWithFormat:@"  %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
     self.cardExpirationDataLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - 10.0)];
-    [self.cardExpirationDataLabel setBackgroundColor:[UIColor clearColor]];
+    [self.cardExpirationDataLabel setBackgroundColor:[UIColor colorWithRed:15.0/255.0 green:15.0/255.0 blue:15.0/255.0 alpha:0.5]];
     [self.cardExpirationDataLabel setFont:[UIFont boldSystemFontOfSize:18.0]];
     [self.cardExpirationDataLabel setTextAlignment:NSTextAlignmentLeft];
     [self.cardExpirationDataLabel setTextColor:[UIColor whiteColor]];
@@ -137,13 +149,24 @@
 {
     NSLog(@"card info: %@", [SharedDataHandler sharedInstance].userCard);
     
-    NSString *cardTypeData = [NSString stringWithFormat:@"Card Type: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"]];
-    NSString *cardDigitsData = [NSString stringWithFormat:@"Last 4 Digits: %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
-    NSString *cardExpirationData = [NSString stringWithFormat:@"Card Expiration: %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
+    NSString *nullPlaceholder = @"  No Card";
     
-    self.cardTypeDataLabel.text = cardTypeData;
-    self.cardDigitsDataLabel.text = cardDigitsData;
-    self.cardExpirationDataLabel.text = cardExpirationData;
+    NSString *cardTypeData = [NSString stringWithFormat:@"  %@", [[[SharedDataHandler sharedInstance].userCard objectForKey:@"card_type"] uppercaseString]];
+    NSString *cardDigitsData = [NSString stringWithFormat:@"  %@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"last_four"]];
+    NSString *cardExpirationData = [NSString stringWithFormat:@"  %@/%@", [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_month"], [[SharedDataHandler sharedInstance].userCard objectForKey:@"expiration_year"]];
+    
+    if ([SharedDataHandler sharedInstance].userCard)
+    {
+        self.cardTypeDataLabel.text = cardTypeData;
+        self.cardDigitsDataLabel.text = cardDigitsData;
+        self.cardExpirationDataLabel.text = cardExpirationData;
+    }
+    else {
+        self.cardTypeDataLabel.text = nullPlaceholder;
+        self.cardDigitsDataLabel.text = nullPlaceholder;
+        self.cardExpirationDataLabel.text = nullPlaceholder;
+    }
+    
 }
 
 -(void)cardImage

@@ -9,7 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
 #import "BasicSplitTableViewController.h"
+#import "FUIAlertView.h"
 
-@interface BSTNearbyBarsViewController : BasicSplitTableViewController <MKMapViewDelegate>
+@interface BSTNearbyBarsViewController : BasicSplitTableViewController <FUIAlertViewDelegate, MKMapViewDelegate>
 
 @end

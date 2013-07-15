@@ -5,6 +5,7 @@
 //
 
 #import "TextStepperField.h"
+#import "UIImage+FlatUI.h"
 
 @interface TextStepperField ()
 
@@ -240,6 +241,38 @@ UIEdgeInsets insetButtonImage={13,13,13,13};
     self.TypeChange= _longTapLoopValue;
     
     [self sendActionsForControlEvents:UIControlEventValueChanged];
+}
+
+#pragma mark - Flat UI Method
+
+-(void)changeToFlatWithColor:(UIColor *)flatColor buttonsFlatColor:(UIColor *)buttonsFlatColor buttonsHighlightedFlatColor:(UIColor *)buttonsHighlightedFlatColor titleColor:(UIColor *)titleColor
+{
+    int buttonSizeChange = 20.0;
+    
+    [self.textField setTextColor:titleColor];
+    
+    CGRect textRect = self.textField.frame;
+    textRect.origin.x += buttonSizeChange;
+    textRect.size.width -= buttonSizeChange * 2;
+    self.textField.frame = textRect;
+    
+    [self.middleImage setImage:nil];
+    [self.middleImage setBackgroundColor:flatColor];
+    
+    [self.minusButton setBackgroundImage:[UIImage imageWithColor:buttonsFlatColor cornerRadius:0.0] forState:UIControlStateNormal];
+    [self.minusButton setBackgroundImage:[UIImage imageWithColor:buttonsHighlightedFlatColor cornerRadius:0.0] forState:UIControlStateHighlighted];
+    
+    CGRect minusRect = self.minusButton.frame;
+    minusRect.size.width += buttonSizeChange;
+    self.minusButton.frame = minusRect;
+    
+    [self.plusButton setBackgroundImage:[UIImage imageWithColor:buttonsFlatColor cornerRadius:0.0] forState:UIControlStateNormal];
+    [self.plusButton setBackgroundImage:[UIImage imageWithColor:buttonsHighlightedFlatColor cornerRadius:0.0] forState:UIControlStateHighlighted];
+    
+    CGRect plusRect = self.plusButton.frame;
+    plusRect.size.width += buttonSizeChange;
+    plusRect.origin.x -= buttonSizeChange;
+    self.plusButton.frame = plusRect;
 }
 
 @end
