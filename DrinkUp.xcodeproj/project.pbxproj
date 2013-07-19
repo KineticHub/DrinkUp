@@ -231,6 +231,7 @@
 		9CE6082017920AF9009CC3CA /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9CE6081617920AF9009CC3CA /* Lato-Regular.ttf */; };
 		9CE6082E1793337B009CC3CA /* UnlockSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6082D1793337B009CC3CA /* UnlockSliderView.m */; };
 		9CE6083217939B82009CC3CA /* KUIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6083117939B82009CC3CA /* KUIHelper.m */; };
+		9CE6083617979FE3009CC3CA /* gear_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE6083517979FE3009CC3CA /* gear_24.png */; };
 		9CF05361173901FC00351DA4 /* BalancedHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF05360173901FC00351DA4 /* BalancedHelper.m */; };
 		9CF053641739023C00351DA4 /* BPHCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053631739023C00351DA4 /* BPHCard.m */; };
 		9CF053671739030400351DA4 /* BPHUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053661739030400351DA4 /* BPHUtils.m */; };
@@ -619,6 +620,7 @@
 		9CE6082D1793337B009CC3CA /* UnlockSliderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UnlockSliderView.m; sourceTree = "<group>"; };
 		9CE6083017939B82009CC3CA /* KUIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KUIHelper.h; sourceTree = "<group>"; };
 		9CE6083117939B82009CC3CA /* KUIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KUIHelper.m; sourceTree = "<group>"; };
+		9CE6083517979FE3009CC3CA /* gear_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear_24.png; sourceTree = "<group>"; };
 		9CF0535F173901FC00351DA4 /* BalancedHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalancedHelper.h; sourceTree = "<group>"; };
 		9CF05360173901FC00351DA4 /* BalancedHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BalancedHelper.m; sourceTree = "<group>"; };
 		9CF053621739023C00351DA4 /* BPHCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHCard.h; sourceTree = "<group>"; };
@@ -999,6 +1001,7 @@
 		9C69C65016CFFA1900D548F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9CE6083517979FE3009CC3CA /* gear_24.png */,
 				9CD3FB36177479A40046B9BF /* 320x480.png */,
 				9CD3FB37177479A50046B9BF /* 512.png */,
 				9CD3FB38177479A50046B9BF /* 640by1136.png */,
@@ -1605,6 +1608,7 @@
 				9CE6081E17920AF9009CC3CA /* Lato-Light.ttf in Resources */,
 				9CE6081F17920AF9009CC3CA /* Lato-LightItalic.ttf in Resources */,
 				9CE6082017920AF9009CC3CA /* Lato-Regular.ttf in Resources */,
+				9CE6083617979FE3009CC3CA /* gear_24.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1817,7 +1821,7 @@
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Khair Alnajar";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1828,7 +1832,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				OTHER_LDFLAGS = "-lxml2";
-				PROVISIONING_PROFILE = "3CDEF4BC-380E-4D11-A2C0-89BECC27022A";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5936AF87-449C-447A-9291-508579680B09";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1875,7 +1879,7 @@
 		9C69C5B816CD89F800D548F2 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: K Alnajar (AGD5N2QUJJ)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Khair Alnajar";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Khair Alnajar";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1898,7 +1902,7 @@
 				);
 				"OTHER_LDFLAGS[arch=*]" = "-lstdc++";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "3CDEF4BC-380E-4D11-A2C0-89BECC27022A";
+				PROVISIONING_PROFILE = "5936AF87-449C-447A-9291-508579680B09";
 				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "5936AF87-449C-447A-9291-508579680B09";
 				WRAPPER_EXTENSION = app;
 			};

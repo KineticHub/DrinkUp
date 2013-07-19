@@ -46,19 +46,19 @@
         [self.nameLabel setAdjustsFontSizeToFitWidth:YES];
         [self.feedContainer addSubview:self.nameLabel];
         
-        self.updateLabel = [[UILabel alloc] initWithFrame:CGRectMake(7, 252, 154, 21)]; //7, 246, 263, 47
+        self.updateLabel = [[UILabel alloc] initWithFrame:CGRectMake(7, 252, 263, 21)]; // actual:(7, 246, 263, 47) mine:(7, 252, 154, 21)
         self.updateLabel.textColor =  neutralColor;
         self.updateLabel.font =  [UIFont fontWithName:fontName size:18.0f];
         [self.updateLabel setBackgroundColor:[UIColor clearColor]];
         [self.updateLabel setAdjustsFontSizeToFitWidth:YES];
         [self.feedContainer addSubview:self.updateLabel];
         
-        self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(208, 252, 62, 21)]; //208, 223, 62, 21
+        self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(208, 252, 62, 21)]; // actual:(208, 223, 62, 21) mine: (208, 252, 62, 21)
         self.dateLabel.textColor = neutralColor;
         self.dateLabel.font =  [UIFont fontWithName:boldFontName size:20.0f];
         [self.dateLabel setBackgroundColor:[UIColor clearColor]];
         [self.dateLabel setAdjustsFontSizeToFitWidth:YES];
-        [self.feedContainer addSubview:self.dateLabel];
+//        [self.feedContainer addSubview:self.dateLabel];
         
         self.commentCountLabel = [[UILabel alloc] initWithFrame:CGRectMake(92, 308, 42, 21)];
         self.commentCountLabel.textColor = neutralColor;

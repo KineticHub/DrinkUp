@@ -15,6 +15,7 @@
 #import "FUIAlertView.h"
 #import "FUIButton.h"
 #import "UIFont+FlatUI.h"
+#import "KUIHelper.h"
 
 @interface DrinkUpLoginViewController ()
 @property (nonatomic, strong) UITextField *loginUsernameOrEmailField;
@@ -27,26 +28,27 @@
 {
     [super viewDidLoad];
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
-    [self.view setBackgroundColor:[UIColor cloudsColor]];
+    [self.view setBackgroundColor:[KUIHelper getAppBackgroundColor]];
+    self.navigationItem.title = @"DrinkUp Login";
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
     
-    CGFloat y = 4.0;
+    CGFloat y = 15.0;
     CGFloat spacer = 10.0;
     CGFloat edgeInset = 15.0;
     CGFloat fieldWidth = 290.0;
     CGFloat fieldHeight = 40.0;
     
-    UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
-    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
-    [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor blackColor]];
-    [drinkUpLabel setText:@"DrinkUp Login"];
-    [self.view addSubview:drinkUpLabel];
+//    UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
+//    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
+//    [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
+//    [drinkUpLabel setTextColor:[UIColor blackColor]];
+//    [drinkUpLabel setText:@"DrinkUp Login"];
+//    [self.view addSubview:drinkUpLabel];
     
-    y += drinkUpLabel.frame.size.height;
+//    y += drinkUpLabel.frame.size.height;
     
 //    UIView *coloredBgView1 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
 //    [coloredBgView1 setBackgroundColor:[UIColor clearColor]];
@@ -55,15 +57,7 @@
 //    [coloredBgView1.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView1];
 
-    self.loginUsernameOrEmailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [self.loginUsernameOrEmailField setPlaceholder:@"Email"];
-    [self.loginUsernameOrEmailField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.loginUsernameOrEmailField.backgroundColor = [UIColor silverColor];
-    self.loginUsernameOrEmailField.layer.cornerRadius = 3.0f;
-    self.loginUsernameOrEmailField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.loginUsernameOrEmailField.leftView = leftView1;
-    [self.loginUsernameOrEmailField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    self.loginUsernameOrEmailField = [KUIHelper createCommonTextFieldWithRect:CGRectMake(edgeInset, y, fieldWidth, fieldHeight) andPlaceholder:@"Email"];
     [self.view addSubview:self.loginUsernameOrEmailField];
 
     y += self.loginUsernameOrEmailField.frame.size.height + spacer - 3.0;
@@ -75,16 +69,7 @@
 //    [coloredBgView2.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView2];
 
-    self.loginPasswordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [self.loginPasswordField setPlaceholder:@"Password"];
-    [self.loginPasswordField setSecureTextEntry:YES];
-    [self.loginPasswordField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.loginPasswordField.backgroundColor = [UIColor silverColor];
-    self.loginPasswordField.layer.cornerRadius = 3.0f;
-    self.loginPasswordField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.loginPasswordField.leftView = leftView2;
-    [self.loginPasswordField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    self.loginPasswordField = [KUIHelper createPasswordFieldWithRect:CGRectMake(edgeInset, y, fieldWidth, fieldHeight) andPlaceholder:@"Password"];
     [self.view addSubview:self.loginPasswordField];
     
     y += self.loginPasswordField.frame.size.height + spacer + 2.0;
@@ -100,17 +85,10 @@
 //    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
 //    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
 //    [self.view addSubview:loginButton];
-    
-    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(0.0, y, self.view.frame.size.width, fieldHeight + 15.0)];
+
+    FUIButton *loginButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 15.0)
+                                                          andTitle:@"Log In"];
     [loginButton addTarget:self action:@selector(loginToServer:) forControlEvents:UIControlEventTouchUpInside];
-    [loginButton setTitle:@"LOG IN" forState:UIControlStateNormal];
-    loginButton.buttonColor = [UIColor midnightBlueColor];
-    loginButton.shadowColor = [UIColor blackColor];
-    loginButton.shadowHeight = 0.0f;
-    loginButton.cornerRadius = 0.0f;
-    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:22];
-    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [loginButton setTitleColor:[UIColor concreteColor] forState:UIControlStateHighlighted];
     [self.view addSubview:loginButton];
     
     y += loginButton.frame.size.height + spacer - 3.0;
@@ -136,7 +114,7 @@
     [cancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor pomegranateColor] forState:UIControlStateHighlighted];
     [cancelButton addTarget:self action:@selector(leaveSignUpView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelButton];
+//    [self.view addSubview:cancelButton];
 }
 
 -(void)leaveSignUpView
@@ -170,22 +148,21 @@
                      [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{
                      }];
                  } else {
-                     UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Login Failed"
-                                                                       message:@"Please check your username and password and try again."
-                                                                      delegate:self
-                                                             cancelButtonTitle:@"Okay"
-                                                             otherButtonTitles:nil];
-                     [message show];
+                     [[KUIHelper createAlertViewWithTitle:@"Login Failed"
+                                                 message:@"Please check your username and password and try again."
+                                                delegate:self
+                                       cancelButtonTitle:@"Okay"
+                                        otherButtonTitles:nil] show];
+                     
                  }
              }];
         });
     } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Missing Fields"
-                                                          message:@"Please make sure you have entered a username and password."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Okay"
-                                                otherButtonTitles:nil];
-        [message show];
+        [[KUIHelper createAlertViewWithTitle:@"Missing Fields"
+                                     message:@"Please make sure you have entered a username and password."
+                                    delegate:self
+                           cancelButtonTitle:@"Okay"
+                           otherButtonTitles:nil] show];
     }
 }
 

@@ -10,6 +10,7 @@
 #import "SharedDataHandler.h"
 #import "BasicSplitTableViewController.h"
 #import "NewDrinkSelectCell.h"
+#import "UIColor+FlatUI.h"
 
 @interface OrderHistoryInfoViewController ()
 @property (nonatomic, strong) NSMutableArray *drinksOrdered;
@@ -42,6 +43,7 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
+//    self.navigationItem.title = @"Order Details";
     
     CGFloat verticlSpacer = 10.0;
     CGFloat horizontalSpacer = 10.0;
@@ -55,7 +57,7 @@
     [self setupBottomViewWithView:bottomView];
     
     UIView *priceView = [[UIView alloc] initWithFrame:CGRectMake(0.0, self.view.frame.size.height - self.navigationController.navigationBar.frame.size.height - 120.0 - bottomViewHeight, self.view.frame.size.width, 120.0)];
-    [priceView setBackgroundColor:[UIColor blackColor]];
+    [priceView setBackgroundColor:[UIColor belizeHoleColor]];
     [self.view addSubview:priceView];
     
     [self setupPriceViewWithView:priceView];
@@ -105,8 +107,8 @@
     self.tipCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier3"];
     [self.tipCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.tipCell setBackgroundColor:[UIColor clearColor]];
-    self.tipCell.textLabel.text = @"Tip";
-    self.tipCell.detailTextLabel.text = [NSString stringWithFormat:@"$%@", [self.order objectForKey:@"tip"]];
+    self.tipCell.textLabel.text = @"Sub Total:";
+    self.tipCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", [[self.order objectForKey:@"sub_total"] doubleValue]];
     [self.tipCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.tipCell.detailTextLabel setTextColor:[UIColor whiteColor]];
     
@@ -116,10 +118,10 @@
     self.taxAndFeeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
     [self.taxAndFeeCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.taxAndFeeCell setBackgroundColor:[UIColor clearColor]];
-    self.taxAndFeeCell.textLabel.text = @"Tax and fees";
+    self.taxAndFeeCell.textLabel.text = @"Gratuity:";
     [self.taxAndFeeCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.taxAndFeeCell.detailTextLabel setTextColor:[UIColor whiteColor]];
-    self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", [[self.order objectForKey:@"tax"] doubleValue] + [[self.order objectForKey:@"fees"] doubleValue]];
+    self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", [[self.order objectForKey:@"tip"] doubleValue]];
     
     [priceView addSubview:self.taxAndFeeCell];
     pvYPosition += pvHeight;
@@ -127,7 +129,7 @@
     self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
     [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.totalCell setBackgroundColor:[UIColor clearColor]];
-    self.totalCell.textLabel.text = @"Total:";
+    self.totalCell.textLabel.text = @"Grand Total:";
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
     [self.totalCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.totalCell.detailTextLabel setTextColor:[UIColor whiteColor]];
@@ -155,7 +157,7 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UILabel *headerLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 30.0)];
-    [headerLabel setBackgroundColor:[UIColor blackColor]];
+    [headerLabel setBackgroundColor:[UIColor belizeHoleColor]];
     [headerLabel setTextColor:[UIColor whiteColor]];
     [headerLabel setText:[NSString stringWithFormat:@"ORDER ID #%i", [[self.order objectForKey:@"id"] intValue]]];
     [headerLabel setFont:[UIFont boldSystemFontOfSize:17.0]];
@@ -195,7 +197,7 @@
     
     NSDictionary *drink = [self.drinksOrdered objectAtIndex:[indexPath row]];
     
-    NSString *priceString = [NSString stringWithFormat:@"%i x $%@",[[drink objectForKey:@"quantity"] intValue], [drink objectForKey:@"unit_price"]];
+    NSString *priceString = [NSString stringWithFormat:@"%i x $%.02f",[[drink objectForKey:@"quantity"] intValue], [[drink objectForKey:@"unit_price"] doubleValue]];
     
     cell.textLabel.text = [drink objectForKey:@"drink_name"];
     cell.detailTextLabel.text = priceString;

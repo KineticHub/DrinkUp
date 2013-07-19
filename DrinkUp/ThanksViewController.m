@@ -10,6 +10,8 @@
 #import "BSTDrinkTypeViewController.h"
 #import "SharedDataHandler.h"
 #import "CollapsableDrinkViewController.h"
+#import "UIColor+FlatUI.h"
+#import "KUIHelper.h"
 
 @interface ThanksViewController ()
 @property (nonatomic, strong) UILabel *claimLabel;
@@ -20,6 +22,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+//    self.navigationItem.title = @"Order Number";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Drinks Claimed!" style:UIBarButtonItemStyleDone target:self action:@selector(confirmOrderReceived)];
     self.navigationItem.leftBarButtonItem = backButton;
@@ -33,25 +36,33 @@
     UILabel *thanksLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition, labelWidth, labelHeight)];
     [thanksLabel setText:@"Thanks for using DrinkUp!"];
     [thanksLabel setTextAlignment:NSTextAlignmentCenter];
-    [thanksLabel setTextColor:[UIColor whiteColor]];
+    [thanksLabel setTextColor:[UIColor blackColor]];
     [thanksLabel setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:thanksLabel];
+//    [self.view addSubview:thanksLabel];
     yPosition += labelHeight + spacer;
     
     UILabel *claimInfoLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition, labelWidth, labelHeight)];
     [claimInfoLabel setText:@"Show this code to the bartender to claim your drink:"];
     [claimInfoLabel setTextAlignment:NSTextAlignmentCenter];
-    [claimInfoLabel setTextColor:[UIColor whiteColor]];
+    [claimInfoLabel setTextColor:[UIColor blackColor]];
     [claimInfoLabel setBackgroundColor:[UIColor clearColor]];
-    [self.view addSubview:claimInfoLabel];
+    [claimInfoLabel setAdjustsFontSizeToFitWidth:YES];
+//    [self.view addSubview:claimInfoLabel];
     
     self.claimLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, yPosition * 2, labelWidth, labelHeight * 4)];
     [self.claimLabel setText:[SharedDataHandler sharedInstance].currentOrderID];
     [self.claimLabel setTextAlignment:NSTextAlignmentCenter];
-    [self.claimLabel setTextColor:[UIColor orangeColor]];
-    [self.claimLabel setFont:[UIFont systemFontOfSize:120.0]];
+    [self.claimLabel setTextColor:[UIColor midnightBlueColor]];
+    [self.claimLabel setFont:[UIFont systemFontOfSize:150.0]];
     [self.claimLabel setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:self.claimLabel];
+    
+    NSString *message = @"We'll notify you when your order is ready.  Show the number at the pick up area to claim your order.";
+    [[KUIHelper createAlertViewWithTitle:@"Order Placed"
+                                message:message
+                               delegate:nil
+                      cancelButtonTitle:@"Cool Beans"
+                      otherButtonTitles:nil] show];
 }
 
 -(void)orderReadyUpdate {
@@ -69,12 +80,11 @@
 
 -(void)confirmOrderReceived
 {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Order Claimed?"
-                                                      message:@"Did you claim your order?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Not yet"
-                                            otherButtonTitles:@"Yup!", nil];
-    [message show];
+    [[KUIHelper createAlertViewWithTitle:@"Order Claimed?"
+                                message:@"Did you claim your order?"
+                               delegate:self
+                       cancelButtonTitle:@"Not yet"
+                       otherButtonTitles:@"Yup!", nil] show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

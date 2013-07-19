@@ -14,11 +14,17 @@
 #import "QBFlatButton.h"
 #import "MBProgressHUD.h"
 #import "UIColor+FlatUI.h"
+#import "KUIHelper.h"
+#import "FUIAlertView.h"
+#import "UserPictureViewController.h"
+#import "UINavigationBar+FlatUI.h"
 
 @interface CreditCardProfileViewController ()
 @property (nonatomic, strong) UILabel *cardTypeDataLabel;
 @property (nonatomic, strong) UILabel *cardDigitsDataLabel;
 @property (nonatomic, strong) UILabel *cardExpirationDataLabel;
+@property (nonatomic, strong) FUIButton *changeCardButton;
+@property (nonatomic, strong) FUIButton *removeCardButton;
 @end
 
 @implementation CreditCardProfileViewController
@@ -26,13 +32,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"Payment Info";
     
     UIView *background = [[UIView alloc] init];
 //    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
     [background setBackgroundColor:[UIColor cloudsColor]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     
-    CGFloat y = 10.0;
+    CGFloat y = 15.0;
     CGFloat spacer = 10.0;
     CGFloat edgeInset = 10.0;
     CGFloat fieldWidth = 300.0;
@@ -42,11 +49,11 @@
     [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
     [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
     [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor whiteColor]];
+    [drinkUpLabel setTextColor:[UIColor midnightBlueColor]];
     [drinkUpLabel setText:@"Payment Info"];
-    [self.view addSubview:drinkUpLabel];
+//    [self.view addSubview:drinkUpLabel];
     
-    y += drinkUpLabel.frame.size.height + spacer;
+//    y += drinkUpLabel.frame.size.height + spacer;
     
     UILabel *cardTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
     [cardTypeLabel setBackgroundColor:[UIColor clearColor]];
@@ -111,37 +118,56 @@
     
     y += self.cardDigitsDataLabel.frame.size.height + spacer * 2;
     
-    QBFlatButton *changeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    changeCardButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    changeCardButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    changeCardButton.radius = 6.0;
-    changeCardButton.margin = 4.0;
-    changeCardButton.depth = 3.0;
-    changeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [changeCardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [changeCardButton setTitle:@"Change Card" forState:UIControlStateNormal];
-    [changeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
-    [changeCardButton addTarget:self action:@selector(cardImage) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:changeCardButton];
+//    QBFlatButton *changeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    changeCardButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    changeCardButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    changeCardButton.radius = 6.0;
+//    changeCardButton.margin = 4.0;
+//    changeCardButton.depth = 3.0;
+//    changeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [changeCardButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [changeCardButton setTitle: forState:UIControlStateNormal];
+//    [changeCardButton setFrame:];
     
-    y += changeCardButton.frame.size.height + spacer;
+    self.changeCardButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, fieldWidth, 45.0)
+                                                               andTitle:@"Change Card"];
+    [self.changeCardButton addTarget:self action:@selector(cardImage) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:self.changeCardButton];
     
-    QBFlatButton *removeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    removeCardButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
-    removeCardButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
-    removeCardButton.radius = 6.0;
-    removeCardButton.margin = 4.0;
-    removeCardButton.depth = 3.0;
-    removeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [removeCardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [removeCardButton setTitle:@"Remove Card" forState:UIControlStateNormal];
-    [removeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
-    [removeCardButton addTarget:self action:@selector(confirmRemoveCard) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:removeCardButton];
+    y += self.changeCardButton.frame.size.height + spacer;
+    
+//    QBFlatButton *removeCardButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    removeCardButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+//    removeCardButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+//    removeCardButton.radius = 6.0;
+//    removeCardButton.margin = 4.0;
+//    removeCardButton.depth = 3.0;
+//    removeCardButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [removeCardButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [removeCardButton setTitle:@"Remove Card" forState:UIControlStateNormal];
+//    [removeCardButton setFrame:CGRectMake(edgeInset, y, fieldWidth, 45.0)];
+    
+    self.removeCardButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, fieldWidth, 45.0)
+                                                               andTitle:@"Remove Card"];
+    [self.removeCardButton addTarget:self action:@selector(confirmRemoveCard) forControlEvents:UIControlEventTouchUpInside];
+    self.removeCardButton.buttonColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+    [self.view addSubview:self.removeCardButton];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownCreditCardScreen"])
+    {
+        [self cardImage];
+        FUIAlertView *postSignUpAlert = [KUIHelper createAlertViewWithTitle:@"Add a Card"
+                                                                    message:@"Now that you have an account, let's add a credit card so that you can pay for your drinks."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"Add Card"
+                                                          otherButtonTitles:nil];
+        [postSignUpAlert show];
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasShownCreditCardScreen"];
+    }
+    
     [self refreshCardInfo];
 }
 
@@ -160,19 +186,29 @@
         self.cardTypeDataLabel.text = cardTypeData;
         self.cardDigitsDataLabel.text = cardDigitsData;
         self.cardExpirationDataLabel.text = cardExpirationData;
+        
+        [self.removeCardButton setHidden:NO];
+        [self.changeCardButton setTitle:@"Change Card" forState:UIControlStateNormal];
     }
-    else {
+    else
+    {
         self.cardTypeDataLabel.text = nullPlaceholder;
         self.cardDigitsDataLabel.text = nullPlaceholder;
         self.cardExpirationDataLabel.text = nullPlaceholder;
+        
+        [self.removeCardButton setHidden:YES];
+        [self.changeCardButton setTitle:@"Add Card" forState:UIControlStateNormal];
     }
     
 }
 
 -(void)cardImage
 {
-    CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self];
+    CardIOPaymentViewController *scanViewController = [[CardIOPaymentViewController alloc] initWithPaymentDelegate:self scanningEnabled:NO];
     scanViewController.appToken = @"ae8c82d62dc5477e9623e85e82715a1a"; // get your app token from the card.io website
+    [scanViewController setShowsFirstUseAlert:NO];
+    [scanViewController setKeepStatusBarStyle:YES];
+    [scanViewController setNavigationBarTintColor:[UIColor midnightBlueColor]];
     [self presentViewController:scanViewController animated:YES completion:^{}];
 }
 
@@ -201,12 +237,11 @@
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
             });
             NSLog(@"409 error");
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Not Validated"
-                                                              message:@"It appears there was an issue validating your card. Please check that the card number, security code, and expiration date are correct."
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Okay"
-                                                    otherButtonTitles:nil];
-            [message show];
+            [[KUIHelper createAlertViewWithTitle:@"Credit Card Not Validated"
+                                        message:@"It appears there was an issue validating your card. Please check that the card number, security code, and expiration date are correct."
+                                       delegate:self
+                              cancelButtonTitle:@"Okay"
+                              otherButtonTitles:nil] show];
         }
         else
         {
@@ -218,23 +253,29 @@
                     
                     if (successful)
                     {
-                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Updated"
-                                                                          message:@"Your credit card has been successfully updated."
-                                                                         delegate:self
-                                                                cancelButtonTitle:@"Okay"
-                                                                otherButtonTitles:nil];
-                        [message show];
+                        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+                        {
+                            UserPictureViewController *userPictureVC = [[UserPictureViewController alloc] init];
+                            [self.navigationController pushViewController:userPictureVC animated:YES];
+                        }
+                        else
+                        {   
+                            [[KUIHelper createAlertViewWithTitle:@"Credit Card Updated"
+                                                        message:@"Your credit card has been successfully updated."
+                                                       delegate:self
+                                              cancelButtonTitle:@"Okay"
+                                              otherButtonTitles:nil] show];
+                        }
                         
                         [self refreshCardInfo];
                     }
                     else
-                    {
-                        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Update Error"
-                                                                          message:@"There was an error updating the card information. It may be the connecion or an issue on ur side. Please let us know if this continues to occur and we will help you resolve it as quickly as possible."
-                                                                         delegate:self
-                                                                cancelButtonTitle:@"Okay"
-                                                                otherButtonTitles:nil];
-                        [message show];
+                    {   
+                        [[KUIHelper createAlertViewWithTitle:@"Update Error"
+                                                    message:@"There was an error updating the card information. It may be the connecion or an issue on ur side. Please let us know if this continues to occur and we will help you resolve it as quickly as possible."
+                                                   delegate:self
+                                          cancelButtonTitle:@"Okay"
+                                           otherButtonTitles:nil] show];
                     }
                 }];
         }
@@ -245,12 +286,12 @@
             [MBProgressHUD hideHUDForView:self.view animated:YES];
         });
         
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Update Error"
-                                                          message:[error description]
-                                                         delegate:self
-                                                cancelButtonTitle:@"Okay"
-                                                otherButtonTitles:nil];
-        [message show];
+        [[KUIHelper createAlertViewWithTitle:@"Update Error"
+                                     message:[error description]
+                                    delegate:self
+                           cancelButtonTitle:@"Okay"
+                           otherButtonTitles:nil] show];
+        
         NSLog(@"%@", [error description]);
     }
         });
@@ -266,23 +307,21 @@
         {
             if (successful)
             {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Credit Card Removed"
-                                                                  message:@"Your credit card has been successfully removed. Please keep in mind that you cannot place orders until you associate a credit card with your account."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
+                [[KUIHelper createAlertViewWithTitle:@"Credit Card Removed"
+                                             message:@"Your credit card has been successfully removed. Please keep in mind that you cannot place orders until you associate a credit card with your account."
+                                            delegate:self
+                                   cancelButtonTitle:@"Okay"
+                                   otherButtonTitles:nil] show];
                 
                 [self refreshCardInfo];
             }
             else
             {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Error"
-                                                                  message:@"There was an error removing your credit card. This may be a result of a poor internet connection or a mistake on our end. Please try again, or contact us and we will help you resolve this issue quickly."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
+                [[KUIHelper createAlertViewWithTitle:@"Error"
+                                             message:@"There was an error removing your credit card. This may be a result of a poor internet connection or a mistake on our end. Please try again, or contact us and we will help you resolve this issue quickly."
+                                            delegate:self
+                                   cancelButtonTitle:@"Okay"
+                                   otherButtonTitles:nil] show];
             }
             dispatch_async(dispatch_get_main_queue(), ^{
                 [MBProgressHUD hideHUDForView:self.view animated:YES];
@@ -296,6 +335,20 @@
     NSLog(@"User canceled payment info");
     // Handle user cancellation here...
     [scanViewController dismissViewControllerAnimated:YES completion:^{}];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+    {
+        FUIAlertView *noCardAddedAlert = [KUIHelper createAlertViewWithTitle:@"Card Not Added"
+                                                                    message:@"You will not be able to complete an order until a credit card has been added. To add a card at any time, just go to your profile settings."
+                                                                   delegate:nil
+                                                          cancelButtonTitle:@"Okay"
+                                                          otherButtonTitles:nil];
+        [noCardAddedAlert show];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isCreatingAccount"];
+        
+        int popNum = [[NSUserDefaults standardUserDefaults] integerForKey:@"popToViewController"];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:popNum] animated:YES];
+    }
 }
 
 - (void)userDidProvideCreditCardInfo:(CardIOCreditCardInfo *)info inPaymentViewController:(CardIOPaymentViewController *)scanViewController {
@@ -310,12 +363,11 @@
 
 -(void)confirmRemoveCard
 {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Remove Credit Card"
-                                                      message:@"Are you sure you want to remove the credit card associated with your account? You will need to provide a new one before being able to order."
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Remove", nil];
-    [message show];
+    [[KUIHelper createAlertViewWithTitle:@"Remove Credit Card?"
+                                 message:@"Are you sure you want to remove the credit card associated with your account? You must provide a new one before ordering."
+                                delegate:self
+                       cancelButtonTitle:@"Cancel"
+                       otherButtonTitles:@"Remove", nil] show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

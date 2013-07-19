@@ -261,6 +261,7 @@ UIEdgeInsets insetButtonImage={13,13,13,13};
     
     [self.minusButton setBackgroundImage:[UIImage imageWithColor:buttonsFlatColor cornerRadius:0.0] forState:UIControlStateNormal];
     [self.minusButton setBackgroundImage:[UIImage imageWithColor:buttonsHighlightedFlatColor cornerRadius:0.0] forState:UIControlStateHighlighted];
+    [self.minusButton setImage:[UIImage stepperMinusImageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
     
     CGRect minusRect = self.minusButton.frame;
     minusRect.size.width += buttonSizeChange;
@@ -268,6 +269,7 @@ UIEdgeInsets insetButtonImage={13,13,13,13};
     
     [self.plusButton setBackgroundImage:[UIImage imageWithColor:buttonsFlatColor cornerRadius:0.0] forState:UIControlStateNormal];
     [self.plusButton setBackgroundImage:[UIImage imageWithColor:buttonsHighlightedFlatColor cornerRadius:0.0] forState:UIControlStateHighlighted];
+    [self.plusButton setImage:[UIImage stepperPlusImageWithColor:[UIColor whiteColor]] forState:UIControlStateNormal];
     
     CGRect plusRect = self.plusButton.frame;
     plusRect.size.width += buttonSizeChange;

@@ -7,6 +7,7 @@
 //
 
 #import "OrderHistoryCell.h"
+#import "UIColor+FlatUI.h"
 
 @implementation OrderHistoryCell
 
@@ -17,8 +18,6 @@
     {
         [self.cellImageView setHidden:YES];
         [self.cellImageBox setHidden:YES];
-        
-        
     }
     return self;
 }
@@ -29,6 +28,8 @@
     
     [self.cellImageView setHidden:YES];
     [self.cellImageBox setHidden:YES];
+    
+    [self.textLabel setTextColor:[UIColor midnightBlueColor]];
 }
 
 @end

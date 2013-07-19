@@ -17,6 +17,7 @@
 #import "CreditCardProfileViewController.h"
 #import "AppDelegate.h"
 #import <UAirship.h>
+#import "KUIHelper.h"
 
 @interface SharedDataHandler ()
 @property (nonatomic, strong) NSString *baseURL;
@@ -463,10 +464,10 @@ static id _instance;
             
             [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
             
-            NSString *ua_username;
-            if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
-                ua_username = [NSString stringWithFormat:@"appuser%i", [[[responseObject objectAtIndex:0] objectForKey:@"pk"] intValue]];
-            }
+            NSString *ua_username = [self.userInformation objectForKey:@"username"];
+//            if ([[[responseObject objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"]) {
+//                ua_username = [NSString stringWithFormat:@"appuser%i", [[[responseObject objectAtIndex:0] objectForKey:@"pk"] intValue]];
+//            }
             [self.userInformation setObject:ua_username forKey:@"ua_username"];
             
             if([[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image_saved"] boolValue] && ![self pictureExistsLocally])
@@ -574,39 +575,37 @@ static id _instance;
         } failure:^(AFHTTPRequestOperation *operation, NSError *error)
         {
             NSLog(@"error: %@", [operation.responseData objectFromJSONData]);
+            
+            NSString *messageTitle;
+            NSString *messageText;
+            
             if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"duplicate user"])
             {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Username Taken"
-                                                                  message:@"Oh no! Someone is already using that username. Please try a different username."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
-            } else if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"duplicate email"])
-            {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Email Registered"
-                                                                  message:@"This email is already registered in our system. If you believe this is a mistake, please let us know and we will investigate it immediately."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
-            } else if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"invalid email"])
-            {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Email Invalid"
-                                                                  message:@"It seems that the email provided is invalid. If you think this is an error, please email us and we will investigate it further."
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
-            } else
-            {
-                UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Sign Up Error"
-                                                                  message:@"There was an error creating your account. Please make sure that you have entered a valid email address"
-                                                                 delegate:self
-                                                        cancelButtonTitle:@"Okay"
-                                                        otherButtonTitles:nil];
-                [message show];
+                messageTitle = @"Username Taken";
+                messageText = @"Oh no! Someone is already using that username. Please try a different username.";
             }
+            else if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"duplicate email"])
+            {
+                messageTitle = @"Email Registered";
+                messageText = @"This email is already registered in our system. If you believe this is a mistake, please let us know and we will investigate it immediately.";
+            }
+            else if ([[[operation.responseData objectFromJSONData] objectForKey:@"status"] isEqualToString:@"invalid email"])
+            {
+                messageTitle = @"Email Invalid";
+                messageText = @"It seems that the email provided is invalid. If you think this is an error, please email us and we will investigate it further.";
+            }
+            else
+            {
+                messageTitle = @"Sign Up Error";
+                messageText = @"There was an error creating your account. Please make sure that you have entered a valid email address";
+            }
+            
+            [[KUIHelper createAlertViewWithTitle:messageTitle
+                                         message:messageText
+                                        delegate:self
+                               cancelButtonTitle:@"Okay"
+                               otherButtonTitles:nil] show];
+            
             successBlock(NO);
         }];
         
@@ -709,12 +708,16 @@ static id _instance;
 
 -(void)userCreditCardPrompt
 {
-    if ([SharedDataHandler sharedInstance].isUserAuthenticated) {
-        [[[UIAlertView alloc] initWithTitle:@"Register Credit Card?"
-                                    message:@"DrinkUp cannot find a valid credit card. A credit card is required for purchasing drinks. Would you like to add one now?"
-                                   delegate:self
-                          cancelButtonTitle:@"Not Now"
-                          otherButtonTitles:@"Add Card", nil] show];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+    {
+        if ([SharedDataHandler sharedInstance].isUserAuthenticated) {
+            
+            [[KUIHelper createAlertViewWithTitle:@"Register Credit Card?"
+                                        message:@"DrinkUp cannot find a valid credit card. A credit card is required for purchasing drinks. Would you like to add one now?"
+                                       delegate:self
+                              cancelButtonTitle:@"Not Now"
+                               otherButtonTitles:@"Add Card", nil] show];
+        }
     }
 }
 
@@ -861,6 +864,11 @@ static id _instance;
     NSString *filePath = [documentsDirectoryPath stringByAppendingPathComponent:fileName];
     
     UIImage *userImage = [[UIImage alloc] initWithContentsOfFile:filePath];
+    
+    if (userImage == nil) {
+        userImage = [UIImage imageNamed:@"app-icon_114"];
+    }
+    
     return userImage;
 }
 
@@ -1036,7 +1044,7 @@ static id _instance;
 //            [self.userInformation setValuesForKeysWithDictionary:[[responseObject objectFromJSONData] objectAtIndex:0]];
             [self userIsAuthenticated:^(bool successful)
             {
-                NSString *ua_username = [NSString stringWithFormat:@"appuser%i", [[[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"] objectForKey:@"pk"] intValue]];
+                NSString *ua_username = [[[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"] objectForKey:@"fields"] objectForKey:@"username"];
                 [self.userInformation setObject:ua_username forKey:@"ua_username"];
                 [[UAPush shared] setAlias:[[self userInformation] objectForKey:@"ua_username"]];
                 [[UAPush shared] updateRegistration];
@@ -1048,7 +1056,12 @@ static id _instance;
                 
                 successBlock(YES);
             }];
-        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error)
+        {
+            [[NSNotificationCenter defaultCenter]
+             postNotificationName:@"FacebookServerLoginFailure"
+             object:self];
+            
             NSLog(@"error: %@", operation.responseString);
             [self.userInformation removeAllObjects];
             [self userIsAuthenticated:nil];

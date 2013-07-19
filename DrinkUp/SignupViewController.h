@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FUIAlertView.h"
 
-@interface SignupViewController : UIViewController <UITextFieldDelegate>
+@interface SignupViewController : UIViewController <FUIAlertViewDelegate, UITextFieldDelegate>
 
 @end

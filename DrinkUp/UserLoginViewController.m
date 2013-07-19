@@ -23,6 +23,7 @@
 #import "FUIButton.h"
 #import "FUIAlertView.h"
 #import "UIFont+FlatUI.h"
+#import "KUIHelper.h"
 
 @interface UserLoginViewController ()
 @property (nonatomic, strong) UIImageView *profilePicView;
@@ -39,6 +40,7 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
+    self.navigationItem.title = @"Settings";
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
@@ -104,11 +106,11 @@
     }
     
     if (alertMessage) {
-        [[[UIAlertView alloc] initWithTitle:alertTitle
+        [[KUIHelper createAlertViewWithTitle:alertTitle
                                     message:alertMessage
                                    delegate:nil
-                          cancelButtonTitle:@"OK"
-                          otherButtonTitles:nil] show];
+                           cancelButtonTitle:@"OK"
+                           otherButtonTitles:nil] show];
     }
 }
 
@@ -121,8 +123,13 @@
                                              selector:@selector(facebookAuthorized:)
                                                  name:@"FacebookServerLoginAuthorized"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(facebookAuthorizationFailure:)
+                                                 name:@"FacebookServerLoginFailure"
+                                               object:nil];
     
     [[SharedDataHandler sharedInstance] authorizeFacebook];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
     
 //    // get the app delegate so that we can access the session property
 //    AppDelegate *appDelegate = [[UIApplication sharedApplication]delegate];
@@ -155,6 +162,12 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self transitionView:1];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+-(void)facebookAuthorizationFailure:(NSNotification *) notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
@@ -230,9 +243,9 @@
 
 -(void)showSignupView {
     SignupViewController *suvc = [[SignupViewController alloc] init];
-//    [self.navigationController pushViewController:suvc animated:YES];
-    [self.navigationController presentViewController:suvc animated:YES completion:^{
-    }];
+    [self.navigationController pushViewController:suvc animated:YES];
+//    [self.navigationController presentViewController:suvc animated:YES completion:^{
+//    }];
 }
 
 //-(void)postToFacebookWall:(id)sender {
@@ -273,22 +286,27 @@
 {
     self.isShowingProfileView = YES;
     
-    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    leaveButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    leaveButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    leaveButton.radius = 6.0;
-    leaveButton.margin = 2.0;
-    leaveButton.depth = 2.0;
-    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [leaveButton setTitle:@"Let's order drinks!" forState:UIControlStateNormal];
-    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
-    [leaveButton addTarget:self action:@selector(transitionLeaving) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:leaveButton];
+//    QBFlatButton *leaveButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    leaveButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    leaveButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    leaveButton.radius = 6.0;
+//    leaveButton.margin = 2.0;
+//    leaveButton.depth = 2.0;
+//    leaveButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    [leaveButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [leaveButton setTitle:@"Let's Order Drinks!" forState:UIControlStateNormal];
+//    [leaveButton setFrame:CGRectMake(0.0, 0.0, 115.0, 32.0)];
+//    [leaveButton addTarget:self action:@selector(transitionLeaving) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:leaveButton];
     
-    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
-    [backButton setCustomView:leaveButton];
-    self.navigationItem.leftBarButtonItem = backButton;
+    UIBarButtonItem *leaveButton = [[UIBarButtonItem alloc] initWithTitle:@"Let's Drink!"
+                                     style:UIBarButtonItemStylePlain
+                                    target:self
+                                    action:@selector(transitionLeaving)];
+    
+//    UIBarButtonItem *backButton=[[UIBarButtonItem alloc] init];
+//    [backButton setCustomView:leaveButton];
+    self.navigationItem.leftBarButtonItem = leaveButton;
     
     CGFloat y = 10.0;
     CGFloat spacer = 10.0;
@@ -307,7 +325,8 @@
 //    self.profilePicView.contentMode = UIViewContentModeScaleAspectFit;
     self.profilePicView.contentMode = UIViewContentModeScaleAspectFill;
     [self.profilePicView setBackgroundColor:[UIColor clearColor]];
-    [self.profilePicView.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+//    [self.profilePicView.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+    [self.profilePicView.layer setBorderColor:[[UIColor midnightBlueColor] CGColor]];
     [self.profilePicView.layer setBorderWidth:5.0];
     [self.profilePicView.layer setCornerRadius:8.0];
     [self.profilePicView.layer setMasksToBounds:YES];
@@ -317,7 +336,8 @@
     if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid]) {
         self.fbProfilePicView = [[FBProfilePictureView alloc] initWithProfileID:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"fb_id"] pictureCropping:FBProfilePictureCroppingSquare];
         [self.fbProfilePicView setFrame:self.profilePicView.frame];
-        [self.fbProfilePicView.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+//        [self.fbProfilePicView.layer setBorderColor:[[UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0] CGColor]];
+        [self.fbProfilePicView.layer setBorderColor:[[UIColor midnightBlueColor] CGColor]];
         [self.fbProfilePicView.layer setBorderWidth:5.0];
         [self.fbProfilePicView.layer setCornerRadius:8.0];
         [self.view addSubview:self.fbProfilePicView];
@@ -332,7 +352,7 @@
     NSString *profileNameText = [NSString stringWithFormat:@"%@", [[SharedDataHandler sharedInstance].userInformation objectForKey:@"username" ]];
     NSLog(@"user setupUserProfileView: %@", [SharedDataHandler sharedInstance].userInformation);
     [profileName setText:profileNameText];
-    [profileName setTextColor:[UIColor whiteColor]];
+    [profileName setTextColor:[UIColor midnightBlueColor]];
     [profileName setFont:[UIFont boldSystemFontOfSize:24.0]];
     [profileName setNumberOfLines:2];
     [profileName setLineBreakMode:NSLineBreakByWordWrapping];
@@ -350,7 +370,7 @@
     [emailLabel setText:[[SharedDataHandler sharedInstance].userInformation objectForKey:@"email"]];
     [emailLabel setBackgroundColor:[UIColor clearColor]];
     [emailLabel setTextAlignment:NSTextAlignmentLeft];
-    [emailLabel setTextColor:[UIColor lightGrayColor]];
+    [emailLabel setTextColor:[UIColor darkGrayColor]];
     [emailLabel setFont:[UIFont boldSystemFontOfSize:14.0]];
     [emailLabel setNumberOfLines:2];
     [emailLabel setLineBreakMode:NSLineBreakByWordWrapping];
@@ -359,65 +379,79 @@
     
     y = CGRectGetMaxY(self.profilePicView.frame) + spacer * 2;
     
-    QBFlatButton *orderHistoryButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    orderHistoryButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    orderHistoryButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    orderHistoryButton.radius = 6.0;
-    orderHistoryButton.margin = 4.0;
-    orderHistoryButton.depth = 3.0;
-    orderHistoryButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [orderHistoryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [orderHistoryButton setTitle:@"View Order History" forState:UIControlStateNormal];
-    [orderHistoryButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+//    QBFlatButton *orderHistoryButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    orderHistoryButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    orderHistoryButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    orderHistoryButton.radius = 6.0;
+//    orderHistoryButton.margin = 4.0;
+//    orderHistoryButton.depth = 3.0;
+//    orderHistoryButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [orderHistoryButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [orderHistoryButton setTitle:@"View Order History" forState:UIControlStateNormal];
+//    [orderHistoryButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+//    [orderHistoryButton addTarget:self action:@selector(transitionOrderHistory) forControlEvents:UIControlEventTouchUpInside];  
+    
+    FUIButton *orderHistoryButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)
+                                                                 andTitle:@"View Order History"];
     [orderHistoryButton addTarget:self action:@selector(transitionOrderHistory) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:orderHistoryButton];
     
     y += orderHistoryButton.frame.size.height + spacer;
     
-    QBFlatButton *changeProfileImageButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    changeProfileImageButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    changeProfileImageButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    changeProfileImageButton.radius = 6.0;
-    changeProfileImageButton.margin = 4.0;
-    changeProfileImageButton.depth = 3.0;
-    changeProfileImageButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [changeProfileImageButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [changeProfileImageButton setTitle:@"Change Profile Image" forState:UIControlStateNormal];
-    [changeProfileImageButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+//    QBFlatButton *changeProfileImageButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    changeProfileImageButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    changeProfileImageButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    changeProfileImageButton.radius = 6.0;
+//    changeProfileImageButton.margin = 4.0;
+//    changeProfileImageButton.depth = 3.0;
+//    changeProfileImageButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [changeProfileImageButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [changeProfileImageButton setTitle:@"Change Profile Image" forState:UIControlStateNormal];
+//    [changeProfileImageButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+    
+    FUIButton *changeProfileImageButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)
+                                                                       andTitle:@"Change Profile Image"];
     [changeProfileImageButton addTarget:self action:@selector(transitionProfilePicture) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changeProfileImageButton];
     
     y += changeProfileImageButton.frame.size.height + spacer;
     
-    QBFlatButton *changePaymentButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    changePaymentButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
-    changePaymentButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
-    changePaymentButton.radius = 6.0;
-    changePaymentButton.margin = 4.0;
-    changePaymentButton.depth = 3.0;
-    changePaymentButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
-    [changePaymentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [changePaymentButton setTitle:@"Change Credit Card" forState:UIControlStateNormal];
-    [changePaymentButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+//    QBFlatButton *changePaymentButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    changePaymentButton.faceColor = [UIColor colorWithRed:(255/255.0) green:(255/255.0) blue:(255/255.0) alpha:1.0];
+//    changePaymentButton.sideColor = [UIColor colorWithRed:(235/255.0) green:(235/255.0) blue:(235/255.0) alpha:0.7];
+//    changePaymentButton.radius = 6.0;
+//    changePaymentButton.margin = 4.0;
+//    changePaymentButton.depth = 3.0;
+//    changePaymentButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    [changePaymentButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+//    [changePaymentButton setTitle:@"Change Credit Card" forState:UIControlStateNormal];
+//    [changePaymentButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+    
+    FUIButton *changePaymentButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)
+                                                                       andTitle:@"Change Credit Card"];
     [changePaymentButton addTarget:self action:@selector(transitionChangeCreditCard) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:changePaymentButton];
     
     y += changePaymentButton.frame.size.height + spacer;
     
-    QBFlatButton *logoutButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-//    logoutButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
-//    logoutButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
-    logoutButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
-    logoutButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
-    logoutButton.radius = 6.0;
-    logoutButton.margin = 4.0;
-    logoutButton.depth = 3.0;
-    logoutButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+//    QBFlatButton *logoutButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+////    logoutButton.faceColor = [UIColor colorWithRed:(59/255.0) green:(149/255.0) blue:(154/255.0) alpha:1.0];
+////    logoutButton.sideColor = [UIColor colorWithRed:(50/255.0) green:(140/255.0) blue:(145/255.0) alpha:0.7];
+//    logoutButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+//    logoutButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+//    logoutButton.radius = 6.0;
+//    logoutButton.margin = 4.0;
+//    logoutButton.depth = 3.0;
+//    logoutButton.titleLabel.font = [UIFont boldSystemFontOfSize:16];
+////    [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //    [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
-    [logoutButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+//    [logoutButton setTitle:@"Logout" forState:UIControlStateNormal];
+//    [logoutButton setFrame:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)];
+    
+    FUIButton *logoutButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, buttonWidth, fieldHeight + 5.0)
+                                                            andTitle:@"Logout"];
     [logoutButton addTarget:self action:@selector(confirmLogout) forControlEvents:UIControlEventTouchUpInside];
+    logoutButton.buttonColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
     [self.view addSubview:logoutButton];
     
     y += logoutButton.frame.size.height + spacer;
@@ -635,17 +669,10 @@
 //    [self.view addSubview:self.loginPasswordField];
 //    
 //    y += self.loginPasswordField.frame.size.height + spacer;
-    
-    FUIButton *loginButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
-    [loginButton setTitle:@"Log In with DrinkUp" forState:UIControlStateNormal];
+
+    FUIButton *loginButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)
+                                                        andTitle:@"Log In with DrinkUp"];
     [loginButton addTarget:self action:@selector(transitionLoginView) forControlEvents:UIControlEventTouchUpInside];
-    loginButton.buttonColor = [UIColor midnightBlueColor];
-    loginButton.shadowColor = [UIColor blackColor];
-    loginButton.shadowHeight = 3.0f;
-    loginButton.cornerRadius = 6.0f;
-    loginButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [loginButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:loginButton];
     
     y += loginButton.frame.size.height + spacer;
@@ -659,16 +686,11 @@
 //    
 //    y += orLabel.frame.size.height + 5.0;
     
-    FUIButton *facebookButton = [[FUIButton alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)];
-    [facebookButton setTitle:@"Log In with Facebook" forState:UIControlStateNormal];
+    FUIButton *facebookButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset, y, fieldWidth, fieldHeight + 5.0)
+                                                           andTitle:@"Log In with Facebook"];
     [facebookButton addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
     facebookButton.buttonColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
     facebookButton.shadowColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
-    facebookButton.shadowHeight = 3.0f;
-    facebookButton.cornerRadius = 6.0f;
-    facebookButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [self.view addSubview:facebookButton];
     
     y += facebookButton.frame.size.height + spacer;
@@ -689,33 +711,18 @@
     [signupButton2 addTarget:self action:@selector(showSignupView) forControlEvents:UIControlEventTouchUpInside];
 //    [firstTimeContainer addSubview:signupButton2];
     
-    FUIButton *signupButton = [[FUIButton alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight)];
-    [signupButton setTitle:@"Sign Up" forState:UIControlStateNormal];
+    FUIButton *signupButton = [KUIHelper createBannerButtonWithRect:CGRectMake(0, CGRectGetMaxY(firstTimeLabel.frame) + 5.0, fieldWidth, fieldHeight) andTitle:@"Sign Up"];
     [signupButton addTarget:self action:@selector(showSignupView) forControlEvents:UIControlEventTouchUpInside];
-    signupButton.buttonColor = [UIColor midnightBlueColor];
-    signupButton.shadowColor = [UIColor blackColor];
-    signupButton.shadowHeight = 3.0f;
-    signupButton.cornerRadius = 6.0f;
-    signupButton.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-    [signupButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [signupButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateHighlighted];
     [firstTimeContainer addSubview:signupButton];
 }
 
 -(void)showLeavingOptions
 {
-    FUIAlertView *leaveAlert = [[FUIAlertView alloc] initWithTitle:@"Not Logged In" message:@"If you leave witout logging in, you cannot order drinks. Are you sure?" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Leave", nil];
-    leaveAlert.titleLabel.textColor = [UIColor cloudsColor];
-    leaveAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-    leaveAlert.messageLabel.textColor = [UIColor cloudsColor];
-    leaveAlert.messageLabel.font = [UIFont flatFontOfSize:14];
-    leaveAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
-    leaveAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
-    leaveAlert.defaultButtonColor = [UIColor cloudsColor];
-    leaveAlert.defaultButtonShadowColor = [UIColor asbestosColor];
-    leaveAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
-    leaveAlert.defaultButtonTitleColor = [UIColor asbestosColor];
-    [leaveAlert show];
+    [[KUIHelper createAlertViewWithTitle:@"Not Logged In"
+                                 message:@"If you leave without logging in, you cannot order drinks. Are you sure?"
+                                delegate:self
+                       cancelButtonTitle:@"Cancel"
+                       otherButtonTitles:@"Leave", nil] show];
 }
 
 #pragma mark - UITextField delegate methods
@@ -753,8 +760,8 @@
 -(void)transitionLoginView
 {
     DrinkUpLoginViewController *drinkUpLoginVC = [[DrinkUpLoginViewController alloc] init];
-    [self.navigationController presentViewController:drinkUpLoginVC animated:YES completion:^{
-    }];
+//    [self.navigationController presentViewController:drinkUpLoginVC animated:YES completion:^{}];
+    [self.navigationController pushViewController:drinkUpLoginVC animated:YES];
 }
 
 -(void)transitionOrderHistory
@@ -770,12 +777,11 @@
 
 -(void)confirmLogout
 {
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Account Logout"
-                                                      message:@"Are you sure you want to logout?"
-                                                     delegate:self
-                                            cancelButtonTitle:@"Cancel"
-                                            otherButtonTitles:@"Logout", nil];
-    [message show];
+    [[KUIHelper createAlertViewWithTitle:@"Account Logout"
+                                 message:@"Are you sure you want to logout?"
+                                delegate:self
+                       cancelButtonTitle:@"Cancel"
+                       otherButtonTitles:@"Logout", nil] show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex

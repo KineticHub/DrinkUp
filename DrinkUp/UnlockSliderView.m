@@ -36,7 +36,7 @@ BOOL UNLOCKED = NO;
                                     stretchableImageWithLeftCapWidth:30.0 topCapHeight:0.0];
         UIImage *thumbImage = [UIImage imageWithColor:[UIColor cloudsColor] cornerRadius:20.0];
         
-        self.slideToUnlock = [[UISlider alloc] initWithFrame:CGRectMake(10.0, 6.0, frame.size.width - 20.0, frame.size.height - 12.0)];
+        self.slideToUnlock = [[UISlider alloc] initWithFrame:CGRectMake(10.0, 6.0, frame.size.width - 20.0, frame.size.height - 12.0)]; //-12
         [self.slideToUnlock setThumbImage:thumbImage forState:UIControlStateNormal];
         [self.slideToUnlock setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
         [self.slideToUnlock setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];

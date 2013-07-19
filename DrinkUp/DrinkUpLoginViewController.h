@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FUIAlertView.h"
 
-@interface DrinkUpLoginViewController : UIViewController <UITextFieldDelegate>
+@interface DrinkUpLoginViewController : UIViewController <FUIAlertViewDelegate, UITextFieldDelegate>
 
 @end

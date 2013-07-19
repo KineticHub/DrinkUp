@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FUIAlertView.h"
 
-@interface UserPictureViewController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface UserPictureViewController : UIViewController <FUIAlertViewDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 
 @end

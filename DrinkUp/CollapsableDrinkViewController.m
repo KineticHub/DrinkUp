@@ -22,6 +22,8 @@
 #import "UIColor+FlatUI.h"
 #import "FUIAlertView.h"
 #import "UIFont+FlatUI.h"
+#import "UIBarButtonItem+FlatUI.h"
+#import "KUIHelper.h"
 
 #define kCellHeight 65.0
 
@@ -97,34 +99,45 @@
 //                                             target:self action:@selector(showUserProfile)];
 //    [settingsProfileButton setTintColor:[UIColor whiteColor]];
     
-    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
-    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
-    [settingsButton setButtonWithImage:settingsImage];
-    [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
+//    UIImage *settingsImage = [UIImage imageNamed:@"gear_24.png"];
+//    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
+//    [settingsButton setButtonWithImage:settingsImage];
+//    [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
     
-    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] init];
-    [settingsProfileButton setCustomView:settingsButton];
+    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(showUserProfile)];
+//    [settingsProfileButton setCustomView:settingsButton];
     
     //    // Optional: if you want to add space between the refresh & profile buttons
     //    UIBarButtonItem *fixedSpaceBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFixedSpace target:nil action:nil];
     //    fixedSpaceBarButtonItem.width = 12;
     
-    QBFlatButton *orderButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    orderButton.faceColor = [UIColor grayColor];
-    orderButton.sideColor = [UIColor darkGrayColor];
-    orderButton.radius = 6.0;
-    orderButton.margin = 2.0;
-    orderButton.depth = 2.0;
-    orderButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    [orderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [orderButton setTitle:@"View Order" forState:UIControlStateNormal];
-    [orderButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
-    [orderButton addTarget:self action:@selector(viewCurrentOrderView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:orderButton];
+//    QBFlatButton *orderButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    orderButton.faceColor = [UIColor grayColor];
+//    orderButton.sideColor = [UIColor darkGrayColor];
+//    orderButton.radius = 6.0;
+//    orderButton.margin = 2.0;
+//    orderButton.depth = 2.0;
+//    orderButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    [orderButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [orderButton setTitle:@"View Order" forState:UIControlStateNormal];
+//    [orderButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
+//    [orderButton addTarget:self action:@selector(viewCurrentOrderView) forControlEvents:UIControlEventTouchUpInside];
+//    [self.view addSubview:orderButton];
     
 //    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
-    self.orderBarButtonItem = [[UIBarButtonItem alloc] init];
-    [self.orderBarButtonItem setCustomView:orderButton];
+    
+    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order"
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(viewCurrentOrderView)];
+//    [self.orderBarButtonItem setCustomView:orderButton];
+    
+//    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemOrganize target:self action:@selector(cancelCurrentOrderCheck)];
+//    [self.orderBarButtonItem setTitle:@"View Order"];
+//    [self.orderBarButtonItem configureFlatButtonWithColor:[UIColor grayColor] highlightedColor:[UIColor grayColor] cornerRadius:3.0];
     
     self.navigationItem.rightBarButtonItems = @[self.orderBarButtonItem, /* fixedSpaceBarButtonItem, */ settingsProfileButton];
 	
@@ -204,18 +217,12 @@
     
     if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0)
     {
-        FUIAlertView *leaveAlert = [[FUIAlertView alloc] initWithTitle:@"Clear Selected Drinks?" message:@"Leaving this bar will clear any drinks currently selected at this bar." delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Clear Drinks", nil];
-        leaveAlert.titleLabel.textColor = [UIColor cloudsColor];
-        leaveAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-        leaveAlert.messageLabel.textColor = [UIColor cloudsColor];
-        leaveAlert.messageLabel.font = [UIFont flatFontOfSize:14];
-        leaveAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
-        leaveAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
-        leaveAlert.defaultButtonColor = [UIColor cloudsColor];
-        leaveAlert.defaultButtonShadowColor = [UIColor asbestosColor];
-        leaveAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
-        leaveAlert.defaultButtonTitleColor = [UIColor asbestosColor];
-        [leaveAlert show];
+        [[KUIHelper createAlertViewWithTitle:@"Clear Selected Drinks?"
+                                    message:@"Leaving this bar will clear any drinks currently selected at this bar."
+                                   delegate:self
+                          cancelButtonTitle:@"Cancel"
+                          otherButtonTitles:@"Clear Drinks", nil] show];
+        
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }
@@ -386,13 +393,15 @@
     if ([self.drinksOrder count] > 0)
     {
 //        [self.orderBarButtonItem setTintColor:[UIColor blueColor]];
-        ((QBFlatButton *)self.orderBarButtonItem.customView).faceColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
-        ((QBFlatButton *)self.orderBarButtonItem.customView).sideColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
+//        ((QBFlatButton *)self.orderBarButtonItem.customView).faceColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
+//        ((QBFlatButton *)self.orderBarButtonItem.customView).sideColor = [UIColor colorWithRed:(70/255.0) green:(70/255.0) blue:(170/255.0) alpha:0.7];
+        [self.orderBarButtonItem configureFlatButtonWithColor:[UIColor turquoiseColor] highlightedColor:[UIColor turquoiseColor] cornerRadius:3.0];
         [self.orderBarButtonItem setEnabled:YES];
     } else {
 //        [self.orderBarButtonItem setTintColor:[UIColor grayColor]];
-        ((QBFlatButton *)self.orderBarButtonItem.customView).faceColor = [UIColor grayColor];
-        ((QBFlatButton *)self.orderBarButtonItem.customView).sideColor = [UIColor darkGrayColor];
+//        ((QBFlatButton *)self.orderBarButtonItem.customView).faceColor = [UIColor grayColor];
+//        ((QBFlatButton *)self.orderBarButtonItem.customView).sideColor = [UIColor darkGrayColor];
+        [self.orderBarButtonItem configureFlatButtonWithColor:[UIColor grayColor] highlightedColor:[UIColor grayColor] cornerRadius:3.0];
         [self.orderBarButtonItem setEnabled:NO];
     }
 }

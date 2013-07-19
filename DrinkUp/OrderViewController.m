@@ -21,6 +21,9 @@
 #import "UnlockSliderView.h"
 #import "FUIAlertView.h"
 #import "KUIHelper.h"
+#import "SignupViewController.h"
+#import "CreditCardProfileViewController.h"
+#import "UIBarButtonItem+FlatUI.h"
 
 @interface OrderViewController ()
 {
@@ -34,6 +37,7 @@
 
 @property (nonatomic, strong) UITableViewCell *totalCell;
 @property (nonatomic, strong) UITableViewCell *taxAndFeeCell;
+@property (nonatomic, strong) UITableViewCell *drinkTotalCell;
 @property (nonatomic, strong) UITableViewCell *tipCell;
 @property (nonatomic, strong) SVSegmentedControl *tipSlider;
 @property (nonatomic, strong) UnlockSliderView *unlockSliderPlaceOrder;
@@ -86,13 +90,16 @@
     [self.collapsableDrinkOrder openCollapseClickCellAtIndex:0 animated:NO];
     [self.view addSubview:self.collapsableDrinkOrder];
     
-    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
-    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
-    [settingsButton setButtonWithImage:settingsImage];
-    [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
+//    UIImage *settingsImage = [UIImage imageNamed:@"gears"];
+//    CustomBarButton *settingsButton = [[CustomBarButton alloc] init];
+//    [settingsButton setButtonWithImage:settingsImage];
+//    [settingsButton addTarget:self action:@selector(showUserProfile) forControlEvents:UIControlEventTouchUpInside];
     
-    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] init];
-    [settingsProfileButton setCustomView:settingsButton];
+    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc] initWithTitle:@"Settings"
+                                                                              style:UIBarButtonItemStylePlain
+                                                                             target:self
+                                                                             action:@selector(showUserProfile)];
+//    [settingsProfileButton setCustomView:settingsButton];
     
 //    UIBarButtonItem *settingsProfileButton = [[UIBarButtonItem alloc]
 //                                              initWithImage:[UIImage imageNamed:@"settings_icon"]
@@ -103,21 +110,28 @@
 //    UIBarButtonItem *clearButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear Drinks" style:UIBarButtonItemStyleDone target:self action:@selector(cancelCurrentOrderCheck)];
 //    [clearButton setTintColor:[UIColor redColor]];
     
-    QBFlatButton *clearButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
-    clearButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
-    clearButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
-    clearButton.radius = 6.0;
-    clearButton.margin = 2.0;
-    clearButton.depth = 2.0;
-    clearButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
-    [clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [clearButton setTitle:@"Clear Order" forState:UIControlStateNormal];
-    [clearButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
-    [clearButton addTarget:self action:@selector(cancelCurrentOrderCheck) forControlEvents:UIControlEventTouchUpInside];
+//    QBFlatButton *clearButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
+//    clearButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
+//    clearButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
+//    clearButton.radius = 6.0;
+//    clearButton.margin = 2.0;
+//    clearButton.depth = 2.0;
+//    clearButton.titleLabel.font = [UIFont boldSystemFontOfSize:12];
+//    [clearButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+//    [clearButton setTitle:@"Clear Order" forState:UIControlStateNormal];
+//    [clearButton setFrame:CGRectMake(0.0, 0.0, 95.0, 32.0)];
+//    [clearButton addTarget:self action:@selector(cancelCurrentOrderCheck) forControlEvents:UIControlEventTouchUpInside];
+    
+    UIBarButtonItem *clearBarButton = [[UIBarButtonItem alloc] initWithTitle:@"Clear Order"
+                                                                       style:UIBarButtonItemStylePlain
+                                                                      target:self
+                                                                      action:@selector(cancelCurrentOrderCheck)];
+    
+    [clearBarButton configureFlatButtonWithColor:[UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0] highlightedColor:[UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0] cornerRadius:3.0];
     
     //    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
-    UIBarButtonItem *clearBarButton = [[UIBarButtonItem alloc] init];
-    [clearBarButton setCustomView:clearButton];
+//    UIBarButtonItem *clearBarButton = [[UIBarButtonItem alloc] init];
+//    [clearBarButton setCustomView:clearButton];
     
     self.navigationItem.rightBarButtonItems = @[clearBarButton, /* fixedSpaceBarButtonItem, */ settingsProfileButton];
 }
@@ -125,6 +139,22 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.unlockSliderPlaceOrder lockSlider];
+    
+    NSLog(@"View will appear order view hit");
+    
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isCreatingAccount"];
+        if ([SharedDataHandler sharedInstance].isUserAuthenticated && [SharedDataHandler sharedInstance].userCard != nil)
+        {
+            FUIAlertView *doneAlert = [KUIHelper createAlertViewWithTitle:@"DrinkUp!"
+                                                                  message:@"You're all set, slide to order and have a good time!"
+                                                                 delegate:self
+                                                        cancelButtonTitle:@"Let's Drink"
+                                                        otherButtonTitles:nil];
+            [doneAlert show];
+        }
+    }
 }
 
 #pragma mark - Subviews Setup
@@ -156,11 +186,11 @@
     [self.tipSlider setFrame:CGRectMake(0, 0, pvWidth, pvHeight - 5.0)];
     [self.tipSlider setBackgroundColor:[UIColor darkGrayColor]];
     self.tipSlider.cornerRadius = 1.0;
-    [self.tipSlider setSelectedSegmentIndex:1 animated:NO];
     [self.tipSlider setCenter:CGPointMake(self.tipCell.frame.size.width/2, self.tipCell.frame.size.height/2)];
 //    [self.tipSlider addTarget:self action:@selector(segmentedControlChangedValue:) forControlEvents:UIControlEventValueChanged];
 
-    self.tipPercent = 0.20;
+    self.tipPercent = 0.25;
+    [self.tipSlider setSelectedSegmentIndex:2 animated:NO];
     [self.tipSlider setChangeHandler:^(NSUInteger newIndex)
     {
         NSArray *tipPercents = @[@0.15, @0.20, @0.25, @0.30];
@@ -171,29 +201,47 @@
     }];
     
 	self.tipSlider.crossFadeLabelsOnDrag = YES;
-    //	redSC.thumb.tintColor = [UIColor colorWithRed:0
-    [self.tipCell addSubview:self.tipSlider];
+//    [self.tipCell addSubview:self.tipSlider];
     
-    [priceView addSubview:self.tipCell];
+//    [priceView addSubview:self.tipCell];
+//    pvYPosition += pvHeight;
+    
+    self.drinkTotalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier4"];
+    [self.drinkTotalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
+    [self.drinkTotalCell setBackgroundColor:[UIColor cloudsColor]];
+    self.drinkTotalCell.textLabel.text = @"Sub Total:";
+    self.drinkTotalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.totalPrice];
+    [self.drinkTotalCell.textLabel setTextColor:[UIColor midnightBlueColor]];
+    [self.drinkTotalCell.detailTextLabel setTextColor:[UIColor midnightBlueColor]];
+    
+    [priceView addSubview:self.drinkTotalCell];
     pvYPosition += pvHeight;
     
     self.taxAndFeeCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier"];
     [self.taxAndFeeCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
-    [self.taxAndFeeCell setBackgroundColor:[UIColor clearColor]];
+    [self.taxAndFeeCell setBackgroundColor:[UIColor cloudsColor]];
     self.taxAndFeeCell.textLabel.text = @"Gratuity:";
-    [self.taxAndFeeCell.textLabel setTextColor:[UIColor whiteColor]];
-    [self.taxAndFeeCell.detailTextLabel setTextColor:[UIColor whiteColor]];
+    [self.taxAndFeeCell.textLabel setTextColor:[UIColor midnightBlueColor]];
+    [self.taxAndFeeCell.detailTextLabel setTextColor:[UIColor midnightBlueColor]];
     
     [priceView addSubview:self.taxAndFeeCell];
     pvYPosition += pvHeight;
     
+    UIView *littleView = [[UIView alloc] initWithFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, 2.0)];
+    [littleView setBackgroundColor:[UIColor whiteColor]];
+    [priceView addSubview:littleView];
+    
+    pvYPosition += 2.0;
+    
     self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
     [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.totalCell setBackgroundColor:[UIColor clearColor]];
-    self.totalCell.textLabel.text = @"Total:";
+    self.totalCell.textLabel.text = @"Grand Total:";
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
     [self.totalCell.textLabel setTextColor:[UIColor whiteColor]];
+    [self.totalCell.textLabel setFont:[UIFont systemFontOfSize:24.0]];
     [self.totalCell.detailTextLabel setTextColor:[UIColor whiteColor]];
+    [self.totalCell.detailTextLabel setFont:[UIFont boldSystemFontOfSize:24.0]];
     
     [priceView addSubview:self.totalCell];
     pvYPosition += pvHeight;
@@ -239,11 +287,14 @@
         self.totalPrice += [[drink objectForKey:@"quantity"] floatValue] * [[drink objectForKey:priceKey] floatValue];
     }
     
-    //NEED TO FIGURE OUT WHERE THIS ACTUALLY COMES FROM
-    self.taxAndFees = 0.05 * self.totalPrice + 0.05 + (self.totalPrice * self.tipPercent);
-    self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.taxAndFees];
+    self.drinkTotalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.totalPrice];
     
-    self.finalPrice = self.totalPrice + self.taxAndFees + ((self.totalPrice + self.taxAndFees) * self.tipPercent);
+    //NEED TO FIGURE OUT WHERE THIS ACTUALLY COMES FROM
+//    self.taxAndFees = 0.05 * self.totalPrice + 0.05 + (self.totalPrice * self.tipPercent);
+    self.taxAndFees = self.totalPrice * self.tipPercent;
+    self.taxAndFeeCell.detailTextLabel.text = [NSString stringWithFormat:@"+ $%.02f", self.taxAndFees];
+    
+    self.finalPrice = self.totalPrice + self.taxAndFees; // + ((self.totalPrice + self.taxAndFees) * self.tipPercent);
     
 //    int tipValue = roundf(self.tipSlider.value);
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
@@ -261,7 +312,14 @@
 {
     UIRemoteNotificationType status = [[UIApplication sharedApplication] enabledRemoteNotificationTypes];
     
-    if (![SharedDataHandler sharedInstance].isUserAuthenticated)
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasCreatedAccount"] && ![SharedDataHandler sharedInstance].isUserAuthenticated)
+    {
+        NSLog(@"First time app account launch");
+//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasCreatedAccount"];
+        SignupViewController *signup = [[SignupViewController alloc] init];
+        [self.navigationController pushViewController:signup animated:YES];
+    }
+    else if (![SharedDataHandler sharedInstance].isUserAuthenticated)
     {
         FUIAlertView *loginAlert = [KUIHelper createAlertViewWithTitle:@"Login Required"
                                                                message:@"You must be logged in to place orders. Please go to the settings menu and login."
@@ -273,9 +331,9 @@
     else if (![SharedDataHandler sharedInstance].userCard)
     {
         FUIAlertView *cardAlert = [KUIHelper createAlertViewWithTitle:@"Credit Card Required"
-                                                               message:@"You must have a credit card associated with your account to place and order."
+                                                               message:@"You must have a credit card associated with your account to place an order."
                                                               delegate:self
-                                                     cancelButtonTitle:@"Okay"
+                                                     cancelButtonTitle:@"Add Card"
                                                      otherButtonTitles:nil];
         [cardAlert show];
     }
@@ -294,13 +352,14 @@
     else
     {
         NSLog(@"place order button hit");
+        [self placeOrder];
         
-        FUIAlertView *orderAlert = [KUIHelper createAlertViewWithTitle:@"Place Order?"
-                                                              message:@"Would you like to place this order?"
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Cancel"
-                                                    otherButtonTitles:@"Place Order",nil];
-        [orderAlert show];
+//        FUIAlertView *orderAlert = [KUIHelper createAlertViewWithTitle:@"Place Order?"
+//                                                              message:@"Would you like to place this order?"
+//                                                             delegate:self
+//                                                    cancelButtonTitle:@"Cancel"
+//                                                    otherButtonTitles:@"Place Order",nil];
+//        [orderAlert show];
     }
     
 }
@@ -324,6 +383,10 @@
     } else if([title isEqualToString:@"Cancel"])
     {
         [self.unlockSliderPlaceOrder lockSlider];
+    } else if([title isEqualToString:@"Add Card"])
+    {
+        CreditCardProfileViewController *creditCardProfileVC = [[CreditCardProfileViewController alloc] init];
+        [self.navigationController pushViewController:creditCardProfileVC animated:YES];
     }
 }
 
@@ -357,10 +420,10 @@
     NSMutableDictionary *order = [[NSMutableDictionary alloc] init];
     [order setObject:[NSNumber numberWithInt:[SharedDataHandler sharedInstance].current_section] forKey:@"bar_id"];
     [order setObject:[NSNumber numberWithFloat:self.totalPrice] forKey:@"total"];
-    [order setObject:[NSNumber numberWithFloat:2.40] forKey:@"tax"];
-    [order setObject:[NSNumber numberWithFloat:self.totalPrice + 2.40] forKey:@"sub_total"];
-    [order setObject:[NSNumber numberWithFloat:((self.totalPrice + 2.40 + 0.35) * self.tipPercent)] forKey:@"tip"];
-    [order setObject:[NSNumber numberWithFloat:0.35] forKey:@"fees"];
+    [order setObject:[NSNumber numberWithFloat:0.0] forKey:@"tax"];
+    [order setObject:[NSNumber numberWithFloat:self.totalPrice] forKey:@"sub_total"];
+    [order setObject:[NSNumber numberWithFloat:(self.totalPrice * self.tipPercent)] forKey:@"tip"];
+    [order setObject:[NSNumber numberWithFloat:0.0] forKey:@"fees"];
     [order setObject:[NSNumber numberWithFloat:self.finalPrice] forKey:@"grand_total"];
     [order setObject:[SharedDataHandler sharedInstance].currentDrinkOrder forKey:@"drinks"];
     //    [[SharedDataHandler sharedInstance] placeOrder:order];
@@ -564,6 +627,7 @@
 -(void)sliderDidFinishUnlocking
 {
     [self placeOrderCheck];
+    [self.unlockSliderPlaceOrder lockSlider];
 }
 
 @end

@@ -10,6 +10,7 @@
 #import "ConfirmOrderViewController.h"
 #import "UserLoginViewController.h"
 #import "UIColor+FlatUI.h"
+#import "KUIHelper.h"
 
 #define BOTTOM_BAR_HEIGHT 60.0
 
@@ -228,13 +229,13 @@ static bool isShowingBottomBar = NO;
 
 -(void) showLeavingOptions {
     
-    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0) {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Clear Selected Drinks?"
-                                                          message:@"Leaving this bar will clear any drinks currently selected at this bar."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Cancel"
-                                                otherButtonTitles:@"Clear Drinks", nil];
-        [message show];
+    if ([[SharedDataHandler sharedInstance].currentDrinkOrder count] > 0)
+    {
+        [[KUIHelper createAlertViewWithTitle:@"Clear Selected Drinks?"
+                                    message:@"Leaving this bar will clear any drinks currently selected at this bar."
+                                   delegate:self
+                          cancelButtonTitle:@"Cancel"
+                           otherButtonTitles:@"Clear Drinks", nil] show];
     } else {
         [self.navigationController popViewControllerAnimated:YES];
     }

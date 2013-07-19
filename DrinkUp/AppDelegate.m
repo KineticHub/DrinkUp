@@ -31,6 +31,7 @@
 #import "UIColor+FlatUI.h"
 #import "UINavigationBar+FlatUI.h"
 #import "UIFont+FlatUI.h"
+#import "KUIHelper.h"
 
 @interface AppDelegate ()
 @property (nonatomic, strong) REMenu *menu;
@@ -185,12 +186,12 @@
     
 //    [background setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
 //    [background setBackgroundColor:[UIColor colorWithRed:(239/255.0) green:(239/255.0) blue:(239/255.0) alpha:1.0]];
-    [background setBackgroundColor:[UIColor cloudsColor]];
+    [background setBackgroundColor:[KUIHelper getAppBackgroundColor]];
     background.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height);
     [self.rootNavigationController.view addSubview:background];
     [self.rootNavigationController.view sendSubviewToBack:background];
     
-    [self.rootNavigationController.view setBackgroundColor:[UIColor cloudsColor]];
+    [self.rootNavigationController.view setBackgroundColor:[KUIHelper getAppBackgroundColor]];
     
     [self.revealController.view addSubview:background];
     [self.revealController.view sendSubviewToBack:background];
@@ -332,7 +333,7 @@ didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
     // Updates the device token and registers the token with UA. This won't occur until
     // push is enabled if the outlined process is followed.
 
-    NSLog(@"registering device");
+    NSLog(@"registering device: %@", deviceToken);
 //    [[UAPush shared] setAlias:[[[SharedDataHandler sharedInstance] userInformation] objectForKey:@"ua_username"]];
     [[UAPush shared] registerDeviceToken:deviceToken];
 }
@@ -355,12 +356,11 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
     
     NSLog(@"notification: %@", userInfo);
     NSString *messageText = messageText = [[userInfo objectForKey:@"aps"] objectForKey:@"alert"];
-    UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Order Update"
-                                                      message:messageText
-                                                     delegate:self
-                                            cancelButtonTitle:@"Sounds Good"
-                                            otherButtonTitles:nil];
-    [message show];
+    [[KUIHelper createAlertViewWithTitle:@"Order Update"
+                                message:messageText
+                               delegate:nil
+                      cancelButtonTitle:@"Sounds Good"
+                       otherButtonTitles:nil] show];
 }
 
 #pragma  mark -Facebook Helper

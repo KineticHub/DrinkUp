@@ -10,12 +10,13 @@
 #import <MapKit/MapKit.h>
 #import "FBConnect.h"
 #import "AFNetworking.h"
+#import "FUIAlertView.h"
 
 typedef void(^JsonRequestCompletionBlock)(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error);
 typedef void(^ObjectsCompletionBlock)(NSMutableArray* objects);
 typedef void(^SuccessCompletionBlock)(bool successful);
 
-@interface SharedDataHandler : NSObject <CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate, NSURLConnectionDelegate>
+@interface SharedDataHandler : NSObject <FUIAlertViewDelegate, CLLocationManagerDelegate, FBSessionDelegate, FBRequestDelegate, FBDialogDelegate, NSURLConnectionDelegate>
 
 @property int current_section;
 @property (nonatomic, strong) NSMutableArray *currentDrinkOrder;

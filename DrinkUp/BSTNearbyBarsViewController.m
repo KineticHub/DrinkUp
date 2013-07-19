@@ -34,6 +34,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"Nearby Bars";
     [[SharedDataHandler sharedInstance] initializeLocationTracking];
     
     self.bars = [[NSMutableArray alloc] init];
@@ -52,7 +53,7 @@
 {
     NSLog(@"View will appear");
     MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading Bars...";
+    hud.labelText = @"Loading Bars";
     dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
         
         [[SharedDataHandler sharedInstance] loadUserLocation];

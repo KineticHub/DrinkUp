@@ -10,10 +10,11 @@
 #import "SharedDataHandler.h"
 #import "MBProgressHUD.h"
 #import "BasicCell.h"
+#import "FUIAlertView.h"
 
 #define BOTTOM_BAR_TAG 55155
 
-@interface BasicSplitTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
+@interface BasicSplitTableViewController : UIViewController <FUIAlertViewDelegate, UITableViewDelegate, UITableViewDataSource, UIAlertViewDelegate>
 @property (nonatomic, strong) UIView *upperView;
 @property (nonatomic, strong) UITableView *tableView;
 

@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import "CardIO.h"
+#import "FUIAlertView.h"
 
-@interface CreditCardProfileViewController : UIViewController <CardIOPaymentViewControllerDelegate>
+@interface CreditCardProfileViewController : UIViewController <FUIAlertViewDelegate, CardIOPaymentViewControllerDelegate>
 
 @end

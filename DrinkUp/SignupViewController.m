@@ -18,6 +18,8 @@
 #import "FUIButton.h"
 #import "FUIAlertView.h"
 #import "UIFont+FlatUI.h"
+#import "KUIHelper.h"
+#import "CreditCardProfileViewController.h"
 
 @interface SignupViewController ()
 @property (nonatomic, strong) UITextField *emailField;
@@ -34,7 +36,8 @@
 {
     [super viewDidLoad];
 //    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"black_thread"]]];
-    [self.view setBackgroundColor:[UIColor cloudsColor]];
+    [self.view setBackgroundColor:[KUIHelper getAppBackgroundColor]];
+    self.navigationItem.title = @"Sign Up";
     
     UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
     [self.view addGestureRecognizer:gestureRecognizer];
@@ -45,15 +48,15 @@
     CGFloat fieldWidth = 300.0;
     CGFloat fieldHeight = 35.0;
     
-    UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
-    [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
-    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
-    [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
-    [drinkUpLabel setTextColor:[UIColor blackColor]];
-    [drinkUpLabel setText:@"Sign Up"];
-    [self.view addSubview:drinkUpLabel];
+//    UILabel *drinkUpLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
+//    [drinkUpLabel setBackgroundColor:[UIColor clearColor]];
+//    [drinkUpLabel setFont:[UIFont boldSystemFontOfSize:22.0]];
+//    [drinkUpLabel setTextAlignment:NSTextAlignmentCenter];
+//    [drinkUpLabel setTextColor:[UIColor blackColor]];
+//    [drinkUpLabel setText:@"Sign Up"];
+//    [self.view addSubview:drinkUpLabel];
     
-    y += drinkUpLabel.frame.size.height + spacer;
+//    y += drinkUpLabel.frame.size.height + spacer;
     
 //    UIView *coloredBgView1 = [[UIView alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight)];
 //    [coloredBgView1 setBackgroundColor:[UIColor clearColor]];
@@ -62,15 +65,7 @@
 //    [coloredBgView1.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView1];
     
-    self.emailField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight)];
-    [self.emailField setPlaceholder:@"Email Address"];
-    [self.emailField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.emailField.backgroundColor = [UIColor silverColor];
-    self.emailField.layer.cornerRadius = 3.0f;
-    self.emailField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView1 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.emailField.leftView = leftView1;
-    [self.emailField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    self.emailField = [KUIHelper createCommonTextFieldWithRect:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight) andPlaceholder:@"email address"];
     [self.view addSubview:self.emailField];
     
     y += self.emailField.frame.size.height + spacer;
@@ -81,16 +76,8 @@
 //    [coloredBgView2.layer setBorderWidth:3.0];
 //    [coloredBgView2.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView2];
-    
-    self.userNameField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight)];
-    [self.userNameField setPlaceholder:@"Username"];
-    [self.userNameField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.userNameField.backgroundColor = [UIColor silverColor];
-    self.userNameField.layer.cornerRadius = 3.0f;
-    self.userNameField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView2 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.userNameField.leftView = leftView2;
-    [self.userNameField setAutocorrectionType:UITextAutocorrectionTypeNo];
+
+    self.userNameField = [KUIHelper createCommonTextFieldWithRect:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight) andPlaceholder:@"username"];
     [self.view addSubview:self.userNameField];
     
     y += self.userNameField.frame.size.height + spacer;
@@ -114,16 +101,7 @@
 //    [coloredBgView3.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView3];
     
-    self.passwordField = [[UITextField alloc] initWithFrame:CGRectMake(edgeInset + 10.0, y, halfField - 10.0, fieldHeight)];
-    [self.passwordField setPlaceholder:@"Password"];
-    [self.passwordField setSecureTextEntry:YES];
-    [self.passwordField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.passwordField.backgroundColor = [UIColor silverColor];
-    self.passwordField.layer.cornerRadius = 3.0f;
-    self.passwordField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView3 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.passwordField.leftView = leftView3;
-    [self.passwordField setAutocorrectionType:UITextAutocorrectionTypeNo];
+    self.passwordField = [KUIHelper createPasswordFieldWithRect:CGRectMake(edgeInset + 10.0, y, halfField - 10.0, fieldHeight) andPlaceholder:@"password"];
     [self.view addSubview:self.passwordField];
     
 //    y += self.passwordField.frame.size.height + spacer;
@@ -134,17 +112,8 @@
 //    [coloredBgView4.layer setBorderWidth:3.0];
 //    [coloredBgView4.layer setCornerRadius:5.0];
 //    [self.view addSubview:coloredBgView4];
-    
-    self.passwordRetypeField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.passwordField.frame) + 5.0, y, halfField - 14.0, fieldHeight)];
-    [self.passwordRetypeField setPlaceholder:@"Confirm Password"];
-    [self.passwordRetypeField setSecureTextEntry:YES];
-    [self.passwordRetypeField setContentVerticalAlignment:UIControlContentVerticalAlignmentCenter];
-    self.passwordRetypeField.backgroundColor = [UIColor silverColor];
-    self.passwordRetypeField.layer.cornerRadius = 3.0f;
-    self.passwordRetypeField.leftViewMode = UITextFieldViewModeAlways;
-    UIView* leftView4 = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 10, 10)];
-    self.passwordRetypeField.leftView = leftView4;
-    [self.passwordRetypeField setAutocorrectionType:UITextAutocorrectionTypeNo];
+
+    self.passwordRetypeField = [KUIHelper createPasswordFieldWithRect:CGRectMake(CGRectGetMaxX(self.passwordField.frame) + 5.0, y, halfField - 14.0, fieldHeight) andPlaceholder:@"retype"];
     [self.view addSubview:self.passwordRetypeField];
     
     y += self.passwordRetypeField.frame.size.height + spacer * 2 - spacer/2;
@@ -155,19 +124,14 @@
     [doneButton addTarget:self  action:@selector(signupOnServer) forControlEvents:UIControlEventTouchUpInside];
 //    [self.view addSubview:doneButton];
     
-    FUIButton *createAccountButton = [[FUIButton alloc] initWithFrame:CGRectMake(0.0, y, self.view.frame.size.width, fieldHeight + 20.0)];
-    createAccountButton.buttonColor = [UIColor midnightBlueColor];
-    createAccountButton.titleLabel.font = [UIFont boldFlatFontOfSize:22];
-    [createAccountButton setTitle:@"Create Account" forState:UIControlStateNormal];
+    FUIButton *createAccountButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight + 20.0) andTitle:@"Create Account"];
     [createAccountButton addTarget:self action:@selector(signupOnServer) forControlEvents:UIControlEventTouchUpInside];
-    [createAccountButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [createAccountButton setTitleColor:[UIColor concreteColor] forState:UIControlStateHighlighted];
     [self.view addSubview:createAccountButton];
     
-    y += createAccountButton.frame.size.height;
+    y += createAccountButton.frame.size.height + spacer * 5;
     
     UILabel *newLabel = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, 30.0)];
-    [newLabel setText:@"OR"];
+    [newLabel setText:@"Want to sign in quickly?"];
     [newLabel setTextAlignment:NSTextAlignmentCenter];
     [newLabel setBackgroundColor:[UIColor clearColor]];
     [newLabel setTextColor:[UIColor blackColor]];
@@ -175,13 +139,10 @@
     
     y += newLabel.frame.size.height + 5.0;
     
-    FUIButton *facebookButton = [[FUIButton alloc] initWithFrame:CGRectMake(0.0, y, self.view.frame.size.width, fieldHeight + 20.0)];
+    FUIButton *facebookButton = [KUIHelper createBannerButtonWithRect:CGRectMake(edgeInset + 10.0, y, fieldWidth - 20.0, fieldHeight + 20.0)
+                                                             andTitle:@"Facebook Sign Up"];
     facebookButton.buttonColor = [UIColor colorWithRed:(100/255.0) green:(100/255.0) blue:(200/255.0) alpha:1.0];
-    facebookButton.titleLabel.font = [UIFont boldSystemFontOfSize:22];
-    [facebookButton setTitle:@"Facebook Sign Up" forState:UIControlStateNormal];
     [facebookButton addTarget:self action:@selector(loginWithFacebook:) forControlEvents:UIControlEventTouchUpInside];
-    [facebookButton setTitleColor:[UIColor cloudsColor] forState:UIControlStateNormal];
-    [facebookButton setTitleColor:[UIColor concreteColor] forState:UIControlStateHighlighted];
     [self.view addSubview:facebookButton];
     
     y += facebookButton.frame.size.height + spacer;
@@ -207,14 +168,33 @@
     [cancelButton setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor pomegranateColor] forState:UIControlStateHighlighted];
     [cancelButton addTarget:self action:@selector(leaveSignUpView) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:cancelButton];
+//    [self.view addSubview:cancelButton];
+    
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasCreatedAccount"])
+    {
+        NSLog(@"First time app account launch - Sign up");
+        FUIAlertView *firstSignupAlert = [KUIHelper createAlertViewWithTitle:@"WELCOME!"
+                                                                     message:@"Welcome to DrinkUp! To place an order, we'll help you sign up in just 3 simple steps. Let's get started!"
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Okay!"
+                                                           otherButtonTitles:nil];
+        [firstSignupAlert show];
+    }
+}
 
+-(void)didMoveToParentViewController:(UIViewController *)parent
+{
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownCreditCardScreen"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isCreatingAccount"];
+    }
 }
 
 -(void)leaveSignUpView
 {
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{
-    }];
+//    [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{
+//    }];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 -(void)signupOnServer
@@ -237,8 +217,7 @@
                  {
                      if (successful)
                      {
-                         [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{
-                         }];
+                         [self handlePostAuthentication];
                      }
                      
                      dispatch_async(dispatch_get_main_queue(), ^{
@@ -248,22 +227,22 @@
                  }];
             });
         } else {
-            UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Passwords Mismatch"
-                                                              message:@"The password fields do not match. Please type the same password for both password fields."
-                                                             delegate:self
-                                                    cancelButtonTitle:@"Okay"
-                                                    otherButtonTitles:nil];
-            [message show];
+            FUIAlertView *passwordMismatchAlert = [KUIHelper createAlertViewWithTitle:@"Passwords Mismatch"
+                                                                         message:@"The password fields do not match. Please type the same password for both password fields."
+                                                                        delegate:self
+                                                               cancelButtonTitle:@"Okay"
+                                                               otherButtonTitles:nil];
+            [passwordMismatchAlert show];
         }
         
     }
     else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Missing Fields"
-                                                          message:@"Please make sure you have entered information for each field."
-                                                         delegate:self
-                                                cancelButtonTitle:@"Okay"
-                                                otherButtonTitles:nil];
-        [message show];
+        FUIAlertView *missingFieldsAlert = [KUIHelper createAlertViewWithTitle:@"Missing Fields"
+                                                                          message:@"Please make sure you have entered information for each field."
+                                                                         delegate:self
+                                                                cancelButtonTitle:@"Okay"
+                                                                otherButtonTitles:nil];
+        [missingFieldsAlert show];
     }
 }
 
@@ -276,15 +255,38 @@
                                              selector:@selector(facebookAuthorized:)
                                                  name:@"FacebookServerLoginAuthorized"
                                                object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(facebookAuthorizationFailure:)
+                                                 name:@"FacebookServerLoginFailure"
+                                               object:nil];
     
     [[SharedDataHandler sharedInstance] authorizeFacebook];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 -(void)facebookAuthorized:(NSNotification *) notification
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-    [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{}];
     [MBProgressHUD hideHUDForView:self.view animated:YES];
+    [self handlePostAuthentication];
+}
+
+-(void)facebookAuthorizationFailure:(NSNotification *) notification
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
+}
+
+-(void)handlePostAuthentication
+{
+//    [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{}];
+
+    NSLog(@"Post handler user authenticated!");
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isCreatingAccount"];
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"hasShownCreditCardScreen"];
+    [[NSUserDefaults standardUserDefaults] setInteger:[[self.navigationController viewControllers] count] - 2 forKey:@"popToViewController"];
+    CreditCardProfileViewController *ccProfile = [[CreditCardProfileViewController alloc] init];
+    [self.navigationController pushViewController:ccProfile animated:YES];
 }
 
 #pragma mark - UITextField delegate methods

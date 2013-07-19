@@ -12,6 +12,7 @@
 #import "OrderHistoryCell.h"
 #import "OrderHistoryInfoViewController.h"
 #import "NewDrinkSelectCell.h"
+#import "UIColor+FlatUI.h"
 
 @interface OrderHistorySelectionViewController ()
 @property (nonatomic, strong) UITableView *tableView;
@@ -24,6 +25,7 @@
 {
     [super viewDidLoad];
     [self.view setBackgroundColor:[UIColor clearColor]];
+    self.navigationItem.title = @"Order History";
     
     self.orderHistory = [[NSMutableArray alloc] init];
     
@@ -64,7 +66,7 @@
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *nearbyView = [[UIView alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 25.0)];
-    [nearbyView setBackgroundColor:[UIColor darkGrayColor]];
+    [nearbyView setBackgroundColor:[UIColor peterRiverColor]];
     [nearbyView setAlpha:0.8];
     
     UILabel *nearbyLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, tableView.frame.size.width, 15.0)];
@@ -72,7 +74,7 @@
     [nearbyLabel setFont:[UIFont systemFontOfSize:14.0]];
     [nearbyLabel setBackgroundColor:[UIColor clearColor]];
     [nearbyLabel setTextAlignment:NSTextAlignmentCenter];
-    [nearbyLabel setTextColor:[UIColor lightGrayColor]];
+    [nearbyLabel setTextColor:[UIColor whiteColor]];
     [nearbyLabel setText:@"Order History"];
     [nearbyView addSubview:nearbyLabel];
     

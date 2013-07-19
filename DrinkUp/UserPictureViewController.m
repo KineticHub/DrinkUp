@@ -9,6 +9,7 @@
 #import "UserPictureViewController.h"
 #import "SharedDataHandler.h"
 #import "MBProgressHUD.h"
+#import "KUIHelper.h"
 
 #import <AWSRuntime/AWSRuntime.h>
 #import <AWSS3/AWSS3.h>
@@ -28,7 +29,38 @@
     self.selfie.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.selfie];
     
-    [self takePictureWithCamera];
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+    {
+        FUIAlertView *pictureAlert = [KUIHelper createAlertViewWithTitle:@"Add a Picture"
+                                                                    message:@"This is the last step! Add a profile picture so that the bartender can easily recognize you!\n\nYou can always come back here and take a new picture whenever you want."
+                                                                   delegate:self
+                                                          cancelButtonTitle:@"No Thanks, Not Now"
+                                                          otherButtonTitles:@"Let's Take a Picture", nil];
+        [pictureAlert show];
+    }
+    else
+    {
+        [self takePictureWithCamera];
+    }
+}
+
+-(void)alertView:(FUIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSString *title = [alertView buttonTitleAtIndex:buttonIndex];
+    if([title isEqualToString:@"No Thanks, Not Now"])
+    {
+        NSLog(@"Cancel picture was selected");
+        if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+        {
+            int popNum = [[NSUserDefaults standardUserDefaults] integerForKey:@"popToViewController"];
+            [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:popNum] animated:YES];
+        }
+    }
+    else if([title isEqualToString:@"Let's Take a Picture"])
+    {
+        NSLog(@"Let's Take a Picture was selected");
+        [self takePictureWithCamera];
+    }
 }
 
 -(void)takePictureWithCamera
@@ -96,7 +128,15 @@
             
             [[SharedDataHandler sharedInstance] updateUserProfileImageSaved:^(bool successful)
             {
-                [self.navigationController popViewControllerAnimated:YES];
+                if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+                {
+                    int popNum = [[NSUserDefaults standardUserDefaults] integerForKey:@"popToViewController"];
+                    [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:popNum] animated:YES];
+                }
+                else
+                {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [MBProgressHUD hideHUDForView:self.view animated:YES];
                 });
@@ -107,6 +147,12 @@
 
 -(void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
 {
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"])
+    {
+        int popNum = [[NSUserDefaults standardUserDefaults] integerForKey:@"popToViewController"];
+        [self.navigationController popToViewController:[self.navigationController.viewControllers objectAtIndex:popNum] animated:YES];
+    }
+    
     [self dismissViewControllerAnimated:NO completion:^{
         [self.navigationController popViewControllerAnimated:YES];
     }];
