@@ -152,13 +152,10 @@
     [self.removeCardButton addTarget:self action:@selector(confirmRemoveCard) forControlEvents:UIControlEventTouchUpInside];
     self.removeCardButton.buttonColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
     [self.view addSubview:self.removeCardButton];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
+    
     if ([[NSUserDefaults standardUserDefaults] boolForKey:@"isCreatingAccount"] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"hasShownCreditCardScreen"])
     {
-        [self cardImage];
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"shouldShowCard.io"];
         FUIAlertView *postSignUpAlert = [KUIHelper createAlertViewWithTitle:@"Add a Card"
                                                                     message:@"Now that you have an account, let's add a credit card so that you can pay for your drinks."
                                                                    delegate:self
@@ -168,6 +165,15 @@
         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasShownCreditCardScreen"];
     }
     
+    if ([[NSUserDefaults standardUserDefaults] boolForKey:@"shouldShowCard.io"])
+    {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"shouldShowCard.io"];
+        [self cardImage];
+    }
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
     [self refreshCardInfo];
 }
 
@@ -209,7 +215,10 @@
     [scanViewController setShowsFirstUseAlert:NO];
     [scanViewController setKeepStatusBarStyle:YES];
     [scanViewController setNavigationBarTintColor:[UIColor midnightBlueColor]];
-    [self presentViewController:scanViewController animated:YES completion:^{}];
+    [self presentViewController:scanViewController animated:YES completion:^
+    {
+        [scanViewController.navigationBar configureFlatNavigationBarWithColor:[UIColor midnightBlueColor]];
+    }];
 }
 
 -(void)changeCard:(CardIOCreditCardInfo *)info
@@ -381,6 +390,10 @@
     {
         NSLog(@"Remove was selected.");
         [self removeCard];
+    }
+    else if([title isEqualToString:@"Add Card"])
+    {
+        [self cardImage];
     }
 }
 

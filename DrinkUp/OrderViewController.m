@@ -385,6 +385,7 @@
         [self.unlockSliderPlaceOrder lockSlider];
     } else if([title isEqualToString:@"Add Card"])
     {
+        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"shouldShowCard.io"];
         CreditCardProfileViewController *creditCardProfileVC = [[CreditCardProfileViewController alloc] init];
         [self.navigationController pushViewController:creditCardProfileVC animated:YES];
     }

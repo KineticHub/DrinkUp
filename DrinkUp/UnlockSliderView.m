@@ -36,23 +36,23 @@ BOOL UNLOCKED = NO;
                                     stretchableImageWithLeftCapWidth:30.0 topCapHeight:0.0];
         UIImage *thumbImage = [UIImage imageWithColor:[UIColor cloudsColor] cornerRadius:20.0];
         
-        self.slideToUnlock = [[UISlider alloc] initWithFrame:CGRectMake(10.0, 6.0, frame.size.width - 20.0, frame.size.height - 12.0)]; //-12
+        self.slideToUnlock = [[UISlider alloc] initWithFrame:CGRectMake(10.0, 6.0, frame.size.width - 20.0, frame.size.height - 14.0)]; //-12
         [self.slideToUnlock setThumbImage:thumbImage forState:UIControlStateNormal];
         [self.slideToUnlock setMinimumTrackImage:stetchLeftTrack forState:UIControlStateNormal];
         [self.slideToUnlock setMaximumTrackImage:stetchRightTrack forState:UIControlStateNormal];
         [self.slideToUnlock addTarget:self action:@selector(unlockSlider) forControlEvents:UIControlEventTouchUpInside];
         [self.slideToUnlock addTarget:self action:@selector(fadeLabel) forControlEvents:UIControlEventValueChanged];
-        [self.slideToUnlock.layer setCornerRadius:20.0];
+        [self.slideToUnlock.layer setCornerRadius:22.0];
         [self.slideToUnlock setBackgroundColor:[UIColor midnightBlueColor]];
         [self.slideToUnlock.layer setBorderColor:[[UIColor midnightBlueColor] CGColor]];
-        [self.slideToUnlock.layer setBorderWidth:3.0];
+        [self.slideToUnlock.layer setBorderWidth:0.0];
         [self addSubview:self.slideToUnlock];
         
         self.sliderLabel = [[UILabel alloc] initWithFrame:frame];
         [self.sliderLabel setBackgroundColor:[UIColor clearColor]];
         [self.sliderLabel setTextAlignment:NSTextAlignmentCenter];
         [self.sliderLabel setTextColor:[UIColor whiteColor]];
-        [self.sliderLabel setText:@"Slide to Order"];
+        [self.sliderLabel setText:@"slide to order"];
         [self addSubview:self.sliderLabel];
     }
     return self;
@@ -61,7 +61,7 @@ BOOL UNLOCKED = NO;
 -(void)lockSlider
 {
     self.sliderLabel.alpha = 1.0;
-	self.slideToUnlock.value = 0.0;
+	self.slideToUnlock.value = 0.01;
     UNLOCKED = NO;
 }
 
@@ -91,7 +91,7 @@ BOOL UNLOCKED = NO;
 			[UIView setAnimationDuration: 0.35];
 			// use CurveEaseOut to create "spring" effect
 			[UIView setAnimationCurve: UIViewAnimationCurveEaseOut];
-			self.slideToUnlock.value = 0.0;
+			self.slideToUnlock.value = 0.01;
 			[UIView commitAnimations];
             
             self.sliderLabel.alpha = 1.0;

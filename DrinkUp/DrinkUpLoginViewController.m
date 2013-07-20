@@ -145,8 +145,7 @@
                  
                  if (successful)
                  {
-                     [[self presentingViewController] dismissViewControllerAnimated:YES completion:^{
-                     }];
+                     [self.navigationController popViewControllerAnimated:YES];
                  } else {
                      [[KUIHelper createAlertViewWithTitle:@"Login Failed"
                                                  message:@"Please check your username and password and try again."
