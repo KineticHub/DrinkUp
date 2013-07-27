@@ -81,6 +81,24 @@ static id _instance;
 #endif
 }
 
+#pragma mark - Save and Load Methods
+- (void)saveUserInfo {
+    
+    NSLog(@"Saving user info: %@", [SharedDataHandler sharedInstance].userInformation);
+    [[NSUserDefaults standardUserDefaults] setObject:[SharedDataHandler sharedInstance].userInformation forKey:@"userInformation"];
+//    [[NSUserDefaults standardUserDefaults] setObject:[SharedDataHandler sharedInstance].userCard forKey:@"userCard"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)loadUserInfo {
+    
+    self.userInformation = [NSKeyedUnarchiver unarchiveObjectWithData:[[NSUserDefaults standardUserDefaults] objectForKey:@"userInformation"]];
+    self.userCard = [[[NSUserDefaults standardUserDefaults] dictionaryForKey:@"userCard"] mutableCopy];
+    
+    NSLog(@"Loading user info: %@", self.userInformation);
+}
+
+#pragma mark - Bar Methods
 -(bool)isBarHappyHour
 {
     NSString *startTime = [self.currentBar objectForKey:@"happyhour_start"];
@@ -435,6 +453,57 @@ static id _instance;
 //#endif
 }
 
+-(void)userLoginToServerWithCookieAndCompletion:(SuccessCompletionBlock)successBlock {
+    
+    if (!self.csrfToken)
+    {
+        [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+            [self userLoginToServerWithCookieAndCompletion:successBlock];
+        }];
+        
+    } else {
+        
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/user_info/", self.baseURL];
+        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+        NSMutableURLRequest *request2 = [client requestWithMethod:@"GET" path:@"" parameters:@{@"csrfmiddlewaretoken": self.csrfToken}];
+        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
+        
+        AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request2];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+            NSLog(@"operation hasAcceptableStatusCode: %d", [operation.response statusCode]);
+            NSLog(@"response string: %@ ", responseObject);
+            
+            [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
+            [self.userInformation setObject:[[[responseObject objectAtIndex:1] objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
+            
+            NSString *ua_username = [self.userInformation objectForKey:@"username"];
+            [self.userInformation setObject:ua_username forKey:@"ua_username"];
+            
+            if([[[[responseObject objectAtIndex:0] objectForKey:@"fields" ] objectForKey:@"profile_image_saved"] boolValue] && ![self pictureExistsLocally])
+            {
+                NSLog(@"saving picture locally");
+                [self saveUserPictureLocally];
+            }
+            [self userIsAuthenticated:^(bool successful)
+             {
+                 NSLog(@"ua_username: %@", [self userInformation]);
+                 [[UAPush shared] setAlias:[[self userInformation] objectForKey:@"ua_username"]];
+                 [[UAPush shared] updateRegistration];
+                 [self userCurrentCardInfo];
+                 successBlock(successful);
+             }];
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"user login to server with cookie error: %@ \n\n %@", operation.responseString, error.description);
+            [self userIsAuthenticated:successBlock];
+        }];
+        
+        [self.queue addOperation:operation];
+    }
+}
+
 -(void)userLoginToServerWithCredentials:(NSMutableDictionary *)credentials andCompletion:(SuccessCompletionBlock)successBlock {
     
     if (!self.csrfToken)
@@ -479,7 +548,7 @@ static id _instance;
             {
 //                NSLog(@"setting push enabled");
 //                [[UAPush shared] setPushEnabled:YES];
-                NSLog(@"ua_username: %@", [self userInformation]);
+                NSLog(@"userinfo after authentication success: %@", [self userInformation]);
                 [[UAPush shared] setAlias:[[self userInformation] objectForKey:@"ua_username"]];
                 [[UAPush shared] updateRegistration];
                 [self userCurrentCardInfo];
@@ -535,8 +604,9 @@ static id _instance;
         [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
             [self userCreateOnServer:userDictionary withSuccess:successBlock];
         }];
-        
-    } else {
+    }
+    else
+    {
         NSLog(@"create user on server started");
         [userDictionary setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
         
@@ -556,14 +626,13 @@ static id _instance;
             id responseDictionary = [[responseObject objectFromJSONData] objectAtIndex:0];
             id responseDictionary2 = [[responseObject objectFromJSONData] objectAtIndex:1];
             
-            NSString *ua_username;
-            ua_username = [NSString stringWithFormat:@"appuser%i", [[responseDictionary objectForKey:@"pk"] intValue]];
             [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"username"];
+            [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"username"] forKey:@"ua_username"];
             [self.userInformation setObject:[[responseDictionary2 objectForKey:@"fields" ] objectForKey:@"email"] forKey:@"email"];
-            [self.userInformation setObject:ua_username forKey:@"ua_username"];
             
             [self userIsAuthenticated:^(bool successful)
              {
+                 [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasCreatedAccount"];
                  //                NSLog(@"setting push enabled");
                  //                [[UAPush shared] setPushEnabled:YES];
                  NSLog(@"ua_username: %@", [self userInformation]);
@@ -574,7 +643,8 @@ static id _instance;
              }];
         } failure:^(AFHTTPRequestOperation *operation, NSError *error)
         {
-            NSLog(@"error: %@", [operation.responseData objectFromJSONData]);
+            NSLog(@"error json: %@", [operation.responseData objectFromJSONData]);
+            NSLog(@"nserror: %@", error);
             
             NSString *messageTitle;
             NSString *messageText;
@@ -849,7 +919,11 @@ static id _instance;
     [stream scheduleInRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
     [stream open];
     
+#ifdef DEV
+    S3GetObjectRequest *request = [[S3GetObjectRequest alloc] initWithKey:fileName withBucket:@"DrinkUp-Users-Dev"];
+#else
     S3GetObjectRequest *request = [[S3GetObjectRequest alloc] initWithKey:fileName withBucket:@"DrinkUp-Users"];
+#endif
     request.outputStream = stream;
     
     [s3Client getObject:request];
@@ -941,6 +1015,9 @@ static id _instance;
 #pragma mark - Facebook Methods
 
 -(Facebook *)facebookInstance {
+    if (!self.facebook) {
+        [self initializeFacebook];
+    }
     return self.facebook;
 }
 
@@ -1044,6 +1121,8 @@ static id _instance;
 //            [self.userInformation setValuesForKeysWithDictionary:[[responseObject objectFromJSONData] objectAtIndex:0]];
             [self userIsAuthenticated:^(bool successful)
             {
+                [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasCreatedAccount"];
+                
                 NSString *ua_username = [[[[[[responseObject objectFromJSONData] objectAtIndex:0] objectForKey:@"fields"] objectForKey:@"user"] objectForKey:@"fields"] objectForKey:@"username"];
                 [self.userInformation setObject:ua_username forKey:@"ua_username"];
                 [[UAPush shared] setAlias:[[self userInformation] objectForKey:@"ua_username"]];

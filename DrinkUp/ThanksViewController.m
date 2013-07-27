@@ -23,6 +23,7 @@
 {
     [super viewDidLoad];
 //    self.navigationItem.title = @"Order Number";
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"isCurrentlyOnThanksViewController"];
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Drinks Claimed!" style:UIBarButtonItemStyleDone target:self action:@selector(confirmOrderReceived)];
     self.navigationItem.leftBarButtonItem = backButton;
@@ -57,12 +58,16 @@
     [self.claimLabel setBackgroundColor:[UIColor clearColor]];
     [self.view addSubview:self.claimLabel];
     
-    NSString *message = @"We'll notify you when your order is ready.  Show the number at the pick up area to claim your order.";
-    [[KUIHelper createAlertViewWithTitle:@"Order Placed"
-                                message:message
-                               delegate:nil
-                      cancelButtonTitle:@"Cool Beans"
-                      otherButtonTitles:nil] show];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"redirectedFromNotification"]) {
+        NSString *message = @"We'll notify you when your order is ready.  Show the number at the pick up area to claim your order.";
+        [[KUIHelper createAlertViewWithTitle:@"Order Placed"
+                                     message:message
+                                    delegate:nil
+                           cancelButtonTitle:@"Cool Beans"
+                           otherButtonTitles:nil] show];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"redirectedFromNotification"];
+    }
 }
 
 -(void)orderReadyUpdate {
@@ -70,11 +75,19 @@
 }
 
 -(void)drinkOrderCompleteExit {
+    [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"isCurrentlyOnThanksViewController"];
+    
+    bool found = NO;
     for (UIViewController *controller in self.navigationController.viewControllers) {
         if ([controller isKindOfClass:[CollapsableDrinkViewController class]]) {
+            found = YES;
             [self.navigationController popToViewController:controller animated:YES];
             break;
         }
+    }
+    
+    if (!found) {
+        [self.navigationController popViewControllerAnimated:YES];
     }
 }
 

@@ -32,6 +32,9 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 + (SharedDataHandler *)sharedInstance;
 -(void)initializeLocationTracking;
 -(bool)isBarHappyHour;
+- (void)saveUserInfo;
+- (void)loadUserInfo;
+- (void)fbGetUserInfo;
 
 #pragma mark - Selection API Functions
 -(void)loadUserLocation;
@@ -52,6 +55,8 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)updateUserProfileImageSaved:(SuccessCompletionBlock)successBlock;
 -(UIImage *)getUserProfileImage;
 -(void)getUserOrderHistoryWithCompletion:(ObjectsCompletionBlock)completionBlock;
+-(void)userIsAuthenticated:(SuccessCompletionBlock)successBlock;
+-(void)userLoginToServerWithCookieAndCompletion:(SuccessCompletionBlock)successBlock;
 
 #pragma mark - Order API Functions
 -(void)placeOrder:(NSMutableDictionary *)order withSuccess:(SuccessCompletionBlock)successBlock;

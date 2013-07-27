@@ -281,7 +281,7 @@
                     else
                     {   
                         [[KUIHelper createAlertViewWithTitle:@"Update Error"
-                                                    message:@"There was an error updating the card information. It may be the connecion or an issue on ur side. Please let us know if this continues to occur and we will help you resolve it as quickly as possible."
+                                                    message:@"There was an error updating the card information. It may be the connection or an issue on our side. Please let us know if this continues to occur and we will help you resolve it as quickly as possible."
                                                    delegate:self
                                           cancelButtonTitle:@"Okay"
                                            otherButtonTitles:nil] show];

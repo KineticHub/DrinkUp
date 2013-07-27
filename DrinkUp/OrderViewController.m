@@ -315,7 +315,6 @@
     if (![[NSUserDefaults standardUserDefaults] boolForKey:@"hasCreatedAccount"] && ![SharedDataHandler sharedInstance].isUserAuthenticated)
     {
         NSLog(@"First time app account launch");
-//        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"hasCreatedAccount"];
         SignupViewController *signup = [[SignupViewController alloc] init];
         [self.navigationController pushViewController:signup animated:YES];
     }

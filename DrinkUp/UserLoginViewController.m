@@ -47,6 +47,10 @@
     
     [[SharedDataHandler sharedInstance] initializeFacebook];
 //    Facebook *facebook = [[SharedDataHandler sharedInstance] facebookInstance];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(facebookAuthorized:)
+                                                 name:@"FacebookServerLoginAuthorized"
+                                               object:nil];
 
     NSLog(@"view did load");
     if ([SharedDataHandler sharedInstance].isUserAuthenticated) {
@@ -68,6 +72,8 @@
         self.isUpdatingProfilePicture = NO;
         [self.profilePicView setImage:[[SharedDataHandler sharedInstance] getUserProfileImage]];
     }
+    
+    NSLog(@"Current user info for login and profile: %@", [SharedDataHandler sharedInstance].userInformation);
 }
 
 - (void)loginView:(FBLoginView *)loginView

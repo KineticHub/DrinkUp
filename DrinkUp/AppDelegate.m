@@ -23,6 +23,7 @@
 #import "MainSettingsViewController.h"
 #import "SharedDataHandler.h"
 #import "NearbyBarsMapViewController.h"
+#import "ThanksViewController.h"
 
 #import "REMenu.h"
 #import "PKRevealController.h"
@@ -44,15 +45,36 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+    [self loadCookies];
+    
+    [[SharedDataHandler sharedInstance] userIsAuthenticated:^(bool successful)
+    {
+        
+        NSLog(@"Checking user authentication:");
+        if (successful) {
+            if ([[SharedDataHandler sharedInstance].facebookInstance isSessionValid])
+            {
+                [[SharedDataHandler sharedInstance] fbGetUserInfo];
+            }
+            else {
+                [[SharedDataHandler sharedInstance] userLoginToServerWithCookieAndCompletion:^(bool successful) {
+                }];
+            }
+            NSLog(@"SUCCESS");
+        } else {
+            NSLog(@"FAILURE");
+        }
+    }];
+    
     // Call takeOff, passing in the launch options so the library can properly record when
     // the app is launched from a push notification
     NSMutableDictionary *takeOffOptions = [[NSMutableDictionary alloc] init];
     [takeOffOptions setValue:launchOptions forKey:UAirshipTakeOffOptionsLaunchOptionsKey];
     
 #ifdef DEV
-    [takeOffOptions setValue:@"NO" forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
+    [takeOffOptions setValue:@NO forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
 #else
-    [takeOffOptions setValue:@"YES" forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
+    [takeOffOptions setValue:@YES forKey:@"APP_STORE_OR_AD_HOC_BUILD"];
 #endif
     
     // This prevents the UA Library from registering with UIApplcation by default when
@@ -281,6 +303,7 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     [UAirship land];
     [FBSession.activeSession close];
+    [self saveCookies];
 }
 
 #pragma mark - NavBar Button Methods
@@ -361,6 +384,11 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
                                delegate:nil
                       cancelButtonTitle:@"Sounds Good"
                        otherButtonTitles:nil] show];
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"redirectedFromNotification"];
+    if (![[NSUserDefaults standardUserDefaults] boolForKey:@"isCurrentlyOnThanksViewController"]) {
+        ThanksViewController *thanksVC = [[ThanksViewController alloc] init];
+        [self.rootNavigationController pushViewController:thanksVC animated:YES];
+    }
 }
 
 #pragma  mark -Facebook Helper
@@ -393,5 +421,24 @@ didReceiveRemoteNotification:(NSDictionary *)userInfo {
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     self.isNavigating = YES;
+}
+
+#pragma mark - Cookie Methods
+- (void)saveCookies{
+    
+    NSData *cookiesData = [NSKeyedArchiver archivedDataWithRootObject: [[NSHTTPCookieStorage sharedHTTPCookieStorage] cookies]];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject: cookiesData forKey: @"sessionCookies"];
+    [defaults synchronize];
+}
+
+- (void)loadCookies{
+    
+    NSArray *cookies = [NSKeyedUnarchiver unarchiveObjectWithData: [[NSUserDefaults standardUserDefaults] objectForKey: @"sessionCookies"]];
+    NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    
+    for (NSHTTPCookie *cookie in cookies){
+        [cookieStorage setCookie: cookie];
+    }
 }
 @end
