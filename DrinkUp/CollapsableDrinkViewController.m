@@ -129,7 +129,7 @@
     
 //    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order" style:UIBarButtonItemStylePlain target:self action:@selector(viewCurrentOrderView)];
     
-    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"View Order"
+    self.orderBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Order"
                                                                style:UIBarButtonItemStylePlain
                                                               target:self
                                                               action:@selector(viewCurrentOrderView)];

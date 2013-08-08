@@ -18,6 +18,7 @@
 #import "FUIButton.h"
 #import "FUIAlertView.h"
 #import "UIFont+FlatUI.h"
+#import "UIPopoverController+FlatUI.h"
 #import "KUIHelper.h"
 #import "CreditCardProfileViewController.h"
 
@@ -147,6 +148,43 @@
     
     y += facebookButton.frame.size.height + spacer;
     
+    UITapGestureRecognizer *agreementTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showTOSWebview:)];
+    agreementTap.numberOfTapsRequired = 1;
+    agreementTap.cancelsTouchesInView = NO;
+    
+    NSMutableAttributedString *agreementString = [[NSMutableAttributedString alloc] initWithString:@"By signing up, you agree to our terms of use and"];
+    [agreementString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:[agreementString.string rangeOfString:@"terms of use"]];
+    
+    UILabel *agreement = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y, fieldWidth, fieldHeight - spacer)];
+    [agreement setTextAlignment:NSTextAlignmentCenter];
+    [agreement setBackgroundColor:[UIColor clearColor]];
+    [agreement setTextColor:[UIColor blackColor]];
+    [agreement setAttributedText:agreementString];
+    [agreement setNumberOfLines:1];
+    [agreement setFont:[UIFont systemFontOfSize:[UIFont smallSystemFontSize]]];
+    [agreement addGestureRecognizer:agreementTap];
+    [agreement setUserInteractionEnabled:YES];
+    [self.view addSubview:agreement];
+    
+    
+    UITapGestureRecognizer *privacyTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(showPPWebview:)];
+    privacyTap.numberOfTapsRequired = 1;
+    privacyTap.cancelsTouchesInView = NO;
+    
+    NSMutableAttributedString *privacyString = [[NSMutableAttributedString alloc] initWithString:@"privacy policy"];
+    [privacyString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:[privacyString.string rangeOfString:@"privacy policy"]];
+    
+    UILabel *agreementPrivacy = [[UILabel alloc] initWithFrame:CGRectMake(edgeInset, y + spacer * 2, fieldWidth, fieldHeight - spacer)];
+    [agreementPrivacy setTextAlignment:NSTextAlignmentCenter];
+    [agreementPrivacy setBackgroundColor:[UIColor clearColor]];
+    [agreementPrivacy setTextColor:[UIColor blackColor]];
+    [agreementPrivacy setAttributedText:privacyString];
+    [agreementPrivacy setNumberOfLines:1];
+    [agreementPrivacy setFont:[UIFont systemFontOfSize:[UIFont smallSystemFontSize]]];
+    [agreementPrivacy addGestureRecognizer:privacyTap];
+    [agreementPrivacy setUserInteractionEnabled:YES];
+    [self.view addSubview:agreementPrivacy];
+    
 //    QBFlatButton *cancelButton = [QBFlatButton buttonWithType:UIButtonTypeCustom];
 //    cancelButton.faceColor = [UIColor colorWithRed:(200/255.0) green:(100/255.0) blue:(100/255.0) alpha:1.0];
 //    cancelButton.sideColor = [UIColor colorWithRed:(170/255.0) green:(70/255.0) blue:(70/255.0) alpha:0.7];
@@ -181,6 +219,48 @@
         [firstSignupAlert show];
     }
 }
+
+-(void)showSimpleWebViewWithURL:(NSURL *)url andTitle:(NSString *)title
+{
+    UIViewController *vc = [[UIViewController alloc] init];
+    vc.contentSizeForViewInPopover = CGSizeMake(320, 480);
+    vc.view.backgroundColor = [UIColor whiteColor];
+    vc.title = title;
+    vc.navigationController.navigationBar.titleTextAttributes = @{UITextAttributeFont: [UIFont boldFlatFontOfSize:18],
+                                                                  UITextAttributeTextColor: [UIColor whiteColor]};
+    
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, vc.view.frame.size.width, vc.view.frame.size.height - vc.navigationController.navigationBar.frame.size.height - 30.0)];
+    [webView loadRequest:[NSURLRequest requestWithURL:url]];
+    [vc.view addSubview:webView];
+    
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+-(void)showTOSWebview:(id)sender
+{
+    NSLog(@"TOS hit");
+    [self showSimpleWebViewWithURL:[NSURL URLWithString:@"https://www.drinkup-app.com/info/terms/"] andTitle:@"Terms of Service"];
+}
+
+-(void)showPPWebview:(id)sender
+{
+    NSLog(@"PP hit");
+    [self showSimpleWebViewWithURL:[NSURL URLWithString:@"https://www.drinkup-app.com/info/privacy/"] andTitle:@"Privacy Policy"];
+}
+
+#pragma mark - UIPopoverControllerDelegate Methods
+
+- (BOOL)popoverControllerShouldDismissPopover:(UIPopoverController *)popoverController
+{
+    return YES;
+}
+
+- (void) popoverControllerDidDismissPopover:(UIPopoverController *)popoverController {
+    popoverController = nil;
+}
+
+
+#pragma mark - View Navigation
 
 -(void)didMoveToParentViewController:(UIViewController *)parent
 {

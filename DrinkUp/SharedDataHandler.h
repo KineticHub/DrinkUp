@@ -57,6 +57,7 @@ typedef void(^SuccessCompletionBlock)(bool successful);
 -(void)getUserOrderHistoryWithCompletion:(ObjectsCompletionBlock)completionBlock;
 -(void)userIsAuthenticated:(SuccessCompletionBlock)successBlock;
 -(void)userLoginToServerWithCookieAndCompletion:(SuccessCompletionBlock)successBlock;
+-(void)userForgotPassword:(NSMutableDictionary *)userDictionary andCompletion:(SuccessCompletionBlock)successBlock;
 
 #pragma mark - Order API Functions
 -(void)placeOrder:(NSMutableDictionary *)order withSuccess:(SuccessCompletionBlock)successBlock;

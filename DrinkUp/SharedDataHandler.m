@@ -174,12 +174,13 @@ static id _instance;
     
     NSString *barsPath = [NSString stringWithFormat:@"%@/api/venues/nearby/?lat=%f&long=%f&radius=%f", self.baseURL, latitude, longitude, radius];
 //    NSString *barsPath = [NSString stringWithFormat:@"DrinkUp-App.com/api/venues/all/"];
+    NSLog(@"Getting bars with URL: %@", barsPath);
     NSLog(@"bars path: %@", barsPath);
     [self JSONWithPath:barsPath onCompletion:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
         
         NSMutableArray *bars = [[NSMutableArray alloc] init];
         NSMutableDictionary *tempDict;
-        NSLog(@"JSON: %@", JSON);
+        NSLog(@"bars returned nearby: %@", JSON);
         for (NSMutableDictionary *bar in JSON) {
             tempDict = [[NSMutableDictionary alloc] initWithDictionary:[bar objectForKey:@"fields"]];
             [tempDict setObject:[bar objectForKey:@"pk"] forKey:@"id"];
@@ -669,6 +670,60 @@ static id _instance;
                 messageTitle = @"Sign Up Error";
                 messageText = @"There was an error creating your account. Please make sure that you have entered a valid email address";
             }
+            
+            [[KUIHelper createAlertViewWithTitle:messageTitle
+                                         message:messageText
+                                        delegate:self
+                               cancelButtonTitle:@"Okay"
+                               otherButtonTitles:nil] show];
+            
+            successBlock(NO);
+        }];
+        
+        [self.queue addOperation:operation];
+    }
+}
+
+-(void)userForgotPassword:(NSMutableDictionary *)userDictionary andCompletion:(SuccessCompletionBlock)successBlock
+{
+    if (!self.csrfToken)
+    {
+        [self getEmptyCSRFToken:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON, NSError *error) {
+            [self userForgotPassword:userDictionary andCompletion:successBlock];
+        }];
+    }
+    else
+    {
+        [userDictionary setObject:self.csrfToken forKey:@"csrfmiddlewaretoken"];
+        
+        NSString *requestPath = [NSString stringWithFormat:@"%@/api/user/password_reset/", self.baseURL];
+        NSURL *url = [NSURL URLWithString:[requestPath stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+        
+        AFHTTPClient *client = [[AFHTTPClient alloc] initWithBaseURL:url];
+        NSMutableURLRequest *request2 = [client requestWithMethod:@"POST" path:@"" parameters:userDictionary];
+        [request2 setValue:@"application/x-www-form-urlencoded" forHTTPHeaderField:@"content-type"];
+        [request2 setValue:[NSString stringWithFormat:@"%@/", self.baseURL] forHTTPHeaderField:@"Referer"];
+        
+        AFJSONRequestOperation *operation = [[AFJSONRequestOperation alloc] initWithRequest:request2];
+        [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject)
+        {
+            NSLog(@"userForgotPassword hasAcceptableStatusCode: %d", [operation.response statusCode]);
+//            [[KUIHelper createAlertViewWithTitle:@"Email Sent"
+//                                         message:@"An email has been sent to the provided address. Please follow the directions in the email to reset your password."
+//                                        delegate:self
+//                               cancelButtonTitle:@"Okay"
+//                               otherButtonTitles:nil] show];
+            successBlock(YES);
+            
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            NSLog(@"userForgotPassword server error: %@", operation.responseString);
+            NSLog(@"userForgotPassword error json: %@", [operation.responseData objectFromJSONData]);
+            
+            NSString *messageTitle;
+            NSString *messageText;
+            
+            messageTitle = @"Account Not Found";
+            messageText = @"We were not able to find the account associated with this email. Please make sure this is the same email used to sign up for the account and try again.";
             
             [[KUIHelper createAlertViewWithTitle:messageTitle
                                          message:messageText

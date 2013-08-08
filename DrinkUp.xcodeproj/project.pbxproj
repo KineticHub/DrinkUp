@@ -71,7 +71,6 @@
 		9C736FB6174E10300056713F /* libUAirship-1.4.0.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C736FB5174E10300056713F /* libUAirship-1.4.0.a */; };
 		9C736FB8174E110C0056713F /* AirshipConfig.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C736FB7174E110C0056713F /* AirshipConfig.plist */; };
 		9C7AFBDD16F7A0DE0010BA43 /* QBFlatButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C7AFBDC16F7A0DE0010BA43 /* QBFlatButton.m */; };
-		9C7D290216F7935200CDA4B8 /* DrinkUp-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C69C5A416CD89F800D548F2 /* DrinkUp-Info.plist */; };
 		9C8039BB17601B16008EFC5C /* CollapsableDrinkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039BA17601B16008EFC5C /* CollapsableDrinkViewController.m */; };
 		9C8039C517601B66008EFC5C /* CollapseClick.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039BF17601B66008EFC5C /* CollapseClick.m */; };
 		9C8039C617601B66008EFC5C /* CollapseClickArrow.m in Sources */ = {isa = PBXBuildFile; fileRef = 9C8039C117601B66008EFC5C /* CollapseClickArrow.m */; };
@@ -232,6 +231,7 @@
 		9CE6082E1793337B009CC3CA /* UnlockSliderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6082D1793337B009CC3CA /* UnlockSliderView.m */; };
 		9CE6083217939B82009CC3CA /* KUIHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6083117939B82009CC3CA /* KUIHelper.m */; };
 		9CE6083617979FE3009CC3CA /* gear_24.png in Resources */ = {isa = PBXBuildFile; fileRef = 9CE6083517979FE3009CC3CA /* gear_24.png */; };
+		9CE6083917A74FB4009CC3CA /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CE6083817A74FB1009CC3CA /* ForgotPasswordViewController.m */; };
 		9CF05361173901FC00351DA4 /* BalancedHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF05360173901FC00351DA4 /* BalancedHelper.m */; };
 		9CF053641739023C00351DA4 /* BPHCard.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053631739023C00351DA4 /* BPHCard.m */; };
 		9CF053671739030400351DA4 /* BPHUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 9CF053661739030400351DA4 /* BPHUtils.m */; };
@@ -621,6 +621,8 @@
 		9CE6083017939B82009CC3CA /* KUIHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KUIHelper.h; sourceTree = "<group>"; };
 		9CE6083117939B82009CC3CA /* KUIHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KUIHelper.m; sourceTree = "<group>"; };
 		9CE6083517979FE3009CC3CA /* gear_24.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = gear_24.png; sourceTree = "<group>"; };
+		9CE6083717A74FAE009CC3CA /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordViewController.h; sourceTree = "<group>"; };
+		9CE6083817A74FB1009CC3CA /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordViewController.m; sourceTree = "<group>"; };
 		9CF0535F173901FC00351DA4 /* BalancedHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BalancedHelper.h; sourceTree = "<group>"; };
 		9CF05360173901FC00351DA4 /* BalancedHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BalancedHelper.m; sourceTree = "<group>"; };
 		9CF053621739023C00351DA4 /* BPHCard.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BPHCard.h; sourceTree = "<group>"; };
@@ -1350,6 +1352,8 @@
 				9C8B70E416DD954D00FB80AF /* UserLoginViewController.m */,
 				9C17CBDE175B79DF00D0EA17 /* DrinkUpLoginViewController.h */,
 				9C17CBDF175B79DF00D0EA17 /* DrinkUpLoginViewController.m */,
+				9CE6083717A74FAE009CC3CA /* ForgotPasswordViewController.h */,
+				9CE6083817A74FB1009CC3CA /* ForgotPasswordViewController.m */,
 			);
 			name = "Email Login";
 			sourceTree = "<group>";
@@ -1521,7 +1525,7 @@
 		9C69C59116CD89F800D548F2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0460;
+				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = Kinetic;
 			};
 			buildConfigurationList = 9C69C59416CD89F800D548F2 /* Build configuration list for PBXProject "DrinkUp" */;
@@ -1560,7 +1564,6 @@
 				9C8B782716F14F9A00FB80AF /* DrinkUp-App.com.der in Resources */,
 				9C225E3F16F280EE002796B2 /* Icon_57x57.png in Resources */,
 				9C225E4016F280EE002796B2 /* Icon_114x114.png in Resources */,
-				9C7D290216F7935200CDA4B8 /* DrinkUp-Info.plist in Resources */,
 				9C736FB8174E110C0056713F /* AirshipConfig.plist in Resources */,
 				9C17CBD4175661CA00D0EA17 /* stressed_linen.png in Resources */,
 				9C17CBDD175A652B00D0EA17 /* black_thread.png in Resources */,
@@ -1755,6 +1758,7 @@
 				9CE6080B179206CA009CC3CA /* FeedCell1.m in Sources */,
 				9CE6082E1793337B009CC3CA /* UnlockSliderView.m in Sources */,
 				9CE6083217939B82009CC3CA /* KUIHelper.m in Sources */,
+				9CE6083917A74FB4009CC3CA /* ForgotPasswordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1857,7 +1861,7 @@
 					"\"$(SDK_DIR)\"/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DrinkUp/CardIO\"",
@@ -1894,7 +1898,7 @@
 					"\"$(SDK_DIR)\"/usr/include/libxml2/**",
 				);
 				INFOPLIST_FILE = "DrinkUp/DrinkUp-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/DrinkUp/CardIO\"",

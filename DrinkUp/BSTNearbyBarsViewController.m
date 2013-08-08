@@ -13,6 +13,7 @@
 #import "CollapsableDrinkViewController.h"
 #import "FeedCell1.h"
 #import "UIImageView+AFNetworking.h"
+#import "KUIHelper.h"
 
 #import "UIColor+FlatUI.h"
 #import "FUIAlertView.h"
@@ -59,25 +60,19 @@
         [[SharedDataHandler sharedInstance] loadUserLocation];
         [[SharedDataHandler sharedInstance] loadBarsWithLocation:^(NSMutableArray *objects)
          {
-             NSLog(@"Bars loaded with location");
+             NSLog(@"Bars loaded with location: %@", objects);
+             
              if ([objects count] == 0)
              {
                  [[SharedDataHandler sharedInstance] loadBars:^(NSMutableArray *objects)
                   {
                       NSLog(@"No location bars found, loading all bars");
                       
-                      FUIAlertView *noBarsAlert = [[FUIAlertView alloc] initWithTitle:@"No Nearby Bars" message:@"No DrinkUp bars were found near you. Showing all participating bars." delegate:self cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                      noBarsAlert.titleLabel.textColor = [UIColor cloudsColor];
-                      noBarsAlert.titleLabel.font = [UIFont boldFlatFontOfSize:16];
-                      noBarsAlert.messageLabel.textColor = [UIColor cloudsColor];
-                      noBarsAlert.messageLabel.font = [UIFont flatFontOfSize:14];
-                      noBarsAlert.backgroundOverlay.backgroundColor = [[UIColor cloudsColor] colorWithAlphaComponent:0.8];
-                      noBarsAlert.alertContainer.backgroundColor = [UIColor midnightBlueColor];
-                      noBarsAlert.defaultButtonColor = [UIColor cloudsColor];
-                      noBarsAlert.defaultButtonShadowColor = [UIColor asbestosColor];
-                      noBarsAlert.defaultButtonFont = [UIFont boldFlatFontOfSize:16];
-                      noBarsAlert.defaultButtonTitleColor = [UIColor asbestosColor];
-                      [noBarsAlert show];
+                      [[KUIHelper createAlertViewWithTitle:@"No Nearby Bars"
+                                                  message:@"No DrinkUp bars were found near you. Showing all participating bars."
+                                                 delegate:nil
+                                        cancelButtonTitle:@"Okay"
+                                         otherButtonTitles:nil] show];
                       
                       self.bars = [NSMutableArray arrayWithArray:objects];
                       [self.tableView reloadData];

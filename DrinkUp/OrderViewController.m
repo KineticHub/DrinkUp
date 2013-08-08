@@ -209,7 +209,7 @@
     self.drinkTotalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier4"];
     [self.drinkTotalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.drinkTotalCell setBackgroundColor:[UIColor cloudsColor]];
-    self.drinkTotalCell.textLabel.text = @"Sub Total:";
+    self.drinkTotalCell.textLabel.text = @"Amount:";
     self.drinkTotalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.totalPrice];
     [self.drinkTotalCell.textLabel setTextColor:[UIColor midnightBlueColor]];
     [self.drinkTotalCell.detailTextLabel setTextColor:[UIColor midnightBlueColor]];
@@ -236,7 +236,7 @@
     self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
     [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.totalCell setBackgroundColor:[UIColor clearColor]];
-    self.totalCell.textLabel.text = @"Grand Total:";
+    self.totalCell.textLabel.text = @"Total:";
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
     [self.totalCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.totalCell.textLabel setFont:[UIFont systemFontOfSize:24.0]];

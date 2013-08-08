@@ -107,7 +107,7 @@
     self.tipCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier3"];
     [self.tipCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.tipCell setBackgroundColor:[UIColor clearColor]];
-    self.tipCell.textLabel.text = @"Sub Total:";
+    self.tipCell.textLabel.text = @"Amount:";
     self.tipCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", [[self.order objectForKey:@"sub_total"] doubleValue]];
     [self.tipCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.tipCell.detailTextLabel setTextColor:[UIColor whiteColor]];
@@ -129,7 +129,7 @@
     self.totalCell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:@"CellIdentifier2"];
     [self.totalCell setFrame:CGRectMake(pvEdgeInset, pvYPosition, pvWidth, pvHeight)];
     [self.totalCell setBackgroundColor:[UIColor clearColor]];
-    self.totalCell.textLabel.text = @"Grand Total:";
+    self.totalCell.textLabel.text = @"Total:";
     self.totalCell.detailTextLabel.text = [NSString stringWithFormat:@"$%.02f", self.finalPrice];
     [self.totalCell.textLabel setTextColor:[UIColor whiteColor]];
     [self.totalCell.detailTextLabel setTextColor:[UIColor whiteColor]];
